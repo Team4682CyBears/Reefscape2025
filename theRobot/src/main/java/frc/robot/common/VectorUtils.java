@@ -1,3 +1,11 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: VectorUtils.java
+// Intent: Forms a class of utilities for vector operations
+// ************************************************************
+
 package frc.robot.common;
 
 import edu.wpi.first.math.geometry.Pose2d;

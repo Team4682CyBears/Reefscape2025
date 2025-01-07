@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: Constants.java
 // Intent: Forms key constants required for this robot.
 // ************************************************************
@@ -14,7 +14,6 @@ import edu.wpi.first.math.util.Units;
 
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import frc.robot.common.DrivetrainSwerveConfig;
-import frc.robot.swerveHelpers.WcpModuleConfigurations;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 

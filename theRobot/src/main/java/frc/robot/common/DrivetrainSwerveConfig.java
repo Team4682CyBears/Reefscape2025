@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo 2024
+// FRC - Reefscape - 2025
 // File: DrivetrainConfig.java
 // Intent: Forms a type to hold drivetrain config
 // ************************************************************

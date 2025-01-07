@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: DrivetrainPowerSubsystem.java
 // Intent: Forms a subsystem to control ordered access to writeable variables in DrivetrainSubsystem without requring access there.
 // ************************************************************

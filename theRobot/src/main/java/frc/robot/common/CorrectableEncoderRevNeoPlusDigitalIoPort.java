@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: public enum CorrectableEncoderRevNeoPlusDigitalIoPort.java
 // Intent: Forms an interface that will help keep a motor encoder from drifting with use of external sensor.
 // ************************************************************

@@ -1,3 +1,12 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: CommandSwerveDrivetrain.java
+// Intent: Forms a class to extend the Phoenix 6 SwerveDrivetrain class and implements
+// Subsystem so it can easily be used in command-based projects.
+// *************************************************************
+
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;

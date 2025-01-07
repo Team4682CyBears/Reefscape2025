@@ -1,12 +1,16 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: DrivetrainSubsystem.java
 // Intent: Forms the prelminary code for drive train subsystem.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
+// TODO - START HERE!! need to merge this with CommandSwerveDrivetrain. 
+// map existing functionality into available swerve actions from list here: 
+// https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/swerve/SwerveRequest.html
 
 package frc.robot.subsystems;
 
@@ -33,9 +37,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -63,11 +64,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static final DrivetrainSwerveConfig swerveConfig = 
   InstalledHardware.tedDrivetrainInstalled ? Constants.tedDrivertainConfig : Constants.fooDrivetrainConfig;
 
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
   public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 6.0;
   public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 12.0;
     /**
    * The maximum angular velocity of the robot in radians per second.
-   * <p>
    * This is a measure of how fast the robot can rotate in place.
    */
   // Here we calculate the theoretical maximum angular velocity. You can also replace this with a measured amount.

@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Rapid React - 2022
+// FRC - Reefscape - 2025
 // File: Gains.java
 // Intent: Forms a set of gains.
 // ************************************************************

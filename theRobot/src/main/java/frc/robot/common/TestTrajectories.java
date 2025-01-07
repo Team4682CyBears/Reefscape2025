@@ -1,7 +1,7 @@
 // ************************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: ManualInputInterfaces.java
 // Intent: Forms a class with trajcetories for testing swerve drives.
 // ************************************************************
@@ -10,118 +10,222 @@
 
 package frc.robot.common;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 
 /**
  * A class with trajcetories for testing swerve drives.
  */
 public class TestTrajectories {
-  // TODO - rewrite this with PathPlanner on-the-fly paths and PathPlanner trajectory follower.
-    public Trajectory traverseSimpleForward;
-    public Trajectory traverseZigZag;
-    public Trajectory traverseSimpleLeft;
-    public Trajectory traverseTurn270;
-    public Trajectory turn90;
-    public Trajectory traverseForwardArc;
-    public Trajectory traverseBackwardArc;
-    public Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
+  public PathPlannerPath traverseSimpleForward;
+  public PathPlannerPath traverseZigZag;
+  public PathPlannerPath traverseSimpleLeft;
+  public PathPlannerPath traverseTurn270;
+  public PathPlannerPath turn90;
+  public PathPlannerPath traverseForwardArc;
+  public PathPlannerPath traverseBackwardArc;
+  public Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
 
-    /**
-    * constructs trajcetories for testing swerve drives.
-    */
-    public TestTrajectories(){
-        traverseSimpleForward = buildTraverseSimpleForward();
-        traverseZigZag = buildZigZag();
-        traverseSimpleLeft = buildTraverseSimpleLeft();
-        traverseTurn270 = buildTraverseTurn270();
-        turn90 = buildTurn90();
-        traverseForwardArc = buildTraverseForwardArc();
-        traverseBackwardArc = buildTraverseBackwardArc();
-    }
+  /**
+   * constructs trajcetories for testing swerve drives.
+   */
+  public TestTrajectories() {
+    traverseSimpleForward = buildTraverseSimpleForward();
+    traverseZigZag = buildZigZag();
+    traverseSimpleLeft = buildTraverseSimpleLeft();
+    traverseTurn270 = buildTraverseTurn270();
+    turn90 = buildTurn90();
+    traverseForwardArc = buildTraverseForwardArc();
+    traverseBackwardArc = buildTraverseBackwardArc();
+  }
 
-    private PathPlannerPath buildTraverseSimpleForward(){
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        // TODO write something that takes Pose2d list and outputs list of PathPlanner Waypoints
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
-        waypoints.add(new Pose2d(3.0, 0.0, Rotation2d.fromDegrees(0)));
-    
-        PathPlannerPath t = new PathPlannerPath(
-          waypoints, 
-          new PathConstraints(1, 1, 1, 1, 12, false), // TODO what are the right constraints??
-          new IdealStartingState(0.0, new Rotation2d(0.0)), 
-          new GoalEndState(0.0, new Rotation2d(0.0))); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
+  private PathPlannerPath buildTraverseSimpleForward() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+        new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
+        new Pose2d(3.0, 0.0, Rotation2d.fromDegrees(0)));
 
-      private PathPlannerPath buildZigZag(){
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
-        waypoints.add(new Pose2d(1.5, 0.5, Rotation2d.fromDegrees(0)));
-        waypoints.add(new Pose2d(3.0, -0.5, Rotation2d.fromDegrees(0)));
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
 
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-    }
-    
-      private PathPlannerPath buildTraverseSimpleLeft(){
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
-        waypoints.add(new Pose2d(0.0, 1.0, Rotation2d.fromDegrees(0.0)));
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
-    
-      private PathPlannerPath buildTraverseTurn270(){
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
-        waypoints.add(new Pose2d(0.5, 0.0, Rotation2d.fromDegrees(-90)));
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
-    
-      // Test purely rotational trajectory.  
-      private Trajectory buildTurn90(){
-        ArrayList<Pose2d> waypoints = new ArrayList<Pose2d>();
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)));
-        waypoints.add(new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(90)));
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
-    
-      private Trajectory buildTraverseForwardArc(){
-        Pose2d start = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0));
-        Pose2d end = this.traverseBackwardArcStartPosition;
-    
-        ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-        interiorWaypoints.add(new Translation2d(0.5, 0.25));
-        interiorWaypoints.add(new Translation2d(1.0, 0.50));
-        interiorWaypoints.add(new Translation2d(1.5, 0.25));
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
-    
-      private Trajectory buildTraverseBackwardArc(){
-        Pose2d start = this.traverseBackwardArcStartPosition;
-        Pose2d end = new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0));
-    
-        ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
-        interiorWaypoints.add(new Translation2d(1.5, 0.25));
-        interiorWaypoints.add(new Translation2d(1.0, 0.50));
-        interiorWaypoints.add(new Translation2d(0.5, 0.25));
-        Trajectory t = new Trajectory(); // TODO - rewrite this with PathPlanner 
-        return t;
-      }
-    
-    
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  private PathPlannerPath buildZigZag() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      // maybe need to add rotations to get the right direction of travel?
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
+      new Pose2d(1.5, 0.5, Rotation2d.fromDegrees(0)),
+      new Pose2d(3.0, -0.5, Rotation2d.fromDegrees(0)));
+
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  private PathPlannerPath buildTraverseSimpleLeft() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
+      new Pose2d(0.0, 1.0, Rotation2d.fromDegrees(0.0)));
+
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  private PathPlannerPath buildTraverseTurn270() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
+
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  // Test purely rotational trajectory.
+  private PathPlannerPath buildTurn90() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
+
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  private PathPlannerPath buildTraverseForwardArc() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
+      new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
+      new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
+      new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),
+      this.traverseBackwardArcStartPosition);
+
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
+  private PathPlannerPath buildTraverseBackwardArc() {
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not
+    // use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      this.traverseBackwardArcStartPosition,
+      new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),      
+      new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
+      new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
+      
+    // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
+
+    // Create the path using the waypoints created above
+    PathPlannerPath p = new PathPlannerPath(
+        waypoints,
+        constraints,
+        null, // do not specify ideal starting state
+        new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    p.preventFlipping = true;
+
+    return p;
+  }
+
 }
