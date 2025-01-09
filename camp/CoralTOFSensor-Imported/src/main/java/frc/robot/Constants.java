@@ -16,6 +16,6 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static int reefTofSensorCanID = 3;
+  public static int reefTofSensorCanID = 16;
 
 }
