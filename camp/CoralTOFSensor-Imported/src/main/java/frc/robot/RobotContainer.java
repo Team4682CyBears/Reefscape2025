@@ -13,6 +13,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ImplementationTOF;
+import frc.robot.commands.RunExperimentCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.reefTofSensor
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,6 +29,8 @@ import frc.robot.subsystems.ImplementationTOF;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Spinner spinMotor = new Spinner();
+  private final reefTofSensor reefSensor = new reefTofSensor(Const.reefTofSensorCanID);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -33,6 +41,13 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     ImplementationTOF implement = new ImplementationTOF();
+
+    SmartDashboard.putNumber("Shooter Angle Setter", Constants.minimumMotorSpeed);
+    SmartDashboard.putData( "Set Shooter To Specified Angle",
+        new RunExperimentCommand(() -> SmartDashboard.getNumber("Shooter Angle Setter", 
+        Constants.minimumMotorSpeed), spinMotor, reefSensor, 20)
+     );
+
   }
 
   /**

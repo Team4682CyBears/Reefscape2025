@@ -17,5 +17,13 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static int reefTofSensorCanID = 16;
+  //Motor Config constant variables
+  public static final int kDriverControllerPort = 0;
+  public static final double motorStatorCurrentMaximumAmps = 100.0;
+  public static final double motorSupplyCurrentMaximumAmps = 50.0;
+  public static final double motorSupplyVoltageTimeConstant = 0.02;
+  //Motor Talon Port
+  public static final int motorCanID = 3;
+  public static final double minimumMotorSpeed = 0.605; 
 
 }

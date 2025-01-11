@@ -63,5 +63,6 @@ public class Spinner extends SubsystemBase {
           System.out.println(
               "TalonFX ID " + motorTalon.getDeviceID() + " failed config with error " + response.toString());
         }
+        
     }
 }
