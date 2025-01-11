@@ -37,7 +37,7 @@ public class reefTofSensor {
         return tofSensor.getRangeSigma();
     }
 
-    public boolean isNoteDetected(){
+    public boolean isCoralDetected(){
         double currentRangeInches = this.getRangeInches();
         if(this.isRangeValid() && (currentRangeInches < noteDetectionThreshold)){
             return true;
@@ -51,7 +51,7 @@ public class reefTofSensor {
 
     public void publishTelemetery(){
         SmartDashboard.putNumber(displayName + " Range Inches" , this.getRangeInches());
-        SmartDashboard.putBoolean(displayName + " Note Detected", this.isNoteDetected());
+        SmartDashboard.putBoolean(displayName + " Note Detected", this.isCoralDetected());
         SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
         SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
       } 
