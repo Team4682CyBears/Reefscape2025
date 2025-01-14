@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -37,7 +38,6 @@ public class MotorSubsystem implements Subsystem {
         motor.set(clamp(speed, -1.0, 1.0));
     }
 
-    
     /**
      * Stops the motor by setting its speed to zero.
      */

@@ -15,9 +15,8 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putNumber("Motor Speed", 0.0);
     SmartDashboard.putData("Set Motor Speed", new MotorDefaultCommand(
-      motorSubsystem,
-      // Clamped between [-1, 1] in MotorSubsystem
-      () -> SmartDashboard.getNumber("Motor Speed", 0.0)
-    ));
+        motorSubsystem,
+        // Clamped between [-1, 1] in MotorSubsystem
+        () -> SmartDashboard.getNumber("Motor Speed", 0.0)));
   }
 }

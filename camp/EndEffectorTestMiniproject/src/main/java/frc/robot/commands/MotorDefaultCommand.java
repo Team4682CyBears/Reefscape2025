@@ -27,7 +27,8 @@ public class MotorDefaultCommand extends Command {
     }
 
     /**
-     * Initializes the command by resetting and starting the timer, setting the done flag to false,
+     * Initializes the command by resetting and starting the timer, setting the done
+     * flag to false,
      * and setting the motor speed using the provided double supplier.
      */
     @Override
@@ -49,7 +50,6 @@ public class MotorDefaultCommand extends Command {
         }
     }
 
-    
     /**
      * Checks if the command has finished execution.
      *
@@ -64,7 +64,8 @@ public class MotorDefaultCommand extends Command {
      * This method is called when the command ends or is interrupted.
      * It stops the motor subsystem.
      *
-     * @param interrupted true if the command was interrupted, false if it ended normally
+     * @param interrupted true if the command was interrupted, false if it ended
+     *                    normally
      */
     @Override
     public void end(boolean interrupted) {
