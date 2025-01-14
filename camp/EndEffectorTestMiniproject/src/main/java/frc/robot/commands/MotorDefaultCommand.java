@@ -26,11 +26,16 @@ public class MotorDefaultCommand extends Command {
         addRequirements(motorSubsystem);
     }
 
+    /**
+     * Initializes the command by resetting and starting the timer, setting the done flag to false,
+     * and setting the motor speed using the provided double supplier.
+     */
     @Override
     public void initialize() {
         timer.reset();
         timer.start();
         done = false;
+        motorSubsystem.setSpeed(doubleSupplier.getAsDouble());
     }
 
     /**
@@ -39,15 +44,30 @@ public class MotorDefaultCommand extends Command {
      */
     @Override
     public void execute() {
-        motorSubsystem.setSpeed(doubleSupplier.getAsDouble());
         if (timer.hasElapsed(Constants.motorRunTime)) {
             done = true;
         }
     }
 
     
+    /**
+     * Checks if the command has finished execution.
+     *
+     * @return true if the command is done, false otherwise.
+     */
     @Override
     public boolean isFinished() {
         return done;
+    }
+
+    /**
+     * This method is called when the command ends or is interrupted.
+     * It stops the motor subsystem.
+     *
+     * @param interrupted true if the command was interrupted, false if it ended normally
+     */
+    @Override
+    public void end(boolean interrupted) {
+        motorSubsystem.stop();
     }
 }

@@ -37,6 +37,14 @@ public class MotorSubsystem implements Subsystem {
         motor.set(clamp(speed, -1.0, 1.0));
     }
 
+    
+    /**
+     * Stops the motor by setting its speed to zero.
+     */
+    public void stop() {
+        motor.set(0.0);
+    }
+
     /**
      * Clamps a value between a minimum and maximum range.
      *
