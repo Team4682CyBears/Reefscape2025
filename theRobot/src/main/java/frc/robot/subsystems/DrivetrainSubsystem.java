@@ -98,6 +98,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.NORMAL_DRIVING;
 
+                                                                       TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
+
+  private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric();
+  private SwerveRequest.SwerveDriveBrake brakeDriveController = new SwerveRequest.SwerveDriveBrake();
+
   /**
    * Constructor for this DrivetrainSubsystem
    */
@@ -126,14 +131,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void drive(ChassisSpeeds updatedChassisSpeeds) {
     this.chassisSpeeds = updatedChassisSpeeds;
   }
-
-  /**
-   * Method to get the current acceleration reduction factor
-   * @return - the current acceleration reduction factor
    */
   protected double getAccelerationReductionFactor() {
     return this.accelerationReductionFactor;
-  }
   
   /**
    * returns chassis speeds (robot relative)
@@ -164,38 +164,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
   
   /**
-   * Method to set the current acceleration reduction factor to a new value
-   * @param value - the new acceleration reduction factor
-   */
-  protected void setAccelerationReductionFactor(double value) {
-    this.accelerationReductionFactor = MotorUtils.truncateValue(value, 0.0, 1.0);
-  }
-  
-  /**
    * Method to set the current speed reduction factor to a new value
    * @param value - the new speed reduction factor
    */
   public void setSpeedReductionFactor(double value) {
     this.speedReductionFactor = MotorUtils.truncateValue(value, 0.0, 1.0);
-  }
-
-  // TODO decide if we need discretize?
-  private ChassisSpeeds discretize(ChassisSpeeds speeds) {
-    // a fudge factor to increase the size of the discretization correction. 
-    // other teams use [1..4]
-    double timeScaleFactor = 1.9; 
-    var desiredDeltaPose = new Pose2d(
-      speeds.vxMetersPerSecond * deltaTimeSeconds, 
-      speeds.vyMetersPerSecond * deltaTimeSeconds, 
-      new Rotation2d(speeds.omegaRadiansPerSecond * deltaTimeSeconds * timeScaleFactor)
-    );
-    var twist = new Pose2d().log(desiredDeltaPose);
-
-    return new ChassisSpeeds(
-      (twist.dx / deltaTimeSeconds), 
-      (twist.dy / deltaTimeSeconds), 
-      (speeds.omegaRadiansPerSecond));
-    // return(speeds);
   }
 
   /**
@@ -205,7 +178,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return A Rotation2d that describes the current orentation of the robot.
    */
   public Rotation2d getGyroscopeRotation() {
-    return drivetrain.getRotation3d().toRotation2d().plus(Rotation2d.fromDegrees(yawOffsetDegrees));
+    return drivetrain.getPigeon2().getRotation2d();
   }
 
   /**
@@ -239,11 +212,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     // TODO update this with calls to CommandSwerveDrivetrain
     // have to figure out Inheritance structure. Think this needs to extend CommandSwerveDrivetrain
-    SwerveModuleState[] states; 
     if (swerveDriveMode == SwerveDriveMode.IMMOVABLE_STANCE && chassisSpeedsAreZero()) {
       // only change to ImmovableStance if chassis is not moving.
       // otherwise, we could tip the robot moving to this stance when bot is at high velocity
-      states = getImmovableStanceStates();
+      drivetrain.setControl(brakeDriveController);
     }
     else { // SwerveDriveMode.NORMAL_DRIVING
       // apply the speed reduction factor to the chassis speeds
@@ -254,17 +226,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
         chassisSpeeds.omegaRadiansPerSecond * Math.min(1.0, this.speedReductionFactor * 1.25));
 
       // apply acceleration control
-      reducedChassisSpeeds = discretize(limitChassisSpeedsAccel(reducedChassisSpeeds));
+      reducedChassisSpeeds = limitChassisSpeedsAccel(reducedChassisSpeeds);
       previousChassisSpeeds = reducedChassisSpeeds; 
 
       // take the current 'requested' chassis speeds and ask the ask the swerve modules to attempt this
       // first we build a theoretical set of individual module states that the chassisSpeeds would corespond to
       //states = swerveKinematics.toSwerveModuleStates(reducedChassisSpeeds);
+      drivetrain.setControl(fieldCentricDriveController
+                            .withVelocityX(reducedChassisSpeeds.vxMetersPerSecond)
+                            .withVelocityY(reducedChassisSpeeds.vyMetersPerSecond)
+                            .withRotationalRate(reducedChassisSpeeds.omegaRadiansPerSecond));
     } 
-    // next we take the state and set the states on the swerve modules
-    //setSwerveModuleStates(states);
-
-    //publisher.set(states);
   }
 
   /**
@@ -286,21 +258,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * sets the Yaw to a specific angle
-   * @param offsetDegrees
-   */
-  public void setYaw(double offsetDegrees) {
-    this.zeroGyroscope();
-    this.yawOffsetDegrees = offsetDegrees;
-  }
-
-  /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    drivetrain.resetRotation(Rotation2d.kZero);
-    this.yawOffsetDegrees = 0.0;
+    drivetrain.seedFieldCentric();
   }
 
   /**
@@ -397,10 +359,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ChassisSpeeds limitChassisSpeedsAccel(ChassisSpeeds speeds) {
     // translational acceleration has different accel/decel limits
     double xVelocityLimited = limitAxisSpeed(speeds.vxMetersPerSecond, previousChassisSpeeds.vxMetersPerSecond, 
-    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED * this.accelerationReductionFactor, 
+    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED, 
     MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
     double yVelocityLimited = limitAxisSpeed(speeds.vyMetersPerSecond, previousChassisSpeeds.vyMetersPerSecond, 
-    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED * this.accelerationReductionFactor, 
+    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED, 
     MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
     // angular acceleration is has same accel/decel limit
     double omegaVelocityLimited = limitAxisSpeed(speeds.omegaRadiansPerSecond, previousChassisSpeeds.omegaRadiansPerSecond, 
@@ -429,7 +391,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   private void displayDiagnostics(){
-    SmartDashboard.putNumber("Drive Accel. Reduction Factor", this.accelerationReductionFactor);
     SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
     SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
