@@ -21,6 +21,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix6.swerve.SwerveModule;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
+import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
 import com.pathplanner.lib.config.RobotConfig;
 
 import static frc.robot.control.Constants.*;
@@ -30,6 +33,7 @@ import frc.robot.control.InstalledHardware;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.TunerConstants;
+import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.common.MotorUtils;
 import frc.robot.common.VisionMeasurement;
@@ -79,10 +83,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private static RobotConfig pathPlannerRobotConfig; 
 
-  private double yawOffsetDegrees = 0.0;
-
-  private CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
   // Standard deviations for poseEstimator updates
   // The wpilib matrix constructor requires sizes specified as Nat types. 
   // Determined these settings from looking at other team's settings
@@ -94,10 +94,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private double speedReductionFactor = 1.0;
-  private double accelerationReductionFactor = 1.0;
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.NORMAL_DRIVING;
 
+  private TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(TunerConstants.DrivetrainConstants, 0, odometryStdDev, visionStdDev,
                                                                        TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
 
   private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric();
@@ -131,9 +131,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void drive(ChassisSpeeds updatedChassisSpeeds) {
     this.chassisSpeeds = updatedChassisSpeeds;
   }
-   */
-  protected double getAccelerationReductionFactor() {
-    return this.accelerationReductionFactor;
   
   /**
    * returns chassis speeds (robot relative)
