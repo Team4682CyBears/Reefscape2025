@@ -110,9 +110,10 @@ public class AutonomousChooser {
      * @param subsystems
      */
     public static void configureAutoBuilder(SubsystemCollection subsystems) {
-        PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+        /*PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
                 new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
                 new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
+                
         );
 
         AutoBuilder.configure(
@@ -140,5 +141,6 @@ public class AutonomousChooser {
                             new ButtonPressCommand("PathPlanner", "FeedNote"),
                             new InstantCommand())); // TODO populate with real command
         }
+        */
     }
 }

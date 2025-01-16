@@ -33,7 +33,7 @@ public class DrivetrainAccelerationSubsystem extends SubsystemBase {
      */
     public DrivetrainAccelerationSubsystem(DrivetrainSubsystem currentDrivetrain) {
         currentDrivetrainSubsystem = currentDrivetrain;
-        this.reductionFactor = currentDrivetrainSubsystem.getAccelerationReductionFactor();
+        //this.reductionFactor = currentDrivetrainSubsystem.getAccelerationReductionFactor();
     }
 
     /**
@@ -101,7 +101,7 @@ public class DrivetrainAccelerationSubsystem extends SubsystemBase {
      */
     public void updateReductionFactor() {
         if (this.currentDrivetrainSubsystem != null) {
-            this.currentDrivetrainSubsystem.setAccelerationReductionFactor(this.reductionFactor);
+            //this.currentDrivetrainSubsystem.setAccelerationReductionFactor(this.reductionFactor);
         }
     }
 }

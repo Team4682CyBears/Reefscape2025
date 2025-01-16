@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class RobotContainer {
 
   private SubsystemCollection subsystems = new SubsystemCollection();
-  private final AutonomousChooser autonomousChooser;
+  //private final AutonomousChooser autonomousChooser;
 
   public RobotContainer() {
 
@@ -63,7 +63,7 @@ public class RobotContainer {
 
 
     AutonomousChooser.configureAutoBuilder(subsystems);
-    autonomousChooser  = new AutonomousChooser(subsystems);
+    //autonomousChooser  = new AutonomousChooser(subsystems);
 
 
     // Configure the button bindings
@@ -116,7 +116,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonomousChooser.getCommand();
+    return new AllStopCommand(this.subsystems);
+    //return autonomousChooser.getCommand();
   }
 
    /**

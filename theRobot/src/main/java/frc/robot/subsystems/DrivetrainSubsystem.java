@@ -20,6 +20,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
@@ -69,8 +70,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   InstalledHardware.tedDrivetrainInstalled ? Constants.tedDrivertainConfig : Constants.fooDrivetrainConfig;
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
-  public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 6.0;
-  public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 12.0;
+  public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 100.0;
+  public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 100.0;
     /**
    * The maximum angular velocity of the robot in radians per second.
    * This is a measure of how fast the robot can rotate in place.
@@ -100,7 +101,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(TunerConstants.DrivetrainConstants, 0, odometryStdDev, visionStdDev,
                                                                        TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
 
-  private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric();
+  private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
   private SwerveRequest.SwerveDriveBrake brakeDriveController = new SwerveRequest.SwerveDriveBrake();
 
   /**
