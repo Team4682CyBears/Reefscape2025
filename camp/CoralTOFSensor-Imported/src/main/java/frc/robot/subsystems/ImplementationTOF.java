@@ -6,14 +6,17 @@ import frc.robot.Constants;
 public class ImplementationTOF extends SubsystemBase{
     private reefTofSensor reefCoralSensor = null;
 
-    public ImplementationTOF(){
-        reefCoralSensor = new reefTofSensor(Constants.reefTofSensorCanID);
+    public ImplementationTOF(reefTofSensor reefCoralSensor){
+        this.reefCoralSensor = reefCoralSensor;
+        System.out.print("Implemenetation tof attempted to configure!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     @Override
     public void periodic() {
+        //this.reefCoralSensor.blinkSensor();
         if(this.reefCoralSensor != null){
             this.reefCoralSensor.publishTelemetery();
         }
     }
+
 }

@@ -5,9 +5,10 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 
 public class reefTofSensor {
-    private static final double noteDetectionThreshold = 8.0;
+    private static final double noteDetectionThreshold = Constants.tofRangeInches;
     private TimeOfFlight tofSensor;
     private int canID;
     private String displayName;
@@ -18,7 +19,7 @@ public class reefTofSensor {
         this.displayName = "TOF ID" + this.canID;
 
         tofSensor.setRangingMode(RangingMode.Short, 20);
-        System.out.println("DONE CONFIG of TOF SENSOR at CanID" + canID);
+        System.out.println("DONE CONFIG OF TOF SENSOR AT CanID!!!" + canID);
     }
 
     public void blinkSensor(){
@@ -30,7 +31,7 @@ public class reefTofSensor {
     }
 
     public double getRangeInches(){
-        return Units.metersToInches(tofSensor.getRange()/1000);
+        return Units.metersToInches(tofSensor.getRange()/1000);   
     }
 
     public final double getRangeSigme(){
@@ -51,9 +52,10 @@ public class reefTofSensor {
 
     public void publishTelemetery(){
         SmartDashboard.putNumber(displayName + " Range Inches" , this.getRangeInches());
-        SmartDashboard.putBoolean(displayName + " Note Detected", this.isCoralDetected());
+        SmartDashboard.putBoolean(displayName + " Coral Detected", this.isCoralDetected());
         SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
         SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
+        //System.out.println("TOF telemtry published!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       } 
     
 }
