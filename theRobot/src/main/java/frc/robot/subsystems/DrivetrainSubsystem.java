@@ -20,6 +20,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -206,6 +207,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
     } 
 
+    SmartDashboard.putNumber("Gyro Yaw", drivetrain.getPigeon2().getYaw().getValueAsDouble());
     this.displayDiagnostics();
 
     // TODO update this with calls to CommandSwerveDrivetrain
