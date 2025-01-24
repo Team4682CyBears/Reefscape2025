@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Reefscape - 2025
 // File: DefaultDriveCommand.java
-// Intent: Forms a command to drive the robot.
+// Intent: Forms a command to drive the robot. We ALWAYS use field oriented drive.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -23,8 +23,6 @@ public class DefaultDriveCommand extends Command {
     private final DoubleSupplier m_translationYSupplier;
     private final DoubleSupplier m_rotationSupplier;
 
-    // true if field oriented drive, false for robot oriented drive
-    private final Boolean fieldOrientedDrive = true;
     private ChassisSpeeds commandedChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem,
@@ -42,21 +40,11 @@ public class DefaultDriveCommand extends Command {
     }
 
     @Override
-    public void execute() {       
-        // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        if(fieldOrientedDrive) {
-            commandedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                m_translationXSupplier.getAsDouble(),
-                m_translationYSupplier.getAsDouble(),
-                m_rotationSupplier.getAsDouble(),
-                m_drivetrainSubsystem.getGyroscopeRotation()
-                );   
-        } else {
-            commandedChassisSpeeds = new ChassisSpeeds(
-                m_translationXSupplier.getAsDouble(),
-                m_translationYSupplier.getAsDouble(),
-                m_rotationSupplier.getAsDouble());
-        }
+    public void execute() {
+        commandedChassisSpeeds = new ChassisSpeeds(
+            m_translationXSupplier.getAsDouble(),
+            m_translationYSupplier.getAsDouble(),
+            m_rotationSupplier.getAsDouble());
    
         m_drivetrainSubsystem.drive(commandedChassisSpeeds);        
     }
