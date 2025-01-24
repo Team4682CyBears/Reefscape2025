@@ -20,8 +20,8 @@ public class Spinner extends SubsystemBase {
     private VelocityVoltage motorTalonVelocityController = new VelocityVoltage(0);
     private VoltageOut motorTalonVoltageController = new VoltageOut(0);
     private TalonFXConfiguration motorTalonMotorConfiguration = null;
-    //private Slot0Configs motorRpmGains = new Slot0Configs().withKS(0.2).withKP(0.11).withKI(0.001).withKD(0.001).withKV(0.12);
-    private Slot0Configs motorRpmGains = new Slot0Configs().withKS(0.15).withKV(5.0).withKP(0.2); // this value of P seems too low. with P=0 it actualy works better
+    // values found through manual system characterization using Phoenix Tuner X.
+    private Slot0Configs motorRpmGains = new Slot0Configs().withKS(0.119956).withKV(0.10905).withKP(0.4).withKD(0).withKI(0);
     private double speedRpm = 0.0;
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Coast;
     private static final double kMinDeadband = 0.001;
@@ -34,11 +34,10 @@ public class Spinner extends SubsystemBase {
         motorTalonVelocityController.withUpdateFreqHz(0); // send commands instantly
     }
 
-    public void spinMotor(double speed){
+    public void spinMotor(double speedRpm){
         //Sets speed to a specific state for testing
-        speedRpm = speed;
         motorTalon.setControl(this.motorTalonVelocityController.withVelocity(speedRpm/60));
-        //System.out.println(" variable speed is " + speedRpm);
+        System.out.println(" variable speed is " + speedRpm);
         //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
     }
 
@@ -64,10 +63,12 @@ public class Spinner extends SubsystemBase {
         motorTalonMotorConfiguration.MotorOutput.NeutralMode = this.motorTargetNeutralModeValue;
         motorTalonMotorConfiguration.MotorOutput.withDutyCycleNeutralDeadband(kMinDeadband);
         motorTalonMotorConfiguration.Slot0 = motorRpmGains;
+        motorTalonMotorConfiguration.ClosedLoopRamps.withVoltageClosedLoopRampPeriod(0.02);
         // do not config feedbacksource, since the default is the internal one.
         motorTalonMotorConfiguration.Voltage.PeakForwardVoltage = 12;
         motorTalonMotorConfiguration.Voltage.PeakReverseVoltage = -12;
         motorTalonMotorConfiguration.Voltage.SupplyVoltageTimeConstant = Constants.motorSupplyVoltageTimeConstant;
+
         // maximum current settings
         motorTalonMotorConfiguration.CurrentLimits.StatorCurrentLimit = Constants.motorSupplyCurrentMaximumAmps;
         motorTalonMotorConfiguration.CurrentLimits.StatorCurrentLimitEnable = true;

@@ -36,9 +36,15 @@ public class RunExperimentCommand extends Command {
         cyclesRun = 0;
         // try to reset the controller to ensure behavior is consistent
         spiningMotor.resetController();
+        desiredSpeed = constSpeed;
         spiningMotor.spinMotor(desiredSpeed);
+        System.out.println("HEY LOOK AT ME OVER HERE THE DESIRED SPEED IS" + desiredSpeed);
+        System.out.println(desiredSpeed);
+        System.out.println(desiredSpeed);
+        System.out.println(desiredSpeed);
+        System.out.println(desiredSpeed);
+        System.out.println(desiredSpeed);
         stopwatch.reset();
-        desiredSpeed = constSpeed/60;
         experimentRunning = false;
         System.out.println("Run experiment command initilized");
     }

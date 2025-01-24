@@ -33,7 +33,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    double motorSpeed = 500; //rpm
+    double motorSpeed = 60; //rpm
     // Configure the trigger bindings
     configureBindings();
     ImplementationTOF implement = new ImplementationTOF(reefSensor);
