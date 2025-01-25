@@ -25,60 +25,54 @@ public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoder 
 
     private TalonFX talonFXMotorEncoder = null;
     private DigitalInput dioStateDevice = null;
-    private double encoderRotationAtStateChangeSetPoint = 0.0;
+    private double encoderRotationAtSensorPosition = 0.0;
     private boolean lastState = false;
     private boolean motorEncoderPositionReset = false;
 
     /**
      * Concrete implementation of a pairing between motor encoder and DIO to coordinate resetting of 
      * encoder position based on state change of DIO
-     * @param revNeoEncoder - the REV Neo motor encoder
+     * @param talonFXEncoder - the Talon motor encoder
      * @param stateDevice - the DIO state device
-     * @param encoderRotationAtStateChange - the set point to use for the motors encoder when the state
-     * changes between the current and previous calls into getCurrentEncoderPosition
-     * @param sensorTriggeredEncoderInitialPositionRotation - the initial set point to use for the motors
-     * encoder when sensor IS triggered to start 
-     * @param sensorNotTriggeredEncoderInitialPositionRotation - the initial set point to use for the motors
-     * encoder when sensor is NOT triggered to start 
+     * @param encoderRotationAtSensorPosition - the set point for the encoderRotation corresponding the sensor location. 
+     * @param sensorInitialPositionRotation - the initial set point to use for the motors encoder
      */
     public CorrectableEncoderPlusDigitalIoPort(
         TalonFX talonFXEncoder,
         DigitalInput stateDevice,
-        double encoderRotationAtStateChange,
-        double sensorTriggeredEncoderInitialPositionRotation,
-        double sensorNotTriggeredEncoderInitialPositionRotation) {
+        double encoderRotationAtSensorPosition,
+        double sensorInitialPositionRotation) {
 
-        talonFXMotorEncoder = talonFXEncoder;
+        this.talonFXMotorEncoder = talonFXEncoder;
         dioStateDevice = stateDevice;
-        encoderRotationAtStateChangeSetPoint = encoderRotationAtStateChange;
+        this.encoderRotationAtSensorPosition = encoderRotationAtSensorPosition;
 
         lastState = dioStateDevice.get();
 
-        // dio state of false is 'triggered' (as in LED is illuminated for 2023 sensors)
-        if(lastState == false) {
-            this.talonFXMotorEncoder.setPosition(sensorTriggeredEncoderInitialPositionRotation);
-        }
-        else {
-            this.talonFXMotorEncoder.setPosition(sensorNotTriggeredEncoderInitialPositionRotation);
-        }
+        this.talonFXMotorEncoder.setPosition(sensorInitialPositionRotation);
     }
 
     /**
-     * An method intended to be called periodically (as in 1x per 20 ms) that will be used to both
-     * correct the motors encoder (when necessary) and also return the current motor encoder position.
+     * A method to return the current motor encoder position.
      * @return a double representing the motor encoder Rotation
      */
-    public StatusSignal<Angle> getCurrentEncoderPosition() {
+    public Angle getCurrentEncoderPosition() {
+        StatusSignal<Angle> position = this.talonFXMotorEncoder.getPosition();
+        return position.getValue();
+    }
 
+    /**
+     * A method intended to be called periodicially (as in 1x per 20 ms) that will be used to 
+     * correct the motor encode (when necessary).
+     */
+    public void updateEncoderPosition() {
         boolean currentState = this.dioStateDevice.get();
 
         if(currentState != this.lastState) {
-            this.talonFXMotorEncoder.setPosition(encoderRotationAtStateChangeSetPoint);
+            this.talonFXMotorEncoder.setPosition(encoderRotationAtSensorPosition);
             this.lastState = currentState;
             motorEncoderPositionReset = true;
         }
-
-        return this.talonFXMotorEncoder.getPosition();
     }
 
     /**
