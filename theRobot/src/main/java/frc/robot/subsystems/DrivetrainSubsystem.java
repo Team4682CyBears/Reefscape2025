@@ -32,6 +32,7 @@ import static frc.robot.control.Constants.*;
 
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
+import frc.robot.Telemetry;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.TunerConstants;
@@ -73,6 +74,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
   public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 100.0;
   public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 100.0;
+
+  private final Telemetry logger = new Telemetry(MAX_VELOCITY_METERS_PER_SECOND);
     /**
    * The maximum angular velocity of the robot in radians per second.
    * This is a measure of how fast the robot can rotate in place.
@@ -112,6 +115,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if(InstalledHardware.limelightInstalled){
       cameraSubsystem = subsystems.getCameraSubsystem();
     }
+
+    drivetrain.registerTelemetry(logger::telemeterize);
 
     publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
@@ -177,7 +182,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return A Rotation2d that describes the current orentation of the robot.
    */
   public Rotation2d getGyroscopeRotation() {
-    return drivetrain.getPigeon2().getRotation2d();
+    return new Rotation2d(0.0);
+    //return drivetrain.getPigeon2().getRotation2d();
   }
 
   /**
@@ -262,7 +268,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    drivetrain.seedFieldCentric();
+    //drivetrain.seedFieldCentric();
   }
 
   /**
