@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 // import local classes
 import frc.robot.common.BagMode;
+import frc.robot.control.Constants;
 import frc.robot.subsystems.BagSubsystem;
 
 public class RunBagCommand extends Command
@@ -43,7 +44,8 @@ public class RunBagCommand extends Command
   @Override
   public void initialize()
   {
-    bag.setBagMode(direction);
+    bag.setBagMode(direction); // set direction (forward or back) of motor
+    bag.setBagSpeed(Constants.bagSpeed); // run bag motor
     done = false;
     //DataLogManager.log("Starting RunBagCommand");
   }
