@@ -23,24 +23,10 @@ public class Constants {
     public static final int portDriverController = 0;
 
     // ******************************************************************
-    // intake will run until note is detected or this timeout has expired
-    public static final double intakeTimeoutSeconds = 4.0;
-
-    // ******************************************************************
     // bag constants
     public static final int bagMotorCanId = 15;
-    public static final int firstBagToShooterTofCanId = 16;
-    public static final int secondBagToShooterTofCanId = 17;
     // bagSpeed is [0.0 .. 1.0]
-    // it runs in one direction for the shooter 
-    // and the opposite direction for the dunker/amp
     public static final double bagSpeed = 0.50;
-    public static final double bagReverseSpeed = 0.10;
-    // bag will run until note is detected or this timeout has expired
-    public static final double bagTimeoutSeconds = 3.0;
-    public static final double bagLaunchTimeoutSecondsInAuto = .75;
-    public static final double bagLaunchTimeoutSecondsInTele = 2.00;
-    public static final double bagRewindSeconds = intakeTimeoutSeconds;
 
     public static class OperatorConstants {
         public static final int kDriverControllerPort = 0;
