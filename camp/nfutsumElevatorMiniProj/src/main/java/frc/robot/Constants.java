@@ -17,4 +17,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
     public static final int elevatorMotorCANID = 10;
+    public static final int TalonFXEncoderTicksPerRevolution = 2048;
+    public static final int elevatorMageneticSensorID = 0;
 }
