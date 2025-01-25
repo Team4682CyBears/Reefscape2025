@@ -23,7 +23,6 @@ public class InstalledHardware
     
     // Onboard Hardware - Orentation/Navigation Hardware
     public static final boolean wifiRadioInstalled = true;
-    public static final boolean pigeonInstalled = true;
     public static final boolean limelightInstalled = true;
 
     // External Input Hardware

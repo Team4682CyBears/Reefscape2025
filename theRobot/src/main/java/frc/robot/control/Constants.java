@@ -54,24 +54,6 @@ public final class Constants {
     public static final double SWERVE_STEER_REDUCTION = 1/15.43; // 15.43:1 (8:24 -> 14:72)
     public static final boolean SWERVE_STEER_INVERTED = false; //two reductions
 
-    //////////////////// COMMON DRIVETRAIN ////////////////////
-    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1; 
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
-    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 3; 
-
-    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 4; 
-    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 5; 
-    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 6; 
-
-    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7; 
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 8; 
-    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-
-    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 10; 
-    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 11; 
-    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 12; 
-    public static final int PIGEON_CANID = 31;
-
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.
     public static final double DegreesPerRevolution = 360.0;

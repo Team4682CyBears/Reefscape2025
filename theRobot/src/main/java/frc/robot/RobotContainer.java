@@ -107,6 +107,7 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
 
     if(this.subsystems.isDriveTrainPowerSubsystemAvailable()) {
+      // TODO fix this command, need to expose robot-centric drive mode in drivetrainSubsystem.
       SmartDashboard.putData(
         "DriveForwardRobotCentric",
         new DriveTimeCommand(this.subsystems.getDriveTrainSubsystem(),
@@ -151,11 +152,9 @@ public class RobotContainer {
    * A method to init the drive train
    */
   private void initializeDrivetrainSubsystem() {
-    if(InstalledHardware.drivetrainInstalled &&
-      InstalledHardware.pigeonInstalled) { // TODO take this out. Integral part of drivetrain.
+    if(InstalledHardware.drivetrainInstalled){
       // The robot's subsystems and commands are defined here...
       subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
-      subsystems.getDriveTrainSubsystem().zeroRobotPosition(); // TODO likely need to take this out. Already handled inside drivetrain subsystem periodic.
       subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
       subsystems.setDriveTrainAccelerationSubsystem(new DrivetrainAccelerationSubsystem(subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Debug: DrivetrainSub", subsystems.getDriveTrainSubsystem());
