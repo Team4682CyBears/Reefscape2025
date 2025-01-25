@@ -53,6 +53,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.Matrix;
@@ -107,6 +109,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
   private SwerveRequest.SwerveDriveBrake brakeDriveController = new SwerveRequest.SwerveDriveBrake();
+
+  /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
+  private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
+  /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
+  private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
+  /* Keep track if we've ever applied the operator perspective before or not */
+  private boolean m_hasAppliedOperatorPerspective = false;
 
   /**
    * Constructor for this DrivetrainSubsystem
@@ -208,6 +217,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
+  /*
+    * Periodically try to apply the operator perspective.
+    * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
+    * This allows us to correct the perspective in case the robot code restarts mid-match.
+    * Otherwise, only check and apply the operator perspective if the DS is disabled.
+    * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
+    */
+  if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
+      DriverStation.getAlliance().ifPresent(allianceColor -> {
+          drivetrain.setOperatorPerspectiveForward(
+              allianceColor == Alliance.Red
+                  ? kRedAlliancePerspectiveRotation
+                  : kBlueAlliancePerspectiveRotation
+          );
+          m_hasAppliedOperatorPerspective = true;
+      });
+  }
+
     // update robot position with vision
     if(InstalledHardware.limelightInstalled){
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
