@@ -53,7 +53,7 @@ public class ManualInputInterfaces {
     // check if subsystem is available 
     if(this.subsystemCollection.isBagSubsystemAvailable()) { // runs forward while button is pressed
       // move bag motor forward
-      this.driverController.x().onTrue(
+      this.driverController.x().whileTrue(
         // not used due to both bag commands being under same subsystem
         new ParallelCommandGroup( // allows different subsystems to run in parallel
           new RunBagCommand( // run bag motor
@@ -61,7 +61,7 @@ public class ManualInputInterfaces {
         )
       );
       // move bag motor in reverse
-      this.driverController.b().onTrue( // runs backward while button is pressed
+      this.driverController.b().whileTrue( // runs backward while button is pressed
         new ParallelCommandGroup(
           new RunBagCommand( // run bag motor
             this.subsystemCollection.getBagSubsystem(), BagMode.Reverse)
