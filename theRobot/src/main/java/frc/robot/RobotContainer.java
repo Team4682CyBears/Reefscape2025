@@ -151,10 +151,10 @@ public class RobotContainer {
    */
   private void initializeDrivetrainSubsystem() {
     if(InstalledHardware.drivetrainInstalled &&
-      InstalledHardware.pigeonInstalled) {
+      InstalledHardware.pigeonInstalled) { // TODO take this out. Integral part of drivetrain.
       // The robot's subsystems and commands are defined here...
       subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
-      subsystems.getDriveTrainSubsystem().zeroRobotPosition(); // can I add this?
+      subsystems.getDriveTrainSubsystem().zeroRobotPosition(); // TODO likely need to take this out. Already handled inside drivetrain subsystem periodic.
       subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
       subsystems.setDriveTrainAccelerationSubsystem(new DrivetrainAccelerationSubsystem(subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Debug: DrivetrainSub", subsystems.getDriveTrainSubsystem());
