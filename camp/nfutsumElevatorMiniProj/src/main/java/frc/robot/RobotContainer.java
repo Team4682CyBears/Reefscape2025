@@ -5,12 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.MoveToPositionCommand;
+import frc.robot.common.ElevatorPositions;
+import frc.robot.subsystems.ElevatorSubsystem;
 //import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.commands.MoveToPositionCommand;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -22,10 +26,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  
+  private final MoveToPositionCommand positionL4 = new MoveToPositionCommand(elevatorSubsystem, ElevatorPositions.L4);
+  private final MoveToPositionCommand positionL3 = new MoveToPositionCommand(elevatorSubsystem, ElevatorPositions.L3);
+  private final MoveToPositionCommand positionL2 = new MoveToPositionCommand(elevatorSubsystem, ElevatorPositions.L2);
+  private final MoveToPositionCommand positionStow = new MoveToPositionCommand(elevatorSubsystem, ElevatorPositions.STOW);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(
+  private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
   /**
@@ -62,6 +71,16 @@ public class RobotContainer {
     // B -> moveToPosition(L3);
     // A -> moveToPosition(L2);
     // X -> moveToPosition(STOW);
+
+    driverController.povUp().whileTrue(new RunCommand(elevatorSubsystem::moveUp, elevatorSubsystem));
+    driverController.povDown().whileTrue(new RunCommand(elevatorSubsystem::moveDown, elevatorSubsystem));
+
+    driverController.y().onTrue(positionL4);
+    driverController.b().onTrue(positionL3);
+    driverController.a().onTrue(positionL2);
+    driverController.x().onTrue(positionStow);
+
+
   }
 
   /**

@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.units.measure.Distance;
+import static edu.wpi.first.units.Units.Inches;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -23,6 +26,12 @@ public final class Constants {
 
   public static final int elevatorMotorCANID = 10;
   public static final int elevatorMageneticSensorID = 0;
+
+  public static final Distance stowHeight = Inches.of(0.0);
+  public static final Distance L2Height = Inches.of(32.0);;
+  public static final Distance L3Height = Inches.of(48.0);
+  public static final Distance L4Height = Inches.of(72.0);
+
 
   // Motor Config constant variables
   public static final int kDriverControllerPort = 0;
