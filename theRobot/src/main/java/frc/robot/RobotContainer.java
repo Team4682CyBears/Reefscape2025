@@ -77,17 +77,14 @@ public class RobotContainer {
     this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable()) {
-      // TODO FIX test trajectories to PathPlanner. 
-      /*
       TestTrajectories testtrajectories = new TestTrajectories();
-
+      
       SmartDashboard.putData("Basic Forward",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem());
+          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Forward Arc",
-          new DriveTrajectoryCommand(this.subsystems.getDriveTrainSubsystem(), testtrajectories.traverseForwardArc));
+          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Turn 90",
-          new DriveTrajectoryCommand(this.subsystems.getDriveTrainSubsystem(), testtrajectories.turn90));
-          */
+          FollowTrajectoryCommandBuilder.build(testtrajectories.turn90, this.subsystems.getDriveTrainSubsystem()));
     }
 
     // Path Planner Path Commands

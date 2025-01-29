@@ -31,7 +31,14 @@ public class TestTrajectories {
   public PathPlannerPath turn90;
   public PathPlannerPath traverseForwardArc;
   public PathPlannerPath traverseBackwardArc;
-  public Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
+
+  private Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
+  
+  // TODO not sure about these max velocities and accelerations
+  private double maxVelocityMPS = 3.0;
+  private double maxAccelerationPMSSq = 3.0;
+  private double maxAngularVelocityRadPerSecond = 2 * Math.PI;
+  private double maxAngularAccelerationRadPerSecondSq = 4 * Math.PI;
 
   /**
    * constructs trajcetories for testing swerve drives.
@@ -54,13 +61,10 @@ public class TestTrajectories {
         new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
         new Pose2d(3.0, 0.0, Rotation2d.fromDegrees(0)));
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -81,13 +85,10 @@ public class TestTrajectories {
       new Pose2d(1.5, 0.5, Rotation2d.fromDegrees(0)),
       new Pose2d(3.0, -0.5, Rotation2d.fromDegrees(0)));
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -106,13 +107,10 @@ public class TestTrajectories {
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
       new Pose2d(0.0, 1.0, Rotation2d.fromDegrees(0.0)));
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -130,13 +128,10 @@ public class TestTrajectories {
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -155,13 +150,10 @@ public class TestTrajectories {
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -183,13 +175,10 @@ public class TestTrajectories {
       new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),
       this.traverseBackwardArcStartPosition);
 
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
-
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -210,14 +199,11 @@ public class TestTrajectories {
       new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
       new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
-      
-    // The constraints for this path.
-    PathConstraints constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI);
 
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
         waypoints,
-        constraints,
+        getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
     );
@@ -228,4 +214,15 @@ public class TestTrajectories {
     return p;
   }
 
+  /**
+   * A method to return a new path constraint with the default values
+   * @return PathConstraints
+   */
+  private PathConstraints getPathConstraints(){
+    return new PathConstraints(
+      maxVelocityMPS, 
+      maxAccelerationPMSSq, 
+      maxAngularVelocityRadPerSecond, 
+      maxAngularAccelerationRadPerSecondSq);
+  }
 }

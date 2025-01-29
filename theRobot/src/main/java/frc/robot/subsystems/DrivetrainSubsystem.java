@@ -16,13 +16,7 @@ package frc.robot.subsystems;
 
 import java.util.*;
 import java.lang.Math;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
@@ -49,10 +43,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -102,12 +94,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private double speedReductionFactor = 1.0;
 
-  private SwerveDriveMode swerveDriveMode = SwerveDriveMode.NORMAL_DRIVING;
+  private SwerveDriveMode swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
 
   private TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(TunerConstants.DrivetrainConstants, 0, odometryStdDev, visionStdDev,
                                                                        TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
 
   private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
+  private SwerveRequest.RobotCentric robotCentricDriveController = new SwerveRequest.RobotCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
   private SwerveRequest.SwerveDriveBrake brakeDriveController = new SwerveRequest.SwerveDriveBrake();
 
   /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
@@ -142,9 +135,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /**
    * Method avaliable so that callers can update the chassis speeds to induce changes in robot movement
+   * This method is field centric driving and applies acceleration limiter and speed reduction factor
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
-  public void drive(ChassisSpeeds updatedChassisSpeeds) {
+  public void driveFieldCentric(ChassisSpeeds updatedChassisSpeeds) {
+    this.swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
+    this.chassisSpeeds = updatedChassisSpeeds;
+  }
+
+  /**
+   * Method avaliable so that callers can update the chassis speeds to induce changes in robot movement
+   * This method is robot centric driving and does not apply any acceleration limiter or speed reduction factor
+   * It is intended to be used with a trajectory generator that imposes speed and acceleration constraints. 
+   * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
+   */
+  public void driveRobotCentric(ChassisSpeeds updatedChassisSpeeds) {
+    this.swerveDriveMode = SwerveDriveMode.ROBOT_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
   }
   
@@ -243,14 +249,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Yaw", drivetrain.getPigeon2().getYaw().getValueAsDouble());
     this.displayDiagnostics();
 
-    // TODO update this with calls to CommandSwerveDrivetrain
-    // have to figure out Inheritance structure. Think this needs to extend CommandSwerveDrivetrain
     if (swerveDriveMode == SwerveDriveMode.IMMOVABLE_STANCE && chassisSpeedsAreZero()) {
       // only change to ImmovableStance if chassis is not moving.
       // otherwise, we could tip the robot moving to this stance when bot is at high velocity
       drivetrain.setControl(brakeDriveController);
     }
-    else { // SwerveDriveMode.NORMAL_DRIVING
+    else if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING) {
       // apply the speed reduction factor to the chassis speeds
       ChassisSpeeds reducedChassisSpeeds = new ChassisSpeeds(
         chassisSpeeds.vxMetersPerSecond * this.speedReductionFactor, 
@@ -262,14 +266,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
       reducedChassisSpeeds = limitChassisSpeedsAccel(reducedChassisSpeeds);
       previousChassisSpeeds = reducedChassisSpeeds; 
 
-      // take the current 'requested' chassis speeds and ask the ask the swerve modules to attempt this
-      // first we build a theoretical set of individual module states that the chassisSpeeds would corespond to
-      //states = swerveKinematics.toSwerveModuleStates(reducedChassisSpeeds);
+      // send the requested chassis speeds to the sweve drive
       drivetrain.setControl(fieldCentricDriveController
                             .withVelocityX(reducedChassisSpeeds.vxMetersPerSecond)
                             .withVelocityY(reducedChassisSpeeds.vyMetersPerSecond)
                             .withRotationalRate(reducedChassisSpeeds.omegaRadiansPerSecond));
     } 
+    else { // ROBOT_CENTRIC_DRIVING
+      // do not apply acceleration limis or speed limits. 
+      // assumes this is used by a trajectory follower that already imposes those constraints. 
+      drivetrain.setControl(robotCentricDriveController
+                            .withVelocityX(chassisSpeeds.vxMetersPerSecond)
+                            .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+                            .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond));
+      }
   }
 
   /**
@@ -281,13 +291,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * A method to set the swerve drive mode
-   * @param swerveDriveMode
+   * A method to set the swerve drive mode to immovable stance
    */
-  public void setSwerveDriveMode(SwerveDriveMode swerveDriveMode) {
-    this.swerveDriveMode = swerveDriveMode;
-    // if (swerveDriveMode == SwerveDriveMode.IMMOVABLE_STANCE) DO NOT set chassis speeds to 0.0 here.
+  public void setImmovableStance() {
+    this.swerveDriveMode = SwerveDriveMode.IMMOVABLE_STANCE;
+    // DO NOT set chassis speeds to 0.0 here.
     // we need to allow the robot to decel properly so that it doesn't tip.  
+  }
+
+  /**
+   * A method to unset the swerve drive from immovable stance
+   */
+  public void unsetImmovableStance() {
+    // we can unset IMMOVABLE_STANCE by driving field centric at a speed of 0
+    this.driveFieldCentric(new ChassisSpeeds(0, 0, 0));
   }
 
   /**

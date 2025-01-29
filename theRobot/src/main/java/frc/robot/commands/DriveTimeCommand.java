@@ -59,13 +59,11 @@ public class DriveTimeCommand extends Command
     this(drivetrainSubsystem, chassisSpeeds, durationSeconds, false);
   }
 
-
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize()
   {
-    drivetrain.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    drivetrain.driveFieldCentric(new ChassisSpeeds(0.0, 0.0, 0.0));
     timer.reset();
     timer.start();
     done = false;
@@ -77,12 +75,10 @@ public class DriveTimeCommand extends Command
   {
     if(fieldRelativeMode) 
     {
-      drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
-        chassisSpeeds,  
-        drivetrain.getGyroscopeRotation())); 
+      drivetrain.driveFieldCentric(chassisSpeeds);
     }
     else{
-      drivetrain.drive(chassisSpeeds);
+      drivetrain.driveRobotCentric(chassisSpeeds);
     }
     if (timer.hasElapsed(this.durationSecondsValue))
     {
@@ -94,7 +90,7 @@ public class DriveTimeCommand extends Command
   @Override
   public void end(boolean interrupted)
   {
-    drivetrain.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    drivetrain.driveFieldCentric(new ChassisSpeeds(0.0, 0.0, 0.0));
     if(interrupted)
     {
       done = true;      

@@ -122,7 +122,7 @@ public class ManualInputInterfaces {
         this.driverController.leftBumper().onTrue(
           new ParallelCommandGroup(
             new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setSwerveDriveMode(SwerveDriveMode.IMMOVABLE_STANCE)
+              () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()
             ),
             new ButtonPressCommand(
             "driverController.leftBumper()",
@@ -133,7 +133,7 @@ public class ManualInputInterfaces {
         this.driverController.leftBumper().onFalse(
           new ParallelCommandGroup(
             new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setSwerveDriveMode(SwerveDriveMode.NORMAL_DRIVING)
+              () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()
             ),
             new ButtonPressCommand(
             "driverController.leftBumper().onFalse()",
@@ -145,7 +145,7 @@ public class ManualInputInterfaces {
         this.driverController.rightBumper().onTrue(
           new ParallelCommandGroup(
             new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setSwerveDriveMode(SwerveDriveMode.IMMOVABLE_STANCE)
+              () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()
             ),
             new ButtonPressCommand(
             "driverController.rightBumper()",
@@ -156,7 +156,7 @@ public class ManualInputInterfaces {
         this.driverController.rightBumper().onFalse(
           new ParallelCommandGroup(
             new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setSwerveDriveMode(SwerveDriveMode.NORMAL_DRIVING)
+              () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()
             ),
             new ButtonPressCommand(
             "driverController.rightBumper().onFalse()",

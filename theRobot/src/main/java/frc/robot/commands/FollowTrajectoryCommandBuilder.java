@@ -57,7 +57,7 @@ public class FollowTrajectoryCommandBuilder {
                         traj,
                         drivetrain::getRobotPosition, // Pose supplier
                         drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                        (speeds, feedforwards) -> drivetrain.drive(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+                        (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
                         // We do not currently use the module feedforwards
                         pathFollower,
                         drivetrain.getPathPlannerConfig(), // The robot configuration
