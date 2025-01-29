@@ -20,6 +20,7 @@ import java.lang.Math;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 
 import static frc.robot.control.Constants.*;
@@ -40,6 +41,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
@@ -62,33 +64,37 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private final double deltaTimeSeconds = 0.02; // 20ms scheduler time tick
 
-  private static final DrivetrainSwerveConfig swerveConfig = 
-  InstalledHardware.tedDrivetrainInstalled ? Constants.tedDrivertainConfig : Constants.fooDrivetrainConfig;
+  private static final DrivetrainSwerveConfig swerveConfig = InstalledHardware.tedDrivetrainInstalled
+      ? Constants.tedDrivertainConfig
+      : Constants.fooDrivetrainConfig;
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
   public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 100.0;
   public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 100.0;
 
   private final Telemetry logger = new Telemetry(MAX_VELOCITY_METERS_PER_SECOND);
-    /**
+  /**
    * The maximum angular velocity of the robot in radians per second.
    * This is a measure of how fast the robot can rotate in place.
    */
-  // Here we calculate the theoretical maximum angular velocity. You can also replace this with a measured amount.
+  // Here we calculate the theoretical maximum angular velocity. You can also
+  // replace this with a measured amount.
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = Constants.SWERVE_MAX_SPEED /
-          Math.hypot(swerveConfig.getTrackwidthMeters() / 2.0, swerveConfig.getWheelbaseMeters() / 2.0);
-  public static final double MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND = MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.06; // 0.06 a magic number based on testing
+      Math.hypot(swerveConfig.getTrackwidthMeters() / 2.0, swerveConfig.getWheelbaseMeters() / 2.0);
+  public static final double MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND = MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+      * 0.06; // 0.06 a magic number based on testing
   private double MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 70.0;
 
-  private static RobotConfig pathPlannerRobotConfig; 
+  private static RobotConfig pathPlannerRobotConfig;
 
   // Standard deviations for poseEstimator updates
-  // The wpilib matrix constructor requires sizes specified as Nat types. 
+  // The wpilib matrix constructor requires sizes specified as Nat types.
   // Determined these settings from looking at other team's settings
-  // we use a high variance for the camera yaw because we don't want it to override 
+  // we use a high variance for the camera yaw because we don't want it to
+  // override
   // the odometry yaw, which comes from the very accurate IMU
-  private Matrix<N3,N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[]{0.7, 0.7, 10});
-  private Matrix<N3,N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[]{0.1, 0.1, 0.1});
+  private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 10 });
+  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.1, 0.1, 0.1 });
 
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -96,11 +102,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
 
-  private TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(TunerConstants.DrivetrainConstants, 0, odometryStdDev, visionStdDev,
-                                                                       TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
+  private TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(TunerConstants.DrivetrainConstants, 0,
+      odometryStdDev, visionStdDev,
+      TunerConstants.FrontLeft, TunerConstants.FrontRight, TunerConstants.BackLeft, TunerConstants.BackRight);
 
-  private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
-  private SwerveRequest.RobotCentric robotCentricDriveController = new SwerveRequest.RobotCentric().withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
+  private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric()
+      .withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
+  private SwerveRequest.RobotCentric robotCentricDriveController = new SwerveRequest.RobotCentric()
+      .withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
   private SwerveRequest.SwerveDriveBrake brakeDriveController = new SwerveRequest.SwerveDriveBrake();
 
   /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
@@ -125,17 +134,34 @@ public class DrivetrainSubsystem extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // get Path Planner config from GUI settings.
+    /*
     try{
       pathPlannerRobotConfig = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
+      */
+    pathPlannerRobotConfig = new RobotConfig(
+      29.0, 
+      4.2,
+      new ModuleConfig(
+        Constants.SWERVE_WHEEL_DIAMETER / 2,
+        MAX_VELOCITY_METERS_PER_SECOND,
+        1.0, // default value
+        // from CTRE Kraken x 60 https://ctre.download/files/datasheet/Motor%20Performance%20Analysis%20Report.pdf
+        new DCMotor(12.0, 7.09,  374.38, 2.0, 6000 * 2 * Math.PI * 60, 1),
+        SWERVE_DRIVE_REDUCTION,
+        50,
+        2));
   }
 
   /**
-   * Method avaliable so that callers can update the chassis speeds to induce changes in robot movement
-   * This method is field centric driving and applies acceleration limiter and speed reduction factor
+   * Method avaliable so that callers can update the chassis speeds to induce
+   * changes in robot movement
+   * This method is field centric driving and applies acceleration limiter and
+   * speed reduction factor
+   * 
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveFieldCentric(ChassisSpeeds updatedChassisSpeeds) {
@@ -144,46 +170,54 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * Method avaliable so that callers can update the chassis speeds to induce changes in robot movement
-   * This method is robot centric driving and does not apply any acceleration limiter or speed reduction factor
-   * It is intended to be used with a trajectory generator that imposes speed and acceleration constraints. 
+   * Method avaliable so that callers can update the chassis speeds to induce
+   * changes in robot movement
+   * This method is robot centric driving and does not apply any acceleration
+   * limiter or speed reduction factor
+   * It is intended to be used with a trajectory generator that imposes speed and
+   * acceleration constraints.
+   * 
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveRobotCentric(ChassisSpeeds updatedChassisSpeeds) {
     this.swerveDriveMode = SwerveDriveMode.ROBOT_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
   }
-  
+
   /**
    * returns chassis speeds (robot relative)
+   * 
    * @return chassis speeds
    */
-  public ChassisSpeeds getChassisSpeeds(){
+  public ChassisSpeeds getChassisSpeeds() {
     return chassisSpeeds;
   }
 
   /**
    * Method to get the current speed reduction factor
+   * 
    * @return - the current speed reduction factor
    */
   public double getSpeedReductionFactor() {
     return this.speedReductionFactor;
   }
-  
+
   public RobotConfig getPathPlannerConfig() {
     return pathPlannerRobotConfig;
   }
 
   /**
    * a method that makes the odometry update with vision updates
+   * 
    * @param shouldUseVision true to use vision, false to not
    */
-  public void setUseVision(boolean shouldUseVision){
+  public void setUseVision(boolean shouldUseVision) {
     this.useVision = shouldUseVision;
   }
-  
+
   /**
    * Method to set the current speed reduction factor to a new value
+   * 
    * @param value - the new speed reduction factor
    */
   public void setSpeedReductionFactor(double value) {
@@ -191,99 +225,106 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * Obtains the current gyroscope's rotation about the Z axis when looking down at the robot where positive is measured in the 
+   * Obtains the current gyroscope's rotation about the Z axis when looking down
+   * at the robot where positive is measured in the
    * counter-clockwise direction.
    * 
    * @return A Rotation2d that describes the current orentation of the robot.
    */
   public Rotation2d getGyroscopeRotation() {
     return new Rotation2d(0.0);
-    //return drivetrain.getPigeon2().getRotation2d();
+    // return drivetrain.getPigeon2().getRotation2d();
   }
 
   /**
    * A method to get the current position of the robot
+   * 
    * @return the current Pose2d position of the robot
    */
-  public Pose2d getRobotPosition()
-  {
+  public Pose2d getRobotPosition() {
     return drivetrain.getState().Pose;
   }
- 
-   /**
-    * A method to obtain the swerve drive mode
-    * @return the mode
-    */
-   public SwerveDriveMode getSwerveDriveMode() {
+
+  /**
+   * A method to obtain the swerve drive mode
+   * 
+   * @return the mode
+   */
+  public SwerveDriveMode getSwerveDriveMode() {
     return swerveDriveMode;
   }
 
   /**
-   * Perodic for this subsystem - very important for it to run every scheduler cycle - 50Hz
+   * Perodic for this subsystem - very important for it to run every scheduler
+   * cycle - 50Hz
    */
   @Override
   public void periodic() {
-  /*
-    * Periodically try to apply the operator perspective.
-    * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
-    * This allows us to correct the perspective in case the robot code restarts mid-match.
-    * Otherwise, only check and apply the operator perspective if the DS is disabled.
-    * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
-    */
-  if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
+    /*
+     * Periodically try to apply the operator perspective.
+     * If we haven't applied the operator perspective before, then we should apply
+     * it regardless of DS state.
+     * This allows us to correct the perspective in case the robot code restarts
+     * mid-match.
+     * Otherwise, only check and apply the operator perspective if the DS is
+     * disabled.
+     * This ensures driving behavior doesn't change until an explicit disable event
+     * occurs during testing.
+     */
+    if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
       DriverStation.getAlliance().ifPresent(allianceColor -> {
-          drivetrain.setOperatorPerspectiveForward(
-              allianceColor == Alliance.Red
-                  ? kRedAlliancePerspectiveRotation
-                  : kBlueAlliancePerspectiveRotation
-          );
-          m_hasAppliedOperatorPerspective = true;
+        drivetrain.setOperatorPerspectiveForward(
+            allianceColor == Alliance.Red
+                ? kRedAlliancePerspectiveRotation
+                : kBlueAlliancePerspectiveRotation);
+        m_hasAppliedOperatorPerspective = true;
       });
-  }
+    }
 
     // update robot position with vision
-    if(InstalledHardware.limelightInstalled){
+    if (InstalledHardware.limelightInstalled) {
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
-    } 
+    }
 
     SmartDashboard.putNumber("Gyro Yaw", drivetrain.getPigeon2().getYaw().getValueAsDouble());
     this.displayDiagnostics();
 
     if (swerveDriveMode == SwerveDriveMode.IMMOVABLE_STANCE && chassisSpeedsAreZero()) {
       // only change to ImmovableStance if chassis is not moving.
-      // otherwise, we could tip the robot moving to this stance when bot is at high velocity
+      // otherwise, we could tip the robot moving to this stance when bot is at high
+      // velocity
       drivetrain.setControl(brakeDriveController);
-    }
-    else if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING) {
+    } else if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING) {
       // apply the speed reduction factor to the chassis speeds
       ChassisSpeeds reducedChassisSpeeds = new ChassisSpeeds(
-        chassisSpeeds.vxMetersPerSecond * this.speedReductionFactor, 
-        chassisSpeeds.vyMetersPerSecond * this.speedReductionFactor, 
-        // different speed reduction factor for rotation
-        chassisSpeeds.omegaRadiansPerSecond * Math.min(1.0, this.speedReductionFactor * 1.25));
+          chassisSpeeds.vxMetersPerSecond * this.speedReductionFactor,
+          chassisSpeeds.vyMetersPerSecond * this.speedReductionFactor,
+          // different speed reduction factor for rotation
+          chassisSpeeds.omegaRadiansPerSecond * Math.min(1.0, this.speedReductionFactor * 1.25));
 
       // apply acceleration control
       reducedChassisSpeeds = limitChassisSpeedsAccel(reducedChassisSpeeds);
-      previousChassisSpeeds = reducedChassisSpeeds; 
+      previousChassisSpeeds = reducedChassisSpeeds;
 
       // send the requested chassis speeds to the sweve drive
       drivetrain.setControl(fieldCentricDriveController
-                            .withVelocityX(reducedChassisSpeeds.vxMetersPerSecond)
-                            .withVelocityY(reducedChassisSpeeds.vyMetersPerSecond)
-                            .withRotationalRate(reducedChassisSpeeds.omegaRadiansPerSecond));
-    } 
-    else { // ROBOT_CENTRIC_DRIVING
-      // do not apply acceleration limis or speed limits. 
-      // assumes this is used by a trajectory follower that already imposes those constraints. 
+          .withVelocityX(reducedChassisSpeeds.vxMetersPerSecond)
+          .withVelocityY(reducedChassisSpeeds.vyMetersPerSecond)
+          .withRotationalRate(reducedChassisSpeeds.omegaRadiansPerSecond));
+    } else { // ROBOT_CENTRIC_DRIVING
+      // do not apply acceleration limis or speed limits.
+      // assumes this is used by a trajectory follower that already imposes those
+      // constraints.
       drivetrain.setControl(robotCentricDriveController
-                            .withVelocityX(chassisSpeeds.vxMetersPerSecond)
-                            .withVelocityY(chassisSpeeds.vyMetersPerSecond)
-                            .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond));
-      }
+          .withVelocityX(chassisSpeeds.vxMetersPerSecond)
+          .withVelocityY(chassisSpeeds.vyMetersPerSecond)
+          .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond));
+    }
   }
 
   /**
    * A method to set the current position of the robot
+   * 
    * @param updatedPosition - the new position of the robot
    */
   public void setRobotPosition(Pose2d updatedPosition) {
@@ -296,7 +337,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void setImmovableStance() {
     this.swerveDriveMode = SwerveDriveMode.IMMOVABLE_STANCE;
     // DO NOT set chassis speeds to 0.0 here.
-    // we need to allow the robot to decel properly so that it doesn't tip.  
+    // we need to allow the robot to decel properly so that it doesn't tip.
   }
 
   /**
@@ -308,46 +349,52 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
+   * Sets the gyroscope angle to zero. This can be used to set the direction the
+   * robot is currently facing to the
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    //drivetrain.seedFieldCentric();
+    // drivetrain.seedFieldCentric();
   }
 
   /**
    * A method to zero the current position
    */
   public void zeroRobotPosition() {
-    this.setRobotPosition(new Pose2d(0,0,Rotation2d.fromDegrees(0)));
+    this.setRobotPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
 
   /**
    * A method that updates the robot position with a vision measurement
-   * @param visionMeasurement the most recent vision measurement provided by vision subsystem
+   * 
+   * @param visionMeasurement the most recent vision measurement provided by
+   *                          vision subsystem
    */
-  private void addVisionMeasurement(VisionMeasurement visionMeasurement){
-    // for now ignore all vision measurements that are null or contained robot position is null
-    if (visionMeasurement != null && useVision){
+  private void addVisionMeasurement(VisionMeasurement visionMeasurement) {
+    // for now ignore all vision measurements that are null or contained robot
+    // position is null
+    if (visionMeasurement != null && useVision) {
       Pose2d visionComputedMeasurement = visionMeasurement.getRobotPosition();
-      if(visionComputedMeasurement != null) {
-        //we want to reject vision measurements that are more than 1 meter away in case vison gives a bad read
-        if(visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1){
+      if (visionComputedMeasurement != null) {
+        // we want to reject vision measurements that are more than 1 meter away in case
+        // vison gives a bad read
+        if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1) {
           drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
         }
       }
     }
-}
-
-  private boolean chassisSpeedsAreZero(){
-    return (chassisSpeeds.vxMetersPerSecond == 0.0) 
-    && (chassisSpeeds.vyMetersPerSecond == 0.0) 
-    && (chassisSpeeds.omegaRadiansPerSecond == 0.0);
   }
-  
+
+  private boolean chassisSpeedsAreZero() {
+    return (chassisSpeeds.vxMetersPerSecond == 0.0)
+        && (chassisSpeeds.vyMetersPerSecond == 0.0)
+        && (chassisSpeeds.omegaRadiansPerSecond == 0.0);
+  }
+
   /**
-   * Clamps the chassis speeds between a min and max.  
+   * Clamps the chassis speeds between a min and max.
    * Separete min and max for translational (x,y) vs. rotational speeds
+   * 
    * @param chassisSpeeds
    * @param translationMin
    * @param translationMax
@@ -356,91 +403,99 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return clamped chassisSpeeds
    */
   private ChassisSpeeds clampChassisSpeeds(
-    ChassisSpeeds chassisSpeeds, 
-    double translationMin,
-    double translationMax,
-    double rotationMin,
-    double rotationMax){
+      ChassisSpeeds chassisSpeeds,
+      double translationMin,
+      double translationMax,
+      double rotationMin,
+      double rotationMax) {
     // do not scale omega
-    //double clampedOmega = MotorUtils.doubleSidedClamp(chassisSpeeds.omegaRadiansPerSecond, rotationMin, rotationMax);
-    // if one or both of X or Y needs to be clamped, we need to scale both proportionally
+    // double clampedOmega =
+    // MotorUtils.doubleSidedClamp(chassisSpeeds.omegaRadiansPerSecond, rotationMin,
+    // rotationMax);
+    // if one or both of X or Y needs to be clamped, we need to scale both
+    // proportionally
     // form a Translation2d of x, y so the math is easier
     Translation2d translation = new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
     double velocity = translation.getNorm();
     double clampedVelocity = MotorUtils.doubleSidedClamp(velocity, translationMin, translationMax);
     // scale the translation by the clamped velocity scale factor
-    double scale = clampedVelocity/velocity;
+    double scale = clampedVelocity / velocity;
     translation = translation.times(scale);
     return new ChassisSpeeds(translation.getX(), translation.getY(), chassisSpeeds.omegaRadiansPerSecond);
   }
 
   /**
    * Clamps the chassis speeds between the drivetrain min and max velocities
+   * 
    * @param chassisSpeeds
    * @return clamped chassisSpeeds
    */
-  private ChassisSpeeds clampChassisSpeeds(ChassisSpeeds chassisSpeeds){
-    return this.clampChassisSpeeds(chassisSpeeds, 
-    0, // TODO this used to be MIN_VELOCITY_BOUNDARY_METERS_PER_SECOND
-    Constants.SWERVE_MAX_SPEED, 
-    MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND, 
-    MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+  private ChassisSpeeds clampChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    return this.clampChassisSpeeds(chassisSpeeds,
+        0, // TODO this used to be MIN_VELOCITY_BOUNDARY_METERS_PER_SECOND
+        Constants.SWERVE_MAX_SPEED,
+        MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND,
+        MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
   }
 
-  private SwerveModuleState[] getImmovableStanceStates(){
+  private SwerveModuleState[] getImmovableStanceStates() {
     // set wheels in "X" pattern
     return new SwerveModuleState[] {
-      // frontLeftModule
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45)),
-      // frontRightModule
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
-      // backLeftModule
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
-      // backRightModule
-      new SwerveModuleState(0.0, Rotation2d.fromDegrees(45))
-    }; 
+        // frontLeftModule
+        new SwerveModuleState(0.0, Rotation2d.fromDegrees(45)),
+        // frontRightModule
+        new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
+        // backLeftModule
+        new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
+        // backRightModule
+        new SwerveModuleState(0.0, Rotation2d.fromDegrees(45))
+    };
   };
 
   /**
    * Limits chassis speeds based on max allowable acceleration
+   * 
    * @param speeds
    * @return
    */
   private ChassisSpeeds limitChassisSpeedsAccel(ChassisSpeeds speeds) {
     // translational acceleration has different accel/decel limits
-    double xVelocityLimited = limitAxisSpeed(speeds.vxMetersPerSecond, previousChassisSpeeds.vxMetersPerSecond, 
-    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED, 
-    MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
-    double yVelocityLimited = limitAxisSpeed(speeds.vyMetersPerSecond, previousChassisSpeeds.vyMetersPerSecond, 
-    MAX_ACCELERATION_METERS_PER_SECOND_SQUARED, 
-    MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
+    double xVelocityLimited = limitAxisSpeed(speeds.vxMetersPerSecond, previousChassisSpeeds.vxMetersPerSecond,
+        MAX_ACCELERATION_METERS_PER_SECOND_SQUARED,
+        MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
+    double yVelocityLimited = limitAxisSpeed(speeds.vyMetersPerSecond, previousChassisSpeeds.vyMetersPerSecond,
+        MAX_ACCELERATION_METERS_PER_SECOND_SQUARED,
+        MAX_DECELERATION_METERS_PER_SECOND_SQUARED); // acceleration reduction factor does not apply to deceleration
     // angular acceleration is has same accel/decel limit
-    double omegaVelocityLimited = limitAxisSpeed(speeds.omegaRadiansPerSecond, previousChassisSpeeds.omegaRadiansPerSecond, 
-    MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED, 
-    MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED);
+    double omegaVelocityLimited = limitAxisSpeed(speeds.omegaRadiansPerSecond,
+        previousChassisSpeeds.omegaRadiansPerSecond,
+        MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED,
+        MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED);
     return new ChassisSpeeds(xVelocityLimited, yVelocityLimited, omegaVelocityLimited);
   }
 
   /**
    * Limits axis speed based on max allowable acceleration
+   * 
    * @param commandedSpeed
    * @param previousSpeed
    * @param maxAccel
    * @return limited speed
    */
-  private double limitAxisSpeed(double commandedSpeed, double previousSpeed, double maxAccel, double maxDecel){
-      double accel = (commandedSpeed - previousSpeed)/deltaTimeSeconds;
-      double speedLimited = commandedSpeed;
-      if (accel > maxAccel){ // positive accel is greater than max
-        // new velocity is the old velocity + the maximum allowed change toward the new direction
-        speedLimited = previousSpeed + Math.copySign(maxAccel * deltaTimeSeconds, accel);
-      } else if (accel < -maxDecel) { // accel is less than negative max
-        speedLimited = previousSpeed + Math.copySign(maxDecel * deltaTimeSeconds, accel);
-      }
-      return speedLimited;
+  private double limitAxisSpeed(double commandedSpeed, double previousSpeed, double maxAccel, double maxDecel) {
+    double accel = (commandedSpeed - previousSpeed) / deltaTimeSeconds;
+    double speedLimited = commandedSpeed;
+    if (accel > maxAccel) { // positive accel is greater than max
+      // new velocity is the old velocity + the maximum allowed change toward the new
+      // direction
+      speedLimited = previousSpeed + Math.copySign(maxAccel * deltaTimeSeconds, accel);
+    } else if (accel < -maxDecel) { // accel is less than negative max
+      speedLimited = previousSpeed + Math.copySign(maxDecel * deltaTimeSeconds, accel);
+    }
+    return speedLimited;
   }
 
-  private void displayDiagnostics(){
+  private void displayDiagnostics() {
     SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
     SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());

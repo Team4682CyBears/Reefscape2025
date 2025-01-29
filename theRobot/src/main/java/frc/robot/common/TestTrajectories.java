@@ -19,6 +19,7 @@ import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * A class with trajcetories for testing swerve drives.
@@ -34,11 +35,11 @@ public class TestTrajectories {
 
   private Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
   
-  // TODO not sure about these max velocities and accelerations
-  private double maxVelocityMPS = 3.0;
-  private double maxAccelerationPMSSq = 3.0;
-  private double maxAngularVelocityRadPerSecond = 2 * Math.PI;
-  private double maxAngularAccelerationRadPerSecondSq = 4 * Math.PI;
+  // TODO These velocities and acccelerations were copied from Ted. May need to be changed for new robot. 
+  private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+  private double maxAccelerationPMSSq = 1.25; // 6.0 max
+  private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
+  private double maxAngularAccelerationRadPerSecondSq = 8.0; // 12.0 max
 
   /**
    * constructs trajcetories for testing swerve drives.
@@ -126,6 +127,7 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
     // Create the path using the waypoints created above
@@ -148,6 +150,7 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
     // Create the path using the waypoints created above
