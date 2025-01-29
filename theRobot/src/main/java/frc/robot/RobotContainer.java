@@ -85,6 +85,13 @@ public class RobotContainer {
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Turn 90",
           FollowTrajectoryCommandBuilder.build(testtrajectories.turn90, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Backward Arc",
+          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Zig Zag",
+          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Simple Left",
+          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
+      
     }
 
     // Path Planner Path Commands
