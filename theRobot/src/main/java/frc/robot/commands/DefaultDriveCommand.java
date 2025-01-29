@@ -46,11 +46,11 @@ public class DefaultDriveCommand extends Command {
             m_translationYSupplier.getAsDouble(),
             m_rotationSupplier.getAsDouble());
    
-        m_drivetrainSubsystem.drive(commandedChassisSpeeds);        
+        m_drivetrainSubsystem.driveFieldCentric(commandedChassisSpeeds);        
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        m_drivetrainSubsystem.driveFieldCentric(new ChassisSpeeds(0.0, 0.0, 0.0));
     }
 }

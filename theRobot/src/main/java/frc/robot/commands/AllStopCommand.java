@@ -41,8 +41,7 @@ public class AllStopCommand extends Command {
     @Override
     public void execute() {
         if(this.subsystems.isDriveTrainSubsystemAvailable()) {
-            this.subsystems.getDriveTrainSubsystem().drive(new ChassisSpeeds(0.0,0.0,0.0));
-            this.subsystems.getDriveTrainSubsystem().setSwerveDriveMode(SwerveDriveMode.NORMAL_DRIVING);
+            this.subsystems.getDriveTrainSubsystem().driveFieldCentric(new ChassisSpeeds(0.0,0.0,0.0));
         }
         // TODO add stop commands for all other subsystems here. 
     }

@@ -11,7 +11,8 @@
 package frc.robot.control;
 
 public enum SwerveDriveMode {
-    NORMAL_DRIVING,
+    FIELD_CENTRIC_DRIVING,
+    ROBOT_CENTRIC_DRIVING,
     IMMOVABLE_STANCE
 }
 
