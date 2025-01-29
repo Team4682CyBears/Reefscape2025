@@ -20,8 +20,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CommandScheduler.getInstance().setDefaultCommand(m_MotorSubsystem, new MotorPlaySound(m_MotorSubsystem));
+    CommandScheduler.getInstance().setDefaultCommand(m_MotorSubsystem, new MotorPlaySound(m_MotorSubsystem, new MotorSubsystem(4)));
   }
-
-
 }
