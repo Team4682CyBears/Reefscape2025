@@ -7,12 +7,9 @@ package frc.robot;
 import frc.robot.subsystems.ImplementationTOF;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.RunExperimentCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Spinner;
-import frc.robot.common.reefTofSensor;
 
 
 
@@ -25,39 +22,14 @@ import frc.robot.common.reefTofSensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Spinner spinnerMotor = new Spinner();
-  private final reefTofSensor reefSensor = new reefTofSensor(Constants.reefTofSensorCanID);
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  //private final CommandXboxController m_driverController =
-      //new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  ImplementationTOF tof = new ImplementationTOF(Constants.reefTofSensorCanID);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    double motorSpeed = 60; //rpm
-    // Configure the trigger bindings
-    configureBindings();
-    ImplementationTOF implement = new ImplementationTOF(reefSensor);
-    SmartDashboard.putNumber("Set Motor Speed", -1000);
+    double motorSpeed = 120; //rpm
     SmartDashboard.putData( "Run Experiment Command",
-        new RunExperimentCommand(motorSpeed, spinnerMotor, reefSensor, 20)
+        new RunExperimentCommand(motorSpeed, spinnerMotor, tof, 10)
      );
-
-  }
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
   }
 
   /**

@@ -363,7 +363,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "4,1": {
+          "4,0": {
             "size": [
               2,
               1
@@ -378,63 +378,9 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,0": {
+          "7,2": {
             "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/TOF ID16 Range Is Valid",
-              "_title": "/SmartDashboard/TOF ID16 Range Is Valid",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "10,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/TOF ID16 TOF Status",
-              "_title": "/SmartDashboard/TOF ID16 TOF Status",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,1": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Set Motor Speed",
-              "_title": "/SmartDashboard/Set Motor Speed",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Run Experiment Command",
-              "_title": "/SmartDashboard/Run Experiment Command",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "4,2": {
-            "size": [
-              4,
+              3,
               3
             ],
             "content": {
@@ -452,9 +398,37 @@
               "Visible data//SmartDashboard/TOF ID16 Range Inches": true
             }
           },
-          "9,2": {
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/TOF ID16 Range Is Valid",
+              "_title": "/SmartDashboard/TOF ID16 Range Is Valid",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,0": {
             "size": [
               4,
+              2
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Run Experiment Command",
+              "_title": "/SmartDashboard/Run Experiment Command",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,2": {
+            "size": [
+              3,
               3
             ],
             "content": {
@@ -654,6 +628,6 @@
     "x": -9.0,
     "y": 0.0,
     "width": 1935.0,
-    "height": 845.0
+    "height": 859.0
   }
 }

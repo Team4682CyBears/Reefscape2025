@@ -21,7 +21,7 @@ public class Spinner extends SubsystemBase {
     private VoltageOut motorTalonVoltageController = new VoltageOut(0);
     private TalonFXConfiguration motorTalonMotorConfiguration = null;
     // values found through manual system characterization using Phoenix Tuner X.
-    private Slot0Configs motorRpmGains = new Slot0Configs().withKS(0.119956).withKV(0.10905).withKP(0.4).withKD(0).withKI(0);
+    private Slot0Configs motorRpmGains = new Slot0Configs().withKS(0.119956).withKV(0.10905).withKP(0.35).withKD(0.0).withKI(0.0);
     private double speedRpm = 0.0;
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Coast;
     private static final double kMinDeadband = 0.001;
@@ -29,16 +29,15 @@ public class Spinner extends SubsystemBase {
     public Spinner(){
         motorTalon = new TalonFX(Constants.motorCanID);
         configureMotor();
-        System.out.print("Motor is set");
-        motorTalonVelocityController.withSlot(0);
+        System.out.print("Motor configuration complete");
+        motorTalonVelocityController.withSlot(0).withEnableFOC(true);
         motorTalonVelocityController.withUpdateFreqHz(0); // send commands instantly
     }
 
     public void spinMotor(double speedRpm){
         //Sets speed to a specific state for testing
-        motorTalon.setControl(this.motorTalonVelocityController.withVelocity(speedRpm/60));
-        System.out.println(" variable speed is " + speedRpm);
-        //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
+        this.speedRpm = speedRpm;
+        System.out.println("Motor speed set to " + speedRpm);
     }
 
     public void motorStop(){
@@ -51,10 +50,6 @@ public class Spinner extends SubsystemBase {
     public double getSpeed(){
         //return speed
         return motorTalon.getVelocity().getValueAsDouble();
-    }
-
-    public void resetController(){
-        motorTalonVelocityController = new VelocityVoltage(0);
     }
 
     private void configureMotor(){

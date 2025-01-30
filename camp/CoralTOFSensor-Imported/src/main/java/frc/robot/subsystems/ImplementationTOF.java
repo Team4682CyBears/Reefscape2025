@@ -1,19 +1,21 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.common.reefTofSensor;
-import frc.robot.Constants;
 
 public class ImplementationTOF extends SubsystemBase{
-    private reefTofSensor reefCoralSensor = null;
+    private reefTofSensor reefCoralSensor;
 
-    public ImplementationTOF(reefTofSensor reefCoralSensor){
-        this.reefCoralSensor = reefCoralSensor;
+    public ImplementationTOF(int CANId){
+        this.reefCoralSensor = new reefTofSensor(CANId);
         System.out.print("Implemenetation tof attempted to configure!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    public boolean isCoralDetected(){
+        return reefCoralSensor.isCoralDetected();
     }
 
     @Override
     public void periodic() {
-        //this.reefCoralSensor.blinkSensor();
         if(this.reefCoralSensor != null){
             this.reefCoralSensor.publishTelemetery();
         }

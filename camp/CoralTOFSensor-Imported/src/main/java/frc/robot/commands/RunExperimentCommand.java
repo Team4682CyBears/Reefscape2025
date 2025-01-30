@@ -1,49 +1,43 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.common.reefTofSensor;
+import frc.robot.subsystems.ImplementationTOF;
 import frc.robot.subsystems.Spinner;
 
 public class RunExperimentCommand extends Command {
     Spinner spiningMotor;
-    reefTofSensor tofSensor;
+    ImplementationTOF tofSensor;
     double constSpeed;
     double desiredSpeed = 0;
     boolean isDone = false;
+    int desiredCycles;
     int cycles;
+    int cyclesRun = 0;
     Timer stopwatch = new Timer();
     boolean tofActivated = false;
     boolean previousTofActivation = false;
     double dataValue;
-    int cyclesRun = 0;
     double[] dataValues;
     boolean experimentRunning = false;
 
-    public RunExperimentCommand(Double constS, Spinner spin, reefTofSensor tof, int cyc) {
+    public RunExperimentCommand(Double constS, Spinner spin, ImplementationTOF tof, int cyc) {
         spiningMotor = spin;
         tofSensor = tof;
         constSpeed = constS;
-        cycles = cyc;
+        desiredCycles = cyc;
         dataValues = new double[cycles];
+        addRequirements(spin, tof);
     }
 
     @Override
     public void initialize() {
         isDone = false;
+        cycles = desiredCycles;
         cyclesRun = 0;
-        // try to reset the controller to ensure behavior is consistent
-        spiningMotor.resetController();
         desiredSpeed = constSpeed;
         spiningMotor.spinMotor(desiredSpeed);
-        System.out.println("HEY LOOK AT ME OVER HERE THE DESIRED SPEED IS" + desiredSpeed);
-        System.out.println(desiredSpeed);
-        System.out.println(desiredSpeed);
-        System.out.println(desiredSpeed);
-        System.out.println(desiredSpeed);
-        System.out.println(desiredSpeed);
+        System.out.println("HEY LOOK AT ME OVER HERE THE DESIRED SPEED IS " + desiredSpeed);
         stopwatch.reset();
         experimentRunning = false;
         System.out.println("Run experiment command initilized");
@@ -56,11 +50,10 @@ public class RunExperimentCommand extends Command {
         //System.out.println("Desired speed" + desiredSpeed);
         if (experimentRunning == false && spiningMotor.getSpeed() >= desiredSpeed) {
             experimentRunning = true;
-            System.out.println("LETS RUN THIS EXPERIMENT");
+            System.out.println("MOTOR AT SPEED. RUNNING EXPERIMENT for " + cycles + " cycles.");
         }
         if (experimentRunning == true && cycles > 0) {
             stopwatch.start();
-            //System.out.println("stopwatch set");
             tofActivated = tofSensor.isCoralDetected();
             if (tofActivated && !previousTofActivation) {
                 dataValues[cyclesRun] = stopwatch.get();
@@ -99,6 +92,9 @@ public class RunExperimentCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        if (interrupted){
+            System.out.println("THE COMMAND WAS INTERRUPTED!!");
+        }
         // prints out final data
         spiningMotor.motorStop();
         double meanValue = 0;
