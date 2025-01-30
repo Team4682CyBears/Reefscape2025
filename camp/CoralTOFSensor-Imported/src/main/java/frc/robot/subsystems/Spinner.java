@@ -47,9 +47,9 @@ public class Spinner extends SubsystemBase {
         System.out.println("Motor stopped");
     }
     
-    public double getSpeed(){
+    public double getSpeedRpm(){
         //return speed
-        return motorTalon.getVelocity().getValueAsDouble();
+        return motorTalon.getVelocity().getValueAsDouble()*60;
     }
 
     private void configureMotor(){
@@ -81,7 +81,7 @@ public class Spinner extends SubsystemBase {
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Spinner Speed", this.getSpeed());
+        SmartDashboard.putNumber("Spinner Speed", this.getSpeedRpm());
         if(speedRpm != 0){
             motorTalon.setControl(this.motorTalonVelocityController.withVelocity(speedRpm/60));
         }

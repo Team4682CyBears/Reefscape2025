@@ -26,9 +26,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    double motorSpeed = 120; //rpm
+    double motorSpeed = 60; //rpm
     SmartDashboard.putData( "Run Experiment Command",
-        new RunExperimentCommand(motorSpeed, spinnerMotor, tof, 10)
+        new RunExperimentCommand(motorSpeed, spinnerMotor, tof, 20)
      );
   }
 
