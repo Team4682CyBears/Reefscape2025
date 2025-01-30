@@ -2,6 +2,12 @@
 
 We are setting up the motor subsystem for the elevator
 
+1. Bind buttons a/b to wind/unwind the motor
+2. Configure TalonFX motor 
+3. Run a duty cycle to set motor speed
+3. Connect the motors to controller inputs
+5. Create a stop command for motor
+
 
 Motor Controller: TalonFX
 

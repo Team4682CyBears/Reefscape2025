@@ -25,8 +25,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final TalonMotorSubsystem talonMotorSubsystem = new TalonMotorSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
+  // create instance of xbox controller
+  private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -46,12 +46,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
-    // this.feeder.setDefaultCommand(new MotorStop(feeder)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
 
     this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     
-    m_driverController.b().whileTrue(new WindCommand(this.talonMotorSubsystem)); // Binds the "b" button to the backwards command.
-    m_driverController.x().whileTrue(new UnwindCommand(this.talonMotorSubsystem)); // Binds the "x" button to the forward command.
+    driverController.b().whileTrue(new WindCommand(this.talonMotorSubsystem)); // Binds the "b" button to the backwards command.
+    driverController.a().whileTrue(new UnwindCommand(this.talonMotorSubsystem)); // Binds the "a" button to the forward command.
   }
 
   /**

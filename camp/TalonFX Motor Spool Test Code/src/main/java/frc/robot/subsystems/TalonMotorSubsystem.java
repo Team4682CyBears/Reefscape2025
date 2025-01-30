@@ -13,6 +13,16 @@
 // https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/talonfx-control-intro.html#control-output-types
 // ** 
 
+//
+// DutyCycle Description:
+// 
+// A DutyCycle control request outputs a proportion of the supply 
+// voltage, which typically ranges from -1.0 to 1.0, inclusive. 
+// This control output type is typically used in systems where it 
+// is important to be capable of running at the maximum speed 
+// possible, such as in a typical robot drivetrain.
+//
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -29,15 +39,19 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class TalonMotorSubsystem extends SubsystemBase {
     //configurtition for the motor begins here
     private TalonFX talonMotor;
+
     //velcity and voltage control
     private DutyCycleOut motorTalonDutyOut = new DutyCycleOut(0);
     private TalonFXConfiguration motorTalonMotorConfiguration = null;
+
     // values found through manual system characterization using Phoenix Tuner X.
     private double speedRpm = 0.0;
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Brake;
     private static final double kMinDeadband = 0.001;
 
     public TalonMotorSubsystem(){
+
+        // initialize devices on the rio can bus
         talonMotor = new TalonFX(Constants.motorCanID);
         configureMotor();
         System.out.print("Motor is set");
@@ -74,12 +88,9 @@ public class TalonMotorSubsystem extends SubsystemBase {
         // do not config feedbacksource, since the default is the internal one.
         motorTalonMotorConfiguration.Voltage.PeakForwardVoltage = 12;
         motorTalonMotorConfiguration.Voltage.PeakReverseVoltage = -12;
-        motorTalonMotorConfiguration.Voltage.SupplyVoltageTimeConstant = Constants.motorSupplyVoltageTimeConstant;
 
         // maximum current settings
-        motorTalonMotorConfiguration.CurrentLimits.StatorCurrentLimit = Constants.motorSupplyCurrentMaximumAmps;
         motorTalonMotorConfiguration.CurrentLimits.StatorCurrentLimitEnable = true;
-        motorTalonMotorConfiguration.CurrentLimits.SupplyCurrentLimit = Constants.motorSupplyCurrentMaximumAmps;
         motorTalonMotorConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
         // motor direction
         motorTalonMotorConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -90,12 +101,5 @@ public class TalonMotorSubsystem extends SubsystemBase {
               "TalonFX ID " + talonMotor.getDeviceID() + " failed config with error " + response.toString());
         }
     
-    }
-
-    public void periodic(){
-        SmartDashboard.putNumber("Spinner Speed", this.getSpeed());
-        if(speedRpm != 0){
-            talonMotor.setControl(this.motorTalonDutyOut.withVelocity(speedRpm/60));
-        }
     }
 }
