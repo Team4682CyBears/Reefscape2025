@@ -134,26 +134,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // get Path Planner config from GUI settings.
-    /*
     try{
       pathPlannerRobotConfig = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
-      */
+      /* 
     pathPlannerRobotConfig = new RobotConfig(
       29.0, 
       4.2,
       new ModuleConfig(
         Constants.SWERVE_WHEEL_DIAMETER / 2,
-        MAX_VELOCITY_METERS_PER_SECOND,
+        MAX_VELOCITY_METERS_PER_SECOND + 1.0, //PP doesn't like our low velocity?
         1.0, // default value
         // from CTRE Kraken x 60 https://ctre.download/files/datasheet/Motor%20Performance%20Analysis%20Report.pdf
         new DCMotor(12.0, 7.09,  374.38, 2.0, 6000 * 2 * Math.PI * 60, 1),
-        SWERVE_DRIVE_REDUCTION,
+        1.0/SWERVE_DRIVE_REDUCTION,
         50,
-        2));
+        1));
+        */
   }
 
   /**
