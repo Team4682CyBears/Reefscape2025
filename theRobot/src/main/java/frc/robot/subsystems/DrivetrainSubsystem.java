@@ -260,6 +260,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("bot Yaw", this.getRobotPosition().getRotation().getDegrees());
     /*
      * Periodically try to apply the operator perspective.
      * If we haven't applied the operator perspective before, then we should apply
@@ -282,7 +283,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
           m_hasAppliedOperatorPerspective = true;
         });
       }
-      setRobotPosition((cameraSubsystem.getVisionBotPose().getRobotPosition()));
+      //TODO validate this at test field
+      //When disabled countinually set the botpose to what the vision says
+      Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
+      if (visionBotPose != null) {
+        this.setRobotPosition(visionBotPose);
+      }
   }
 
     // update robot position with vision
