@@ -58,7 +58,7 @@ import edu.wpi.first.math.MatBuilder;
 public class DrivetrainSubsystem extends SubsystemBase {
   private CameraSubsystem cameraSubsystem;
 
-  private boolean useVision = false;
+  private boolean useVision = true;
 
   StructArrayPublisher<SwerveModuleState> publisher;
 
@@ -271,23 +271,24 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * This ensures driving behavior doesn't change until an explicit disable event
      * occurs during testing.
      */
-    if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-      DriverStation.getAlliance().ifPresent(allianceColor -> {
-        drivetrain.setOperatorPerspectiveForward(
-            allianceColor == Alliance.Red
-                ? kRedAlliancePerspectiveRotation
-                : kBlueAlliancePerspectiveRotation);
-        m_hasAppliedOperatorPerspective = true;
-      });
-    }
+    if (DriverStation.isDisabled()) {
+
+      if (!m_hasAppliedOperatorPerspective){
+        DriverStation.getAlliance().ifPresent(allianceColor -> {
+          drivetrain.setOperatorPerspectiveForward(
+              allianceColor == Alliance.Red
+                  ? kRedAlliancePerspectiveRotation
+                  : kBlueAlliancePerspectiveRotation);
+          m_hasAppliedOperatorPerspective = true;
+        });
+      }
+      setRobotPosition((cameraSubsystem.getVisionBotPose().getRobotPosition()));
+  }
 
     // update robot position with vision
     if (InstalledHardware.limelightInstalled) {
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
     }
-
-    SmartDashboard.putNumber("Gyro Yaw", drivetrain.getPigeon2().getYaw().getValueAsDouble());
-    this.displayDiagnostics();
 
     if (swerveDriveMode == SwerveDriveMode.IMMOVABLE_STANCE && chassisSpeedsAreZero()) {
       // only change to ImmovableStance if chassis is not moving.
