@@ -29,7 +29,7 @@ public class MotorPlaySound extends Command {
 
     this.m_Orchestra.addInstrument(subsystem.m_motor, 0);
     this.m_Orchestra.addInstrument(subsystem2.m_motor, 1);
-    String path = Filesystem.getDeployDirectory().getAbsolutePath() + "/track6.chrp";
+    String path = Filesystem.getDeployDirectory().getAbsolutePath() + "/track1.chrp";
     System.out.println(path);
     StatusCode status = m_Orchestra.loadMusic(path);
     
