@@ -1,3 +1,18 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: TalonMotor.java
+// Intent: Configures and runs our TalonFX motor via duty cycle
+// ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
+// ** 
+// Documation for TalonFX motor:
+// https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/talonfx-control-intro.html#control-output-types
+// ** 
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -11,7 +26,7 @@ import frc.robot.Constants;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-public class TalonMotor extends SubsystemBase {
+public class TalonMotorSubsystem extends SubsystemBase {
     //configurtition for the motor begins here
     private TalonFX talonMotor;
     //velcity and voltage control
@@ -22,7 +37,7 @@ public class TalonMotor extends SubsystemBase {
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Brake;
     private static final double kMinDeadband = 0.001;
 
-    public TalonMotor(){
+    public TalonMotorSubsystem(){
         talonMotor = new TalonFX(Constants.motorCanID);
         configureMotor();
         System.out.print("Motor is set");
