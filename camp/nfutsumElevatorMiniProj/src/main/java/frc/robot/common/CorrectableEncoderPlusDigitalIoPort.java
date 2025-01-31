@@ -70,6 +70,7 @@ public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoder 
 
         if(currentState != this.lastState) {
             this.talonFXMotorEncoder.setPosition(encoderRotationAtSensorPosition);
+            System.out.println("Resetting encoder position to mag sensor height");
             this.lastState = currentState;
             motorEncoderPositionReset = true;
         }

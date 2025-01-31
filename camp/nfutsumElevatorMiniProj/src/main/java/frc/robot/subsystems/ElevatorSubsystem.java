@@ -27,6 +27,8 @@ import frc.robot.Constants;
 import frc.robot.common.CorrectableEncoderPlusDigitalIoPort;
 import frc.robot.common.ElevatorDirection;
 import frc.robot.common.ElevatorMovementMode;
+import frc.robot.common.ElevatorPositions;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.MotorUtils;
 
 import static edu.wpi.first.units.Units.Inches;
@@ -35,7 +37,7 @@ import static edu.wpi.first.units.Units.Rotations;
 //import javax.lang.model.util.ElementScanner14;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private double inchesPerRotation = 4 / 1; // four inches per rotation TODO update with actual value.
+  private double inchesPerRotation = 6 / 1; // four inches per rotation TODO update with actual value.
   private Distance startingPosition = Inches.of(0.0);
   private Distance heightTolerance = Inches.of(0.25);
   private TalonFX elevatorMotor = null;
@@ -49,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final Distance maxHeight = Inches.of(20.0);
   private final Distance minHeight = Inches.of(0.0);
 
-  private DigitalInput elevatorMageneticSensor = null;
+  private DigitalInput elevatorMageneticSensor = new DigitalInput(Constants.elevatorMageneticSensorID);
   private ElevatorMovementMode elevatorMovementMode = ElevatorMovementMode.STOPPED;
 
   // when moving to a set potision, use motionMagic to control speeds
@@ -76,23 +78,25 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMageneticSensor,
         distanceToAngle(sensorHeight).in(Rotations),
         distanceToAngle(startingPosition).in(Rotations));
-
   }
 
   public void moveUp() {
     elevatorDirection = ElevatorDirection.UP;
     elevatorMovementMode = ElevatorMovementMode.VELOCITY;
+    System.out.println("setting to move up");
   }
 
   public void moveDown() {
     elevatorDirection = ElevatorDirection.UP;
     elevatorMovementMode = ElevatorMovementMode.VELOCITY;
+    System.out.println("setting to move down");
   }
 
   public void moveToPosition(Distance targetPosition) {
     this.targetHeight = Inches
         .of(MotorUtils.clamp(targetPosition.in(Inches), minHeight.in(Inches), maxHeight.in(Inches)));
     elevatorMovementMode = ElevatorMovementMode.POSITION;
+    System.out.println("setting to move to position");
   }
 
   public Distance getCurrentHeight() {
@@ -112,6 +116,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         currentHeight.lt(maxHeight)) {
           elevatorJoystickController.withOutput(elevatorExtendSpeed);
           elevatorMotor.setControl(elevatorJoystickController);
+        
         }
         else if(elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
     elevatorDirection == ElevatorDirection.DOWN &&
@@ -126,6 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       elevatorMovementMode = ElevatorMovementMode.STOPPED;
       elevatorMotor.stopMotor();
     }
+    SmartDashboard.putNumber("position", getCurrentHeight().in(Inches));
   }
 
   public Distance angleToDistance(Angle anglePosition) {
