@@ -16,8 +16,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static int reefTofSensorCanID = 16;
-  public static double tofRangeInches = 8.0;
+  public static int reefTofSensorCanID = 14;
+  public static int reefTofSensorCanID2 = 17;
+  public static double tofRangeInches = 16.0;
   //Motor Config constant variables
   public static final int kDriverControllerPort = 0;
   public static final double motorStatorCurrentMaximumAmps = 100.0;

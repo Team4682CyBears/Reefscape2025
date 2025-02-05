@@ -16,7 +16,9 @@ public class RunExperimentCommand extends Command {
     int cyclesRun = 0;
     Timer stopwatch = new Timer();
     boolean tofActivated = false;
+    boolean tofActivated2 = false;
     boolean previousTofActivation = false;
+    boolean previousTofActivation2 = false;
     double dataValue;
     double[] dataValues;
     boolean experimentRunning = false;
@@ -55,13 +57,15 @@ public class RunExperimentCommand extends Command {
         if (experimentRunning == true && cycles > 0) {
             stopwatch.start();
             tofActivated = tofSensor.isCoralDetected();
-            if (tofActivated && !previousTofActivation) {
+            tofActivated2 = tofSensor.isCoralDetected2();
+            if (tofActivated && !previousTofActivation || tofActivated2 && !previousTofActivation2 ) {
                 dataValues[cyclesRun] = stopwatch.get();
                 cycles -= 1;
                 cyclesRun += 1;
                 System.out.println("Num cycles: " + ((Integer) cycles).toString());
             }
             previousTofActivation = tofActivated;
+            previousTofActivation2 = tofActivated2;
         }
     }
 
