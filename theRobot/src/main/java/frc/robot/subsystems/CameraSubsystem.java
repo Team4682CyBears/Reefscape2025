@@ -40,7 +40,7 @@ public class CameraSubsystem extends SubsystemBase {
   private final int fieldSpaceYIndex = 1;
   private final int botRotationIndex = 5;
   private final int noTagInSightId = -1;
-  private String botPoseSource = "botpose";
+  private String botPoseSource = "botpose_wpiblue";
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   /**
    * a constructor for the camera subsystem class
@@ -82,6 +82,7 @@ public class CameraSubsystem extends SubsystemBase {
    * based on the alliance spit out from driver station
    * https://docs.limelightvision.io/docs/docs-limelight/apis/complete-networktables-api#apriltag-and-3d-data
    */
+  /*
   public void setBotPoseSource(){
     var alliance = DriverStation.getAlliance();
     if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red){
@@ -94,6 +95,7 @@ public class CameraSubsystem extends SubsystemBase {
       botPoseSource = "botpose";
     }
   }
+  */
 
   /**
    * a method that returns the tag id of the current viewed tag
