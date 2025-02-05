@@ -54,6 +54,7 @@ public class AlignWithReefCommand extends Command {
 
     @Override
     public void initialize(){
+        System.out.println("COMMAND INIT");
         timer.reset();
         timer.start();
         done = false;       
@@ -65,6 +66,7 @@ public class AlignWithReefCommand extends Command {
             done = true;
         }
         if (foundReefTag) {
+            System.out.println("ATTEMPTING TO RUN PATHFINDING COMMAND!!!!");
             new PathfindingCommand(
                 RobotPosesForReef.getPoseFromTagIDWithOffset(tagID),
                 getPathConstraints(),
@@ -74,16 +76,16 @@ public class AlignWithReefCommand extends Command {
                 (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds),
                 pathFollower,
                 drivetrain.getPathPlannerConfig(),
-                (Subsystem) drivetrain);
+                (Subsystem) drivetrain).schedule();
             done = true;
         }
         else{
             tagID = camera.getTagId();
-        }
-
-        if ((tagID <= 11 && tagID >= 6) || tagID <= 22 && tagID >= 17){
-            foundReefTag = true;
-        }
+            
+            if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)){
+                foundReefTag = true;
+            }
+        }  
     }
 
     @Override
