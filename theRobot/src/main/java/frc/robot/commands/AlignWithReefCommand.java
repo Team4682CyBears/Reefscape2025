@@ -121,6 +121,7 @@ public class AlignWithReefCommand extends Command {
     }
 
     private boolean mirrorPathForRedAliance(){
+        //when using paths generated from april tag coords always turn mirroring off
         return false;
     }
 

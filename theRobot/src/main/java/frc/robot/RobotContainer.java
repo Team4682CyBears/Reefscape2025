@@ -39,7 +39,6 @@ public class RobotContainer {
   //private final AutonomousChooser autonomousChooser;
 
   public RobotContainer() {
-    private static Pose2d tag7 = new Pose2d(5.116498, -0.00009999999999976694, new Rotation2d(0));
     
 
     // init the data logging

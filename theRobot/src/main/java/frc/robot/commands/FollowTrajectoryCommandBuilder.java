@@ -81,13 +81,11 @@ public class FollowTrajectoryCommandBuilder {
      * Used for paths that should be mirrored when we are on red alliance
      */
     public static boolean mirrorPathForRedAliance() {
-        // TODO FIX THIS!!! types not matching
-        /**
-         * var alliance = DriverStation.getAlliance();
-         * if (alliance != Alliance.Invalid) {
-         * return alliance == Alliance.Red;
-         * }
-         */
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return alliance.get() == Alliance.Red;
+        }
+         
         return false;
     }
 
@@ -96,6 +94,7 @@ public class FollowTrajectoryCommandBuilder {
      * Used for paths that should never be mirrored
      */
     public static boolean neverMirrorPath() {
+        //when using paths generated from april tag coords always turn mirroring off
         return false;
     }
 
