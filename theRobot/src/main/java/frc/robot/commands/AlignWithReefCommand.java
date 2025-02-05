@@ -121,7 +121,7 @@ public class AlignWithReefCommand extends Command {
     }
 
     private boolean mirrorPathForRedAliance(){
-        return true;
+        return false;
     }
 
 }
