@@ -184,6 +184,14 @@ public class ManualInputInterfaces {
             "ramp up to default speed")
           )
         );
+
+        this.driverController.a().onTrue(
+          new ParallelCommandGroup(
+            new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(), 
+                                    this.subsystemCollection.getCameraSubsystem()),
+            new ButtonPressCommand("driverController.a()", "Align with reef command")
+          )
+        );
         }      
     }
   }

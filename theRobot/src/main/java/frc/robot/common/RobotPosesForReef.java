@@ -3,6 +3,7 @@ package frc.robot.common;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.control.Constants;
 
 public class RobotPosesForReef {
     private static Pose2d tag6 = new Pose2d(4.700446000000001, -0.7196820000000002, new Rotation2d(60));
@@ -28,10 +29,10 @@ public class RobotPosesForReef {
             return new Pose2d();
         }
         else if(tagID <= 11 && tagID >= 6){
-            return listOfPoses[(int)(tagID + 6.0)];
+            return listOfPoses[(int)(tagID - 6.0)];
         }
         else if (tagID <= 22 && tagID >= 17){
-            return listOfPoses[(int)(tagID + 6.0)];
+            return listOfPoses[(int)(tagID - 11.0)];
         }
         else{
             return new Pose2d();
@@ -39,39 +40,37 @@ public class RobotPosesForReef {
     }
 
     public static Pose2d getPoseFromTagIDWithOffset(double tagID) {
-        Pose2d p2d;
-        Translation2d t2d;
+        Pose2d pose;
+        Translation2d translation;
         double v;
+        boolean isRed;
 
+        //-1 is the id when we dont see a tag
         if (tagID == -1){
             return new Pose2d();
         }
         else if(tagID <= 11 && tagID >= 6){
-            p2d = listOfPoses[(int)(tagID + 6.0)];
-            t2d = p2d.getTranslation();
-            
-
-            t2d = new Translation2d(
-                    (t2d.getX()-redReefCenter.getX())/v,
-                    
-            );
-
+            pose = listOfPoses[(int)(tagID - 6.0)];
+            isRed = true;
 
         }
         else if (tagID <= 22 && tagID >= 17){
-            p2d = listOfPoses[(int)(tagID + 6.0)];
-            t2d = p2d.getTranslation();
+            pose = listOfPoses[(int)(tagID - 11.0)];
+            isRed = false;
         }
         else{
             return new Pose2d();
         }
 
-        t2d = new Translation2d(
-                    t2d.getX()-redReefCenter
-        );
+        translation = pose.getTranslation();
+        if(isRed) {
+            v = translation.minus(redReefCenter).getNorm();
+        }
+        else {
+            v = translation.minus(blueReefCenter).getNorm();
+        }
+        translation = translation.div(v).times(Constants.alignDistanceFromReef);   
 
-
-
-        return new Pose2d(t2d, p2d.getRotation());
+        return new Pose2d(translation, pose.getRotation());
     }
 }
