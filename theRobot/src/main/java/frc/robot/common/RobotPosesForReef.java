@@ -40,9 +40,8 @@ public class RobotPosesForReef {
     }
 
     public static Pose2d getPoseFromTagIDWithOffset(double tagID) {
-        Pose2d pose;
-        Translation2d translation;
-        double v;
+        Pose2d tagPose;
+        Translation2d tagCoordinate;
         boolean isRed;
 
         //-1 is the id when we dont see a tag
@@ -50,12 +49,12 @@ public class RobotPosesForReef {
             return new Pose2d();
         }
         else if(tagID <= 11 && tagID >= 6){
-            pose = listOfPoses[(int)(tagID - 6.0)];
+            tagPose = listOfPoses[(int)(tagID - 6.0)];
             isRed = true;
 
         }
         else if (tagID <= 22 && tagID >= 17){
-            pose = listOfPoses[(int)(tagID - 11.0)];
+            tagPose = listOfPoses[(int)(tagID - 11.0)];
             isRed = false;
         }
         else{
@@ -63,19 +62,19 @@ public class RobotPosesForReef {
         }
         System.out.println("Is Red: " + isRed);
 
-        translation = pose.getTranslation();
+        tagCoordinate = tagPose.getTranslation();
         Translation2d directionalVec;
-        System.out.println("Pose translation: " + translation);
+        System.out.println("Pose translation: " + tagCoordinate);
+
         if(isRed) {
-            directionalVec = translation.minus(redReefCenter);
-            v = directionalVec.getNorm();
+            directionalVec = tagCoordinate.minus(redReefCenter);
         }
         else {
-            directionalVec = translation.minus(blueReefCenter);
-            v = directionalVec.getNorm();
+            directionalVec = tagCoordinate.minus(blueReefCenter);
         }
-        Translation2d destination = translation.plus(directionalVec.div(v).times(Constants.alignDistanceFromReef));   
+        Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReef);
+        Translation2d destination = tagCoordinate.plus(offsetVector);   
 
-        return new Pose2d(destination, pose.getRotation());
+        return new Pose2d(destination, tagPose.getRotation());
     }
 }
