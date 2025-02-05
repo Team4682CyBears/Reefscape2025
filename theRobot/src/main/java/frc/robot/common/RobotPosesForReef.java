@@ -61,16 +61,21 @@ public class RobotPosesForReef {
         else{
             return new Pose2d();
         }
+        System.out.println("Is Red: " + isRed);
 
         translation = pose.getTranslation();
+        Translation2d directionalVec;
+        System.out.println("Pose translation: " + translation);
         if(isRed) {
-            v = translation.minus(redReefCenter).getNorm();
+            directionalVec = translation.minus(redReefCenter);
+            v = directionalVec.getNorm();
         }
         else {
-            v = translation.minus(blueReefCenter).getNorm();
+            directionalVec = translation.minus(blueReefCenter);
+            v = directionalVec.getNorm();
         }
-        translation = translation.div(v).times(Constants.alignDistanceFromReef);   
+        Translation2d destination = translation.plus(directionalVec.div(v).times(Constants.alignDistanceFromReef));   
 
-        return new Pose2d(translation, pose.getRotation());
+        return new Pose2d(destination, pose.getRotation());
     }
 }

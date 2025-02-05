@@ -7,14 +7,23 @@ import frc.robot.common.RobotPosesForReef;
 import frc.robot.subsystems.CameraSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
-    private double timeout = 5.0;
+    private double timeout = 1.0;
     private boolean done = false;
     private DrivetrainSubsystem drivetrain;
     private CameraSubsystem camera;
@@ -38,14 +47,12 @@ public class AlignWithReefCommand extends Command {
 
     public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem){
         this.drivetrain = drivetrainSubsystem;
-        addRequirements(drivetrainSubsystem);
 
         this.camera = cameraSubsystem;
     }
 
     public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem, double timoutSeconds){
         this.drivetrain = drivetrainSubsystem;
-        addRequirements(drivetrainSubsystem);
 
         this.camera = cameraSubsystem;
 
@@ -54,7 +61,8 @@ public class AlignWithReefCommand extends Command {
 
     @Override
     public void initialize(){
-        System.out.println("COMMAND INIT");
+        foundReefTag = false;
+        tagID = -1;
         timer.reset();
         timer.start();
         done = false;       
@@ -66,16 +74,27 @@ public class AlignWithReefCommand extends Command {
             done = true;
         }
         if (foundReefTag) {
-            System.out.println("ATTEMPTING TO RUN PATHFINDING COMMAND!!!!");
-            new PathfindingCommand(
-                RobotPosesForReef.getPoseFromTagIDWithOffset(tagID),
+            System.out.println(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID));
+
+            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(drivetrain.getRobotPosition(), RobotPosesForReef.getPoseFromTagIDWithOffset(tagID));
+
+            PathPlannerPath traj = new PathPlannerPath(
+                waypoints,
                 getPathConstraints(),
-                0.0,
-                drivetrain::getRobotPosition,
-                drivetrain::getChassisSpeeds,
-                (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds),
+                null,
+                new GoalEndState(0.0, 
+                RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation())
+            );
+
+            new FollowPathCommand(
+                traj,
+                drivetrain::getRobotPosition, // Pose supplier
+                drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+                // We do not currently use the module feedforwards
                 pathFollower,
-                drivetrain.getPathPlannerConfig(),
+                drivetrain.getPathPlannerConfig(), // The robot configuration
+                () -> mirrorPathForRedAliance(),
                 (Subsystem) drivetrain).schedule();
             done = true;
         }
@@ -99,6 +118,10 @@ public class AlignWithReefCommand extends Command {
           maxAccelerationPMSSq, 
           maxAngularVelocityRadPerSecond, 
           maxAngularAccelerationRadPerSecondSq);
+    }
+
+    private boolean mirrorPathForRedAliance(){
+        return true;
     }
 
 }
