@@ -18,11 +18,15 @@ public class RobotPosesForReef {
     private static Pose2d tag20 = new Pose2d(-3.8692599999999997, 0.7194820000000002, new Rotation2d(120));
     private static Pose2d tag21 = new Pose2d(-3.452953999999999, -0.00009999999999976694, new Rotation2d(180));
     private static Pose2d tag22 = new Pose2d(-3.8692599999999997, -0.7196820000000002, new Rotation2d(-120));
+    // TODO rather than storing this in an array, should store it in a hashmap
+    // If you stored it in two hash maps (one for red and one for blue), 
+    // you could use the presence of it to also know which side you are on without having to do the tag comparison below
     private static Pose2d[] listOfPoses = {tag6, tag7, tag8, tag9, tag10, tag11, 
                             tag17, tag18, tag19, tag20, tag21, tag22};
 
-    private static Translation2d redReefCenter = new Translation2d(tag7.getX()-tag10.getX(), tag7.getY());
-    private static Translation2d blueReefCenter = new Translation2d(tag18.getX()-tag21.getX(), tag18.getY());
+    // The coordinates of the reef center is the average of the two opposing reef tags
+    private static Translation2d redReefCenter = new Translation2d((tag7.getX()+tag10.getX())/2.0, tag7.getY());
+    private static Translation2d blueReefCenter = new Translation2d((tag18.getX()+tag21.getX())/2.0, tag18.getY());
 
     public static Pose2d getPoseFromTagID(double tagID) {
         if (tagID == -1){
@@ -64,17 +68,20 @@ public class RobotPosesForReef {
 
         tagCoordinate = tagPose.getTranslation();
         Translation2d directionalVec;
-        System.out.println("Pose translation: " + tagCoordinate);
+        System.out.println("Tag coordinates: " + tagCoordinate);
 
+        // the direction of the offset vector is the same as the direction from the reef center to the tag. 
         if(isRed) {
             directionalVec = tagCoordinate.minus(redReefCenter);
         }
         else {
             directionalVec = tagCoordinate.minus(blueReefCenter);
         }
+        // scale the directional vector by its own magnitude and then divide by the actual offset distance we desire
         Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReef);
+        // add the offset vector to the tag to get the destination coordinates
         Translation2d destination = tagCoordinate.plus(offsetVector);   
-
+        System.out.println("Destination coordinates: " + destination);
         return new Pose2d(destination, tagPose.getRotation());
     }
 }
