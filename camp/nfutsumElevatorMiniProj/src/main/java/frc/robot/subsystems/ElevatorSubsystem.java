@@ -37,7 +37,7 @@ import static edu.wpi.first.units.Units.Rotations;
 //import javax.lang.model.util.ElementScanner14;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private double inchesPerRotation = 6 / 1; // four inches per rotation TODO update with actual value.
+  private double inchesPerRotation = 4; // four inches per rotation TODO update with actual value.
   private Distance startingPosition = Inches.of(0.0);
   private Distance heightTolerance = Inches.of(0.25);
   private TalonFX elevatorMotor = null;
@@ -48,7 +48,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final DutyCycleOut elevatorJoystickController = new DutyCycleOut(0.0);
 
   private final Distance sensorHeight = Inches.of(1.0);
-  private final Distance maxHeight = Inches.of(20.0);
+  private final Distance maxHeight = Inches.of(74.0);
   private final Distance minHeight = Inches.of(0.0);
 
   private DigitalInput elevatorMageneticSensor = new DigitalInput(Constants.elevatorMageneticSensorID);
@@ -56,15 +56,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   // when moving to a set potision, use motionMagic to control speeds
   // when moving via a joystick, need to specify speeds.
-  private final double elevatorRetractSpeed = -0.7;
-  private final double elevatorExtendSpeed = 1.0;
+  private final double elevatorRetractSpeed = -0.050;
+  private final double elevatorExtendSpeed = .050;
   private ElevatorDirection elevatorDirection = ElevatorDirection.UP;
   private Distance targetHeight = startingPosition;
 
   // per documentation, need to set kV and kA (in duty cycle) 
       
-  private Slot0Configs slot0Configs = new Slot0Configs().withKV(0.001).withKA(0.001);
-  private MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs().withMotionMagicExpo_kA(0.001).withMotionMagicExpo_kV(0.001);
+  private Slot0Configs slot0Configs = new Slot0Configs().withKS(0.00625).withKV(0.00885).withKP(0.2).withKA(0.001);
+  private MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs().withMotionMagicExpo_kA(0.1).withMotionMagicExpo_kV(0.11);
   private NeutralModeValue motorNeutralModeValue = NeutralModeValue.Brake;
 
   private CorrectableEncoderPlusDigitalIoPort elevatorCorrectableEncoder = null;
@@ -87,7 +87,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void moveDown() {
-    elevatorDirection = ElevatorDirection.UP;
+    elevatorDirection = ElevatorDirection.DOWN;
     elevatorMovementMode = ElevatorMovementMode.VELOCITY;
     System.out.println("setting to move down");
   }
@@ -97,6 +97,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         .of(MotorUtils.clamp(targetPosition.in(Inches), minHeight.in(Inches), maxHeight.in(Inches)));
     elevatorMovementMode = ElevatorMovementMode.POSITION;
     System.out.println("setting to move to position");
+  }
+
+  public void stopElevator(){
+    elevatorMovementMode = ElevatorMovementMode.STOPPED;
   }
 
   public Distance getCurrentHeight() {
@@ -125,13 +129,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor.setControl(elevatorJoystickController); 
     }
     else if(elevatorMovementMode == ElevatorMovementMode.POSITION && !isAtTargetHeight()){
-        elevatorMotor.setControl(elevatorPositionalController);
+      elevatorPositionalController.withPosition(distanceToAngle(targetHeight));  
+      elevatorMotor.setControl(elevatorPositionalController);
     }
     else {
       elevatorMovementMode = ElevatorMovementMode.STOPPED;
       elevatorMotor.stopMotor();
     }
-    SmartDashboard.putNumber("position", getCurrentHeight().in(Inches));
+    SmartDashboard.putNumber("elevator position", getCurrentHeight().in(Inches));
   }
 
   public Distance angleToDistance(Angle anglePosition) {
@@ -158,6 +163,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorTalonMotorConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
         // motor direction
         motorTalonMotorConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+        // min and max position software limit (set into the motor encoder, itself)
+        motorTalonMotorConfiguration.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        motorTalonMotorConfiguration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = distanceToAngle(maxHeight).in(Rotations);
+        motorTalonMotorConfiguration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        motorTalonMotorConfiguration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = distanceToAngle(minHeight).in(Rotations);
+
     
         StatusCode response = elevatorMotor.getConfigurator().apply(motorTalonMotorConfiguration);
         if (!response.isOK()) {

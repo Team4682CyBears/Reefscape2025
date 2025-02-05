@@ -19,7 +19,7 @@ public class MoveToPositionCommand extends Command{
     }
 
     public void initialize() {
-        elevatorSubsystem.moveToPosition(Constants.stowHeight);
+        System.out.println("Moving elevator to position " + targetPosition);
     }
 
     public void execute() {
@@ -39,12 +39,18 @@ public class MoveToPositionCommand extends Command{
  
     }
 
+    @Override
     public boolean isFinished(){
-        if(elevatorSubsystem.isAtTargetHeight()){
-            return true;
-        }else{
-            return false;
+        return elevatorSubsystem.isAtTargetHeight();
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        if (interrupted){
+            System.out.println("Command interrupted!");
         }
-        
+        else {
+            System.out.println("Command ended!");
+        }
     }
 }

@@ -50,6 +50,7 @@ public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoder 
         lastState = dioStateDevice.get();
 
         this.talonFXMotorEncoder.setPosition(sensorInitialPositionRotation);
+        System.out.println("Initializing Correctable Encoder to " + sensorInitialPositionRotation + " rotations");
     }
 
     /**

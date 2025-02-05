@@ -73,6 +73,8 @@ public class RobotContainer {
     // A -> moveToPosition(L2);
     // X -> moveToPosition(STOW);
 
+    elevatorSubsystem.setDefaultCommand(new RunCommand(elevatorSubsystem::stopElevator, elevatorSubsystem));
+
     driverController.povUp().whileTrue(new RunCommand(elevatorSubsystem::moveUp, elevatorSubsystem));
     driverController.povDown().whileTrue(new RunCommand(elevatorSubsystem::moveDown, elevatorSubsystem));
 
