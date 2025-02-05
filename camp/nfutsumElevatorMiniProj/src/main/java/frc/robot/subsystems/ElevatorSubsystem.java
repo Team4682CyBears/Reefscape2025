@@ -27,7 +27,6 @@ import frc.robot.Constants;
 import frc.robot.common.CorrectableEncoderPlusDigitalIoPort;
 import frc.robot.common.ElevatorDirection;
 import frc.robot.common.ElevatorMovementMode;
-import frc.robot.common.ElevatorPositions;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.MotorUtils;
 
@@ -80,38 +79,56 @@ public class ElevatorSubsystem extends SubsystemBase {
         distanceToAngle(startingPosition).in(Rotations));
   }
 
+  /*
+   * A method to set elevator in a moveUp mode
+   */
   public void moveUp() {
     elevatorDirection = ElevatorDirection.UP;
     elevatorMovementMode = ElevatorMovementMode.VELOCITY;
-    System.out.println("setting to move up");
   }
 
+  /*
+   * A method to set elevator in a moveDown mode
+   */
   public void moveDown() {
     elevatorDirection = ElevatorDirection.DOWN;
     elevatorMovementMode = ElevatorMovementMode.VELOCITY;
-    System.out.println("setting to move down");
   }
 
+  /*
+   * A method to set the elevator in a moveToPosition mode
+   */
   public void moveToPosition(Distance targetPosition) {
     this.targetHeight = Inches
         .of(MotorUtils.clamp(targetPosition.in(Inches), minHeight.in(Inches), maxHeight.in(Inches)));
     elevatorMovementMode = ElevatorMovementMode.POSITION;
-    System.out.println("setting to move to position");
   }
 
+  /*
+   * A method to set elevator in a stop mode
+   */
   public void stopElevator(){
     elevatorMovementMode = ElevatorMovementMode.STOPPED;
   }
 
+  /*
+   * returns the current height as a distance
+   */
   public Distance getCurrentHeight() {
     return angleToDistance(elevatorCorrectableEncoder.getCurrentEncoderPosition());
   }
 
+  /*
+   * returns true when the elevator is within a certain tolerance of the target height
+   */
   public boolean isAtTargetHeight() {
     Distance currentHeight = getCurrentHeight();
     return currentHeight.isNear(targetHeight, heightTolerance);
   }
 
+  /*
+   * periodic for the elevator
+   */
   public void periodic() {
     elevatorCorrectableEncoder.updateEncoderPosition();
     Distance currentHeight = getCurrentHeight();
@@ -139,11 +156,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("elevator position", getCurrentHeight().in(Inches));
   }
 
+  /*
+   * converts an rotations to inches
+   */
   public Distance angleToDistance(Angle anglePosition) {
     return Inches.of(anglePosition.in(Rotations) * inchesPerRotation);
 
   } 
 
+  /*
+   * configures motor
+   */
      private void configureMotor(){
         // Config motor
         TalonFXConfiguration motorTalonMotorConfiguration = new TalonFXConfiguration(); 
@@ -179,6 +202,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     }
 
+    /*
+   * configures positional controller
+   */
   private void configurePositionalController(){
     elevatorPositionalController.UpdateFreqHz = 0;
     elevatorPositionalController.OverrideBrakeDurNeutral = true;
@@ -188,6 +214,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorPositionalController.Slot = 0;
   }
 
+  /*
+   * converts inches to rotations
+   */
   public Angle distanceToAngle(Distance distancePosition) {
     return Rotations.of(distancePosition.in(Inches) / inchesPerRotation);
 

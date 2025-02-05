@@ -25,16 +25,12 @@ public class MoveToPositionCommand extends Command{
     public void execute() {
         if(targetPosition == ElevatorPositions.STOW){
             elevatorSubsystem.moveToPosition(Constants.stowHeight);
-            System.out.println("Setting to stow");
         }else if(targetPosition == ElevatorPositions.L2){
             elevatorSubsystem.moveToPosition(Constants.L2Height);
-            System.out.println("setting to L2");
         }else if(targetPosition == ElevatorPositions.L3){
             elevatorSubsystem.moveToPosition(Constants.L3Height);
-            System.out.println("setting to L3");
         }else if(targetPosition == ElevatorPositions.L4){
             elevatorSubsystem.moveToPosition(Constants.L4Height);
-            System.out.println("setting to L4");
         }
  
     }

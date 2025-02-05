@@ -8,13 +8,12 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.MoveToPositionCommand;
 import frc.robot.common.ElevatorPositions;
 import frc.robot.subsystems.ElevatorSubsystem;
-//import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.MoveToPositionCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -61,17 +60,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // dpad up. while true. new RunCommand(elevatorSubsystem::moveUp, elevatorSubsystem);
-    // dpad down. ""
-    // create enum for elevator positions (stow=0, L2, L3, L4)
-    // create a moveToPosition command (takes in enum value and moves to a specific distance)
-    // init calls the elevator move to position method
-    // isFinished checks the isAtTargetHeight and completes once it's at height or a timeout. 
-    // mapping betweeen postiion and distance is in Constants. (make them type Distance)
-    // Y -> moveToPosition(L4);
-    // B -> moveToPosition(L3);
-    // A -> moveToPosition(L2);
-    // X -> moveToPosition(STOW);
 
     elevatorSubsystem.setDefaultCommand(new RunCommand(elevatorSubsystem::stopElevator, elevatorSubsystem));
 
