@@ -39,7 +39,12 @@ public class InstalledHardware
     // the other TOF sensors that are installed will not work. 
     public static final boolean intakeTofInstalled = true;
     public static final boolean feederToShooterTofInstalled = true;
+    public static final boolean EEToFLeft = true;
+    public static final boolean EEToFRight = true;
 
     //LED Hardware
     public static final boolean LEDSInstalled = true;
+
+    // Subsystems
+    public static final boolean endEffectorInstalled = true;
 }

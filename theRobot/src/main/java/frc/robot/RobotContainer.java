@@ -197,6 +197,19 @@ public class RobotContainer {
   }
 
   /**
+   * A method to init the EndEffectorSubsystem
+   */
+  private void initializeEndEffectorSubsystem(){
+    if(InstalledHardware.endEffectorInstalled) {
+      subsystems.setEndEffectorSubsystem(new EndEffectorSubsystem());
+      DataLogManager.log("SUCCESS: initializeEndEffector");
+    }
+    else {
+      DataLogManager.log("FAIL: initializeEndEffector");
+    }
+  }
+
+  /**
    * A method to init the LEDSubsystem
    */
   private void initializeLEDSubsystem(){

@@ -12,6 +12,7 @@ package frc.robot.control;
 import frc.robot.subsystems.DrivetrainAccelerationSubsystem;
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.EndEffectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -24,6 +25,7 @@ public class SubsystemCollection
     // declaring and init subsystems  
     private CameraSubsystem cameraSubsystem = null;
     private DrivetrainSubsystem driveTrainSubsystem = null;
+    private EndEffectorSubsystem endEffectorSubsystem = null;
     private DrivetrainPowerSubsystem driveTrainPowerSubsystem = null;
     private DrivetrainAccelerationSubsystem drivetrainAccelerationSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null; 
@@ -37,6 +39,10 @@ public class SubsystemCollection
     public DrivetrainSubsystem getDriveTrainSubsystem() { return driveTrainSubsystem; }
     public void setDriveTrainSubsystem(DrivetrainSubsystem value) { driveTrainSubsystem = value; }
     public boolean isDriveTrainSubsystemAvailable() { return driveTrainSubsystem != null; }
+
+    public EndEffectorSubsystem getEndEffectorSubsystem() { return endEffectorSubsystem; }
+    public void setEndEffectorSubsystem(EndEffectorSubsystem value) { endEffectorSubsystem = value; }
+    public boolean isEndEffectorSubsystemAvailable() { return endEffectorSubsystem != null; }
 
     public CameraSubsystem getCameraSubsystem() { return cameraSubsystem; }
     public void setCameraSubsystem(CameraSubsystem value) { cameraSubsystem = value; }

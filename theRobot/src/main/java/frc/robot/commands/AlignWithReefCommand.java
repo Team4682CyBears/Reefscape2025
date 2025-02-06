@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -110,6 +111,15 @@ public class AlignWithReefCommand extends Command {
     @Override
     public boolean isFinished(){
         return done;
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        if(interrupted)
+        {
+        done = true;      
+        }
     }
 
     private PathConstraints getPathConstraints(){
