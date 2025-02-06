@@ -16,6 +16,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicExpoDutyCycle;
+import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -29,6 +30,7 @@ import frc.robot.common.ElevatorDirection;
 import frc.robot.common.ElevatorMovementMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.MotorUtils;
+import com.ctre.phoenix6.controls.StrictFollower;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
@@ -39,7 +41,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double inchesPerRotation = 4; // four inches per rotation TODO update with actual value.
   private Distance startingPosition = Inches.of(0.0);
   private Distance heightTolerance = Inches.of(0.25);
-  private TalonFX elevatorMotor = null;
+  private TalonFX elevatorMotor = new TalonFX(Constants.elevatorMotorCANID);
+  private TalonFX secondElevatorMotor = new TalonFX(Constants.secondMotorCanID);
   // controller for position-based movement
   private final MotionMagicExpoDutyCycle elevatorPositionalController = new MotionMagicExpoDutyCycle(
       distanceToAngle(startingPosition));
@@ -69,7 +72,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private CorrectableEncoderPlusDigitalIoPort elevatorCorrectableEncoder = null;
 
   public ElevatorSubsystem() {
-    elevatorMotor = new TalonFX(Constants.elevatorMotorCANID);
+    secondElevatorMotor.setControl(new StrictFollower(elevatorMotor.getDeviceID()));
     configureMotor();
     configurePositionalController();
 

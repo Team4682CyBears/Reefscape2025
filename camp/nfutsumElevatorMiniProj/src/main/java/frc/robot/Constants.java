@@ -40,6 +40,7 @@ public final class Constants {
   public static final double motorSupplyVoltageTimeConstant = 0.02;
   // Motor Talon Port
   public static final int motorCanID = 3;
+  public static final int secondMotorCanID = 4;
   public static final double falconMaxVoltage = 12.0;
   public static final int falconFreeSpeedRps = 6380 / 60;
   public static final double minimumMotorSpeedRpm = 0.25 * 60;
