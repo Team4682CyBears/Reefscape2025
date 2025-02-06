@@ -165,8 +165,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveFieldCentric(ChassisSpeeds updatedChassisSpeeds) {
+    // if we are switching from robot centric to field centric, 
+    // convert the previous chassis speeds to the correct frame of reference. 
+    if (swerveDriveMode == SwerveDriveMode.ROBOT_CENTRIC_DRIVING){
+      this.previousChassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
+    }
     this.swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
+    
   }
 
   /**
@@ -180,6 +186,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveRobotCentric(ChassisSpeeds updatedChassisSpeeds) {
+    // if we are switching from field centric to robot centric, 
+    // convert the previous chassis speeds to the correct frame of reference. 
+    if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING){
+      this.previousChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
+    }
     this.swerveDriveMode = SwerveDriveMode.ROBOT_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
   }
