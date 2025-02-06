@@ -20,6 +20,8 @@ import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
@@ -196,12 +198,20 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorTalonMotorConfiguration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         motorTalonMotorConfiguration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = distanceToAngle(minHeight).in(Rotations);
 
-    
         StatusCode response = elevatorMotor.getConfigurator().apply(motorTalonMotorConfiguration);
         if (!response.isOK()) {
           System.out.println(
               "TalonFX ID " + elevatorMotor.getDeviceID() + " failed config with error " + response.toString());
         }
+
+        // change invert for angleRightMotor
+        motorTalonMotorConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      // apply configs
+      response = secondElevatorMotor.getConfigurator().apply(motorTalonMotorConfiguration);
+      if (!response.isOK()) {
+        DataLogManager.log(
+            "TalonFX ID " + secondElevatorMotor.getDeviceID() + " failed config with error " + response.toString());
+      }
     
     }
 
