@@ -201,7 +201,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return chassis speeds
    */
   public ChassisSpeeds getChassisSpeeds() {
-    return chassisSpeeds;
+    return drivetrain.getState().Speeds;
   }
 
   /**
