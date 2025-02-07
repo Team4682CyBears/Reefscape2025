@@ -45,6 +45,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -62,7 +63,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean furtherThanAMeter = false;
 
-  private boolean displatOdometryDiagnostics = true;
+  private boolean displayOdometryDiagnostics = true;
 
   StructArrayPublisher<SwerveModuleState> publisher;
 
@@ -264,28 +265,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("bot Yaw", this.getRobotPosition().getRotation().getDegrees());
-    SmartDashboard.putBoolean("furtherThanAMeter", furtherThanAMeter);
-
-    if (displatOdometryDiagnostics) {
-      SmartDashboard.putNumber("raw odometry x", );
-      SmartDashboard.putNumber("raw odometry y", );
-      SmartDashboard.putNumber("raw odometry theta", );
-
-      Pose2d visionPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-      if (visionPose != null){
-        SmartDashboard.putNumber("vision x", visionPose.getX());
-        SmartDashboard.putNumber("vision y", visionPose.getY());
-        SmartDashboard.putNumber("vision theta", visionPose.getRotation().getDegrees());
-      }
-
-      
-      
-      SmartDashboard.putNumber("fused x", );
       SmartDashboard.putNumber("fused y", );
-      SmartDashboard.putNumber("fused theta", );
-
-    }
     /*
      * Periodically try to apply the operator perspective.
      * If we haven't applied the operator perspective before, then we should apply
@@ -352,6 +332,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
           .withVelocityY(chassisSpeeds.vyMetersPerSecond)
           .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond));
     }
+    displayDiagnostics();
   }
 
   /**
@@ -532,6 +513,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
     SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
-
+    
+    if (displayOdometryDiagnostics) {
+      VisionMeasurement visionBotPose = cameraSubsystem.getVisionBotPose();
+      if (visionBotPose.getRobotPosition() != null){
+        SmartDashboard.putNumber("vision x", visionBotPose.getRobotPosition().getX());
+        SmartDashboard.putNumber("vision y", visionBotPose.getRobotPosition().getY());
+        SmartDashboard.putNumber("vision theta", visionBotPose.getRobotPosition().getRotation().getDegrees());
+        SmartDashboard.putNumber("vision timestamp", visionBotPose.getTimestamp());
+        SmartDashboard.putNumber("robot timestamp", Timer.getFPGATimestamp());
+      }
+    }
   }
 }
