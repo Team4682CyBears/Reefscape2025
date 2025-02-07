@@ -40,7 +40,7 @@ public class CameraSubsystem extends SubsystemBase {
   private final int fieldSpaceYIndex = 1;
   private final int botRotationIndex = 5;
   private final int noTagInSightId = -1;
-  private String botPoseSource = "botpose_wpiblue";
+  private String botPoseSource = "botpose";
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   /**
    * a constructor for the camera subsystem class

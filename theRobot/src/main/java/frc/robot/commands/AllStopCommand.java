@@ -29,7 +29,7 @@ public class AllStopCommand extends Command {
     public AllStopCommand(SubsystemCollection collection) {
         subsystems = collection;
         // TODO add all subsystems this command relies on
-        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
+        if(!this.subsystems.isDriveTrainSubsystemAvailable()) {
             addRequirements(this.subsystems.getDriveTrainSubsystem());
         }
     }
@@ -40,7 +40,7 @@ public class AllStopCommand extends Command {
 
     @Override
     public void execute() {
-        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
+        if(!this.subsystems.isDriveTrainSubsystemAvailable()) {
             this.subsystems.getDriveTrainSubsystem().driveFieldCentric(new ChassisSpeeds(0.0,0.0,0.0));
         }
         // TODO add stop commands for all other subsystems here. 

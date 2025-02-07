@@ -87,7 +87,7 @@ public final class Constants {
     public static final boolean useFusedVisionInAuto = false;
     public static final double autoUseFusedVisionDuration = 15.0;
 
-    public static final double alignDistanceFromReef = .75;
+    public static final double alignDistanceFromReef = 0.5;
   
     // ********************************************************************
     // Controller Constants

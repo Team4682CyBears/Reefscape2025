@@ -60,6 +60,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean useVision = true;
 
+  private boolean furtherThanAMeter = false;
+
   StructArrayPublisher<SwerveModuleState> publisher;
 
   private final double deltaTimeSeconds = 0.02; // 20ms scheduler time tick
@@ -94,7 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // override
   // the odometry yaw, which comes from the very accurate IMU
   private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 10 });
-  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.1, 0.1, 0.1 });
+  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { .1, .1, 0.1 });
 
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -261,6 +263,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("bot Yaw", this.getRobotPosition().getRotation().getDegrees());
+    SmartDashboard.putBoolean("furtherThanAMeter", furtherThanAMeter);
     /*
      * Periodically try to apply the operator perspective.
      * If we haven't applied the operator perspective before, then we should apply
@@ -385,6 +388,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (visionComputedMeasurement != null) {
         // we want to reject vision measurements that are more than 1 meter away in case
         // vison gives a bad read
+        furtherThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1;
         if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1) {
           drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
         }

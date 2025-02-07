@@ -34,9 +34,9 @@ public class AlignWithReefCommand extends Command {
 
     // TODO These velocities and acccelerations were copied from Ted. May need to be changed for new robot. 
     private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-    private double maxAccelerationPMSSq = 1.25; // 6.0 max
+    private double maxAccelerationPMSSq = 6; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
-    private double maxAngularAccelerationRadPerSecondSq = 8.0; // 12.0 max
+    private double maxAngularAccelerationRadPerSecondSq = 12.0; // 12.0 max
 
     private PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
         new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
@@ -73,10 +73,12 @@ public class AlignWithReefCommand extends Command {
         if(timer.hasElapsed(this.timeout)){
             done = true;
         }
-        if (foundReefTag) {
-            System.out.println(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID));
-
-            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(drivetrain.getRobotPosition(), RobotPosesForReef.getPoseFromTagIDWithOffset(tagID));
+        if(drivetrain.getRobotPosition().getTranslation().getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) <= .1){
+            done = true;
+        }
+        else if (foundReefTag) {
+            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)), 
+                                                                        new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(), new Rotation2d(0)));
 
             PathPlannerPath traj = new PathPlannerPath(
                 waypoints,
