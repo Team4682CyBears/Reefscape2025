@@ -79,7 +79,7 @@ public class RobotContainer {
 
     if (subsystems.isDriveTrainSubsystemAvailable()) {
       TestTrajectories testtrajectories = new TestTrajectories();
-      
+      /* 
       SmartDashboard.putData("Basic Forward",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Forward Arc",
@@ -92,7 +92,7 @@ public class RobotContainer {
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Simple Left",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
-      
+      */
     }
 
     // Path Planner Path Commands

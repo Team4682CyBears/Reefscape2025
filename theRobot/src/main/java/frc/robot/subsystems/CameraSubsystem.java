@@ -150,20 +150,6 @@ public class CameraSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    VisionMeasurement vm = getVisionBotPose();
-    double x = 99999;
-    double y = 99999;
-    double p = 0;
-    if(vm.getRobotPosition() != null){
-      x = vm.getRobotPosition().getX();
-      y = vm.getRobotPosition().getY();
-      p = getDistanceFromTag(7, 4).getDistanceMeters();
-    } 
-
-    SmartDashboard.putNumber("bot x", x);
-    SmartDashboard.putNumber("bot y", y);
-    SmartDashboard.putNumber("distance", p);
-
-
+    
   }
 }
