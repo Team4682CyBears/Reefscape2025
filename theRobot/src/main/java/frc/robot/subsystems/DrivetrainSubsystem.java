@@ -62,6 +62,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean furtherThanAMeter = false;
 
+  private boolean displatOdometryDiagnostics = true;
+
   StructArrayPublisher<SwerveModuleState> publisher;
 
   private final double deltaTimeSeconds = 0.02; // 20ms scheduler time tick
@@ -264,6 +266,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("bot Yaw", this.getRobotPosition().getRotation().getDegrees());
     SmartDashboard.putBoolean("furtherThanAMeter", furtherThanAMeter);
+
+    if (displatOdometryDiagnostics) {
+      SmartDashboard.putNumber("raw odometry x", );
+      SmartDashboard.putNumber("raw odometry y", );
+      SmartDashboard.putNumber("raw odometry theta", );
+
+      Pose2d visionPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
+      if (visionPose != null){
+        SmartDashboard.putNumber("vision x", visionPose.getX());
+        SmartDashboard.putNumber("vision y", visionPose.getY());
+        SmartDashboard.putNumber("vision theta", visionPose.getRotation().getDegrees());
+      }
+
+      
+      
+      SmartDashboard.putNumber("fused x", );
+      SmartDashboard.putNumber("fused y", );
+      SmartDashboard.putNumber("fused theta", );
+
+    }
     /*
      * Periodically try to apply the operator perspective.
      * If we haven't applied the operator perspective before, then we should apply
