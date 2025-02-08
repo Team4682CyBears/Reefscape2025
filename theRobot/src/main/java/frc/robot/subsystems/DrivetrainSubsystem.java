@@ -243,8 +243,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return A Rotation2d that describes the current orentation of the robot.
    */
   public Rotation2d getGyroscopeRotation() {
-    return new Rotation2d(0.0);
-    // return drivetrain.getPigeon2().getRotation2d();
+    return drivetrain.getState().Pose.getRotation();
   }
 
   /**
