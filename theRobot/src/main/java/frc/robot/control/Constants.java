@@ -74,6 +74,10 @@ public final class Constants {
     public static final int portCoDriverController = 1;
 
     // ******************************************************************
+    // EndEffector constants
+    public static final double branchDetectionThresholdInches = 15.0;
+
+    // ******************************************************************
     //led constants
     public static final int ledCanID = 30;
     public static final int ledLength = 72;
