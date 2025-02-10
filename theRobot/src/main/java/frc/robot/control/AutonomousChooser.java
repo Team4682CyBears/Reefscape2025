@@ -110,6 +110,8 @@ public class AutonomousChooser {
      * @param subsystems
      */
     public static void configureAutoBuilder(SubsystemCollection subsystems) {
+        // TODO add auto builder once autos are defined in path planner
+        
         /*PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
                 new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
                 new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants

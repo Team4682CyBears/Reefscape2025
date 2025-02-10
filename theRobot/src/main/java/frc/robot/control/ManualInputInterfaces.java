@@ -12,7 +12,6 @@ package frc.robot.control;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -102,7 +101,7 @@ public class ManualInputInterfaces {
               "zero gyroscope")
             )
           );
-        DataLogManager.log("FINISHED registering back button to zero navx ... ");
+        DataLogManager.log("FINISHED registering back button to zero gyroscope ... ");
       }
 
       // x button press will stop all      
@@ -205,21 +204,6 @@ public class ManualInputInterfaces {
             "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")
           )
         );
-
-      if(this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
-
-      // right bumper press will toggle drivetrain reduced acceleration mode
-        this.coDriverController.rightBumper().onTrue(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainAccelerationSubsystem().togglePowerReductionFactor()
-            ),
-            new ButtonPressCommand(
-            "coDriverController.rightBumper()",
-            "toggle limited acceleration mode")
-          )
-        );
-      }
     }
   }
 }

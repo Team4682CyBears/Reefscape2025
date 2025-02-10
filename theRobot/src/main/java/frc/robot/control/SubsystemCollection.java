@@ -9,7 +9,6 @@
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot.control;
-import frc.robot.subsystems.DrivetrainAccelerationSubsystem;
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
@@ -25,7 +24,6 @@ public class SubsystemCollection
     private CameraSubsystem cameraSubsystem = null;
     private DrivetrainSubsystem driveTrainSubsystem = null;
     private DrivetrainPowerSubsystem driveTrainPowerSubsystem = null;
-    private DrivetrainAccelerationSubsystem drivetrainAccelerationSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null; 
     private LEDSubsystem ledSubsystem = null;
 
@@ -45,10 +43,6 @@ public class SubsystemCollection
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() { return driveTrainPowerSubsystem; }
     public void setDriveTrainPowerSubsystem(DrivetrainPowerSubsystem value) { driveTrainPowerSubsystem = value; }
     public boolean isDriveTrainPowerSubsystemAvailable() { return driveTrainPowerSubsystem != null; }
-
-    public DrivetrainAccelerationSubsystem getDriveTrainAccelerationSubsystem() { return drivetrainAccelerationSubsystem; }
-    public void setDriveTrainAccelerationSubsystem(DrivetrainAccelerationSubsystem value) { drivetrainAccelerationSubsystem = value; }
-    public boolean isDriveTrainAccelerationSubsystemAvailable() { return drivetrainAccelerationSubsystem != null; }
 
     public PowerDistributionPanelWatcherSubsystem getPowerDistributionPanelWatcherSubsystem() { return powerDistributionPanelWatcherSubsystem; }
     public void setPowerDistributionPanelWatcherSubsystem(PowerDistributionPanelWatcherSubsystem value) { powerDistributionPanelWatcherSubsystem = value; }

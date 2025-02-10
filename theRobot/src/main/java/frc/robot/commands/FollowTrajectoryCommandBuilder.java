@@ -18,6 +18,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -81,13 +82,14 @@ public class FollowTrajectoryCommandBuilder {
      * Used for paths that should be mirrored when we are on red alliance
      */
     public static boolean mirrorPathForRedAliance() {
-        // TODO FIX THIS!!! types not matching
-        /**
-         * var alliance = DriverStation.getAlliance();
-         * if (alliance != Alliance.Invalid) {
-         * return alliance == Alliance.Red;
-         * }
-         */
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            boolean mirrorPaths = alliance.get() == Alliance.Red;
+            DataLogManager.log("Path planner alliance: " + alliance.get());
+            DataLogManager.log("Setting path planner mirroring to " + mirrorPaths);
+            return mirrorPaths;
+        }
+        DataLogManager.log("FAIL: NO DRIVER STATION ALLIANCE DETECTED. NOT MIRRORING PATH PLANNER PATHS.");
         return false;
     }
 

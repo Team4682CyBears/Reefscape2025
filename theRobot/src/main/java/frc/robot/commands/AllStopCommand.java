@@ -13,7 +13,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.control.SubsystemCollection;
-import frc.robot.control.SwerveDriveMode;
 
 /**
  * Class to form a command to stop all subsystems
