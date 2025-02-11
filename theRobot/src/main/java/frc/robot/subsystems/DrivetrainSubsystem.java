@@ -17,6 +17,7 @@ package frc.robot.subsystems;
 import java.util.*;
 import java.lang.Math;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
@@ -392,7 +393,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // vison gives a bad read
         furtherThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2;
         if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2) {
-          drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
+          drivetrain.addVisionMeasurement(visionComputedMeasurement, Utils.fpgaToCurrentTime(visionMeasurement.getTimestamp()));
         }
       }
     }
@@ -513,6 +514,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
     SmartDashboard.putBoolean("VisionWithinAMeter", furtherThanAMeter);
+    SmartDashboard.putBoolean("UseVision", useVision);
     
     if (displayOdometryDiagnostics) {
       VisionMeasurement visionBotPose = cameraSubsystem.getVisionBotPose();
@@ -521,6 +523,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("vision y", visionBotPose.getRobotPosition().getY());
         SmartDashboard.putNumber("vision theta", visionBotPose.getRobotPosition().getRotation().getDegrees());
         SmartDashboard.putNumber("vision timestamp", visionBotPose.getTimestamp());
+        SmartDashboard.putNumber("current timestamp", Utils.fpgaToCurrentTime(visionBotPose.getTimestamp()));
         SmartDashboard.putNumber("robot timestamp", Timer.getFPGATimestamp());
       }
     }
