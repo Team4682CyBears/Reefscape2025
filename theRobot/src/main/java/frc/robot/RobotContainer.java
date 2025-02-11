@@ -73,6 +73,8 @@ public class RobotContainer {
       this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
       DataLogManager.log(">>>> Finished initializing button bindings.");
     }
+
+    SmartDashboard.putData("COmmand scheduler", CommandScheduler.getInstance());
     
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();
