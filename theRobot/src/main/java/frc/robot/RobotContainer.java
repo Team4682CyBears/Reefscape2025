@@ -55,6 +55,7 @@ public class RobotContainer {
 
     // init the various subsystems
     this.initializeDrivetrainSubsystem();
+    this.initializeEndEffectorSubsystem();
 
     // init the input system 
     this.initializeManualInputInterfaces();

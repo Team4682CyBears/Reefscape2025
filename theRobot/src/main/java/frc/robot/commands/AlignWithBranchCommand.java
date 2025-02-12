@@ -10,18 +10,18 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 public class AlignWithBranchCommand extends Command{
     private DrivetrainSubsystem drivetrain;
     private EndEffectorSubsystem endEffector;
-    private boolean aligningLeft;
+    private boolean aligningRight;
     private boolean done = false;
     private Timer timer = new Timer();
     private double durationSeconds = 1;
-    private double yVelocity = 1.0;
+    private double yVelocity = .6;
     private ChassisSpeeds chassisSpeeds;
     
 
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector, boolean aligningLeft){
+    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector, boolean aligningRight){
         this.drivetrain = drivetrainSubsystem;
         this.endEffector = endEffector;
-        this.aligningLeft = aligningLeft;
+        this.aligningRight = aligningRight;
 
         // explicitly not requiring the endEffector here because we are using it in a read-only capacity.
         addRequirements(drivetrainSubsystem);
@@ -34,7 +34,7 @@ public class AlignWithBranchCommand extends Command{
         timer.start();
         done = false;
 
-        if(aligningLeft){
+        if(aligningRight){
             chassisSpeeds = new ChassisSpeeds(0.0, -yVelocity, 0.0);
         }
         else{
@@ -47,7 +47,9 @@ public class AlignWithBranchCommand extends Command{
         if(endEffector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
             done = true;
         }
-        drivetrain.driveRobotCentric(chassisSpeeds);
+        else {
+            drivetrain.driveRobotCentric(chassisSpeeds);
+        }
     }
 
     @Override

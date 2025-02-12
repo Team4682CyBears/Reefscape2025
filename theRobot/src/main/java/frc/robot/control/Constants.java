@@ -75,7 +75,7 @@ public final class Constants {
 
     // ******************************************************************
     // EndEffector constants
-    public static final double branchDetectionThresholdInches = 15.0;
+    public static final double branchDetectionThresholdInches = 20.0;
 
     // ******************************************************************
     //led constants
