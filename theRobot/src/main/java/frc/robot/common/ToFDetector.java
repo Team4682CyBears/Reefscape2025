@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ToFDetector {
 
-  private static double detectionThresholdInches;
+  private double detectionThresholdInches;
   private TimeOfFlight tofSensor;
   private int canID;
   private String displayName;
