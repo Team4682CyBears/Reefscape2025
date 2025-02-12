@@ -73,13 +73,15 @@ public class RobotContainer {
       this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
       DataLogManager.log(">>>> Finished initializing button bindings.");
     }
+
+    SmartDashboard.putData("COmmand scheduler", CommandScheduler.getInstance());
     
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable()) {
       TestTrajectories testtrajectories = new TestTrajectories();
-      
+      /* 
       SmartDashboard.putData("Basic Forward",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Forward Arc",
@@ -92,7 +94,7 @@ public class RobotContainer {
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Simple Left",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
-      
+      */
     }
 
     // Path Planner Path Commands

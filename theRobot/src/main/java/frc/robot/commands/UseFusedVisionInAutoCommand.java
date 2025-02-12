@@ -51,7 +51,7 @@ public class UseFusedVisionInAutoCommand extends Command
     drivetrainSubsystem.setUseVision(true);
     if (timer.hasElapsed(Constants.autoUseFusedVisionDuration))
     {
-      drivetrainSubsystem.setUseVision(false);
+      drivetrainSubsystem.setUseVision(true);
       done = true;
     }
   }
@@ -60,7 +60,7 @@ public class UseFusedVisionInAutoCommand extends Command
   @Override
   public void end(boolean interrupted)
   {
-    drivetrainSubsystem.setUseVision(false);
+    drivetrainSubsystem.setUseVision(true);
     if(interrupted)
     {
     done = true;      

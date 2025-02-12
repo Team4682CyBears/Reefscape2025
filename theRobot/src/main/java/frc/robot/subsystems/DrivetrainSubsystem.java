@@ -17,6 +17,7 @@ package frc.robot.subsystems;
 import java.util.*;
 import java.lang.Math;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
@@ -45,6 +46,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -59,6 +61,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private CameraSubsystem cameraSubsystem;
 
   private boolean useVision = true;
+
+  private boolean furtherThanAMeter = false;
+
+  private boolean displayOdometryDiagnostics = true;
 
   StructArrayPublisher<SwerveModuleState> publisher;
 
@@ -94,7 +100,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // override
   // the odometry yaw, which comes from the very accurate IMU
   private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 10 });
-  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.1, 0.1, 0.1 });
+  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { .1, .1, 0.1 });
 
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -260,7 +266,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("bot Yaw", this.getRobotPosition().getRotation().getDegrees());
     /*
      * Periodically try to apply the operator perspective.
      * If we haven't applied the operator perspective before, then we should apply
@@ -327,6 +332,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
           .withVelocityY(chassisSpeeds.vyMetersPerSecond)
           .withRotationalRate(chassisSpeeds.omegaRadiansPerSecond));
     }
+    displayDiagnostics();
   }
 
   /**
@@ -385,8 +391,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (visionComputedMeasurement != null) {
         // we want to reject vision measurements that are more than 1 meter away in case
         // vison gives a bad read
-        if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1) {
-          drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
+        furtherThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2;
+        if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2) {
+          drivetrain.addVisionMeasurement(visionComputedMeasurement, Utils.fpgaToCurrentTime(visionMeasurement.getTimestamp()));
         }
       }
     }
@@ -506,6 +513,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
     SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
     SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
-
+    SmartDashboard.putBoolean("VisionWithinAMeter", furtherThanAMeter);
+    SmartDashboard.putBoolean("UseVision", useVision);
+    
+    if (displayOdometryDiagnostics) {
+      VisionMeasurement visionBotPose = cameraSubsystem.getVisionBotPose();
+      if (visionBotPose.getRobotPosition() != null){
+        SmartDashboard.putNumber("vision x", visionBotPose.getRobotPosition().getX());
+        SmartDashboard.putNumber("vision y", visionBotPose.getRobotPosition().getY());
+        SmartDashboard.putNumber("vision theta", visionBotPose.getRobotPosition().getRotation().getDegrees());
+        SmartDashboard.putNumber("vision timestamp", visionBotPose.getTimestamp());
+        SmartDashboard.putNumber("current timestamp", Utils.fpgaToCurrentTime(visionBotPose.getTimestamp()));
+        SmartDashboard.putNumber("robot timestamp", Timer.getFPGATimestamp());
+      }
+    }
   }
 }
