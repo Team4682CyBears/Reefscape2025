@@ -116,31 +116,6 @@ public class ManualInputInterfaces {
           )
       );
 
-      this.driverController.b().onTrue(
-        new ParallelCommandGroup(
-          new AlignWithBranchCommand(
-            this.subsystemCollection.getDriveTrainSubsystem(),
-            this.subsystemCollection.getEndEffectorSubsystem(),
-            true),
-          new ButtonPressCommand(
-            "driverController.b()",
-            "Align With Reef Command")
-          )
-      );
-
-      this.driverController.y().onTrue(
-        new ParallelCommandGroup(
-          new AlignWithBranchCommand(
-            this.subsystemCollection.getDriveTrainSubsystem(),
-            this.subsystemCollection.getEndEffectorSubsystem(),
-            false),
-          new ButtonPressCommand(
-            "driverController.y()",
-            "Align With Reef Command")
-          )
-      );
-
-
       if(this.subsystemCollection.isDriveTrainPowerSubsystemAvailable() && 
          this.subsystemCollection.isDriveTrainSubsystemAvailable()){
         // left bumper press will put drivetrain in X stance

@@ -14,6 +14,10 @@ public class EndEffectorSubsystem extends SubsystemBase{
 
     }
 
+    /**
+     * A method that returns true if either ToF detects something in range
+     * @return - if somehthing detected by either ToF is in range
+     */
     public boolean isBranchDetected(){
         boolean leftDetected = InstalledHardware.EEToFLeft && tofLeft.isDetected();
         boolean rightDetected = InstalledHardware.EEToFRight && tofRight.isDetected();
