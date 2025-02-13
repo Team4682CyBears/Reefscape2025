@@ -8,8 +8,10 @@
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
+// namspace to contain class
 package frc.robot.subsystems;
 
+// import motor libraries from ctre
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -21,39 +23,51 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+// import wpilib libraries
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+// import local classes
 import frc.robot.Constants;
 import frc.robot.common.CorrectableEncoderPlusDigitalIoPort;
 import frc.robot.common.ElevatorDirection;
 import frc.robot.common.ElevatorMovementMode;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.MotorUtils;
-import com.ctre.phoenix6.controls.StrictFollower;
+//import com.ctre.phoenix6.controls.StrictFollower;
 
+// import wpilib libraries
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
 
 //import javax.lang.model.util.ElementScanner14;
 
+// elevator subs
 public class ElevatorSubsystem extends SubsystemBase {
+
+  // define class variables
   private double inchesPerRotation = 2.25; // four inches per rotation TODO update with actual value.
   private Distance startingPosition = Inches.of(0.0);
   private Distance heightTolerance = Inches.of(0.25);
-  private TalonFX elevatorMotor = new TalonFX(Constants.elevatorMotorCANID);
-  private TalonFX secondElevatorMotor = new TalonFX(Constants.secondMotorCanID);
-  // controller for position-based movement
-  private final MotionMagicExpoDutyCycle elevatorPositionalController = new MotionMagicExpoDutyCycle(
-      distanceToAngle(startingPosition));
-  // contoller for joystick-based movement
-  private final DutyCycleOut elevatorJoystickController = new DutyCycleOut(0.0);
 
+  // define heights
   private final Distance sensorHeight = Inches.of(1.0);
   private final Distance maxHeight = Inches.of(74.0);
   private final Distance minHeight = Inches.of(0.0);
+
+  // Create motor controller instances
+  private TalonFX elevatorMotor = new TalonFX(Constants.elevatorMotorCANID);
+  private TalonFX secondElevatorMotor = new TalonFX(Constants.secondMotorCanID);
+
+  // controller for position-based movement
+  private final MotionMagicExpoDutyCycle elevatorPositionalController = new MotionMagicExpoDutyCycle(
+      distanceToAngle(startingPosition));
+
+  // contoller for joystick-based movement
+  private final DutyCycleOut elevatorJoystickController = new DutyCycleOut(0.0);
 
   private DigitalInput elevatorMageneticSensor = new DigitalInput(Constants.elevatorMageneticSensorID);
   private ElevatorMovementMode elevatorMovementMode = ElevatorMovementMode.STOPPED;
