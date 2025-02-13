@@ -24,7 +24,8 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static final int elevatorMotorCANID = 5;
+  public static final int elevatorMotorCANID = 4;
+  public static final int secondMotorCanID = 23;
   public static final int elevatorMageneticSensorID = 0;
 
   public static final Distance stowHeight = Inches.of(0.0);
@@ -40,7 +41,6 @@ public final class Constants {
   public static final double motorSupplyVoltageTimeConstant = 0.02;
   // Motor Talon Port
   public static final int motorCanID = 3;
-  public static final int secondMotorCanID = 4;
   public static final double falconMaxVoltage = 12.0;
   public static final int falconFreeSpeedRps = 6380 / 60;
   public static final double minimumMotorSpeedRpm = 0.25 * 60;

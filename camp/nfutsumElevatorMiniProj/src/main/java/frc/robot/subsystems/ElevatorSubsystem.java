@@ -40,7 +40,7 @@ import static edu.wpi.first.units.Units.Rotations;
 //import javax.lang.model.util.ElementScanner14;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private double inchesPerRotation = 4; // four inches per rotation TODO update with actual value.
+  private double inchesPerRotation = 2.25; // four inches per rotation TODO update with actual value.
   private Distance startingPosition = Inches.of(0.0);
   private Distance heightTolerance = Inches.of(0.25);
   private TalonFX elevatorMotor = new TalonFX(Constants.elevatorMotorCANID);
