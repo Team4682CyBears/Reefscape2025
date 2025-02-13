@@ -7,16 +7,15 @@ This code is to test motors to move the elevator.
     - main & follower motor
         - set the code of main motor and then set the follower motor 
         - slow speed for testing
-        - figure out speed for production later
+            - figure out speed for production later
         - one motor rotates clockwise the other is counterclockwise
-        - right next to each on elevator
+        - right next to each on center of elevator
         - connecting with gears
             - belt on elevator
 - SW: TalonFX
 - Control: Motion Magic
     - stops it from over/undershooting
-    - tolerance - 0.25 inches
-    - 
+    - tolerance - 0.25 inches 
 - Sensor - magsensor
     - when elevator reaches the bottom, the sensor will reset the values to stow
     - reads when elevator is released but doesn't do anything
