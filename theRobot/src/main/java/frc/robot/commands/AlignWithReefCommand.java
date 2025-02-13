@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.common.RobotPosesForReef;
@@ -42,7 +43,7 @@ public class AlignWithReefCommand extends Command {
     private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
     private double maxAccelerationPMSSq = 5; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
-    private double maxAngularAccelerationRadPerSecondSq = 12.0; // 12.0 max
+    private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
 
     private PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
         new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
@@ -108,8 +109,12 @@ public class AlignWithReefCommand extends Command {
                     () -> mirrorPathForRedAliance(),
                     (Subsystem) drivetrain);
 
+                ParallelCommandGroup commandGroup = new ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
+                                                    new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
+                
+                commandGroup.schedule();
+
                 drivetrain.setUseVision(false);
-                followPathCommand.withTimeout(timeoutSeconds);
 
                 alreadyRunTrajectory = true;
             }
