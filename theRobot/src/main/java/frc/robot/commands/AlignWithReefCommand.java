@@ -27,7 +27,7 @@ import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
-    private double timeoutSeconds = 1.5;
+    private double timeoutSeconds = 2;
     private boolean done = false;
     private DrivetrainSubsystem drivetrain;
     private CameraSubsystem camera;
@@ -40,8 +40,9 @@ public class AlignWithReefCommand extends Command {
     FollowPathCommand followPathCommand;
 
     // TODO These velocities and acccelerations were copied from Ted. May need to be changed for new robot. 
-    private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-    private double maxAccelerationPMSSq = 5; // 6.0 max
+    //private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+    private double maxVelocityMPS = 5.3;
+    private double maxAccelerationPMSSq = 4; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
 
@@ -109,10 +110,10 @@ public class AlignWithReefCommand extends Command {
                     () -> mirrorPathForRedAliance(),
                     (Subsystem) drivetrain);
 
-                ParallelCommandGroup commandGroup = new ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
-                                                    new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
+                //ParallelCommandGroup commandGroup = new ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
+                //                                    new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
                 
-                commandGroup.schedule();
+                followPathCommand.schedule();
 
                 drivetrain.setUseVision(false);
 
@@ -138,8 +139,10 @@ public class AlignWithReefCommand extends Command {
         if(interrupted){
             done = true;
         }
-        drivetrain.setUseVision(true);
+        followPathCommand.end(false);
         CommandScheduler.getInstance().cancel(followPathCommand);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        drivetrain.setUseVision(true);
     }
 
     private PathConstraints getPathConstraints(){
