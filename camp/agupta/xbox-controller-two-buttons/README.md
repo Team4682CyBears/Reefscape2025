@@ -7,7 +7,8 @@ Intent: Power solenoid to hold the funnel back during climb
 
 Part #
 - a18032300ux0049
-- Power in DC: 10v
+- XRN-0630T 
+- Power in DC: 12v
 - 10N hold
 - 10mm (1cm) reach
 
@@ -21,3 +22,8 @@ Specification (source: https://www.amazon.com/uxcell-XRN-0630T-Frame-Solenoid-El
 - Total Length: 57mm/2.24"
 - Cable Length: 220mm/8.66";
 - Size: 30 x 16 x 19mm/1.18" x 0.63" x 0.75"(L*W*H)
+- As an actuating element of anmation equipment, because the current is large, the single cycle can not be electrified for a long time. The best operate time is in 2 seconds. 
+
+Calculated
+- Arm retracted - 27mm
+- 
