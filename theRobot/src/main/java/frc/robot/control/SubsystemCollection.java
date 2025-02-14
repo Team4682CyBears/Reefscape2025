@@ -30,6 +30,7 @@ public class SubsystemCollection
     private DrivetrainAccelerationSubsystem drivetrainAccelerationSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null; 
     private LEDSubsystem ledSubsystem = null;
+    private AlignWithBranchDirection alignWithBranchDirection = null;
 
     /**
      * Default constructor
@@ -67,4 +68,8 @@ public class SubsystemCollection
     public LEDSubsystem getLedSubsystem() { return ledSubsystem; }
     public void setLEDSubsystem(LEDSubsystem value) { ledSubsystem = value; }
     public boolean isLEDSubsystemAvailable() { return cameraSubsystem != null; }
+
+    public AlignWithBranchDirection getAlignWithBranchDirection() { return alignWithBranchDirection; }
+    public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
+    public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
 }

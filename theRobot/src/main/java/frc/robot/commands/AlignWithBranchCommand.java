@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.common.AlignToBranchSide;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
+import java.util.function.Supplier;
 
 
 /**
@@ -25,7 +26,7 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 public class AlignWithBranchCommand extends Command{
     private DrivetrainSubsystem drivetrain;
     private EndEffectorSubsystem endEffector;
-    private AlignToBranchSide alignSide;
+    private Supplier<AlignToBranchSide> alignSidSupplier;
     private boolean done = false;
     private Timer timer = new Timer();
     private double durationSeconds = 1;
@@ -36,17 +37,17 @@ public class AlignWithBranchCommand extends Command{
      * Constructor to make the robot aling with a branch
      * @param drivetrainsubsystem - the drivetrain subsystems
      * @param endEffector - the end effector subsystem
-     * @param alignSide - an enum that tells us if we want to align right or left
+     * @param alignSideSupplier - a supplier of an enum that tells us if we want to align right or left
      */
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector, AlignToBranchSide alignSide){
+    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector, Supplier<AlignToBranchSide> alignSideSupplier){
         this.drivetrain = drivetrainSubsystem;
         this.endEffector = endEffector;
-        this.alignSide = alignSide;
+        this.alignSidSupplier = alignSideSupplier;
 
         // explicitly not requiring the endEffector here because we are using it in a read-only capacity.
         addRequirements(drivetrainSubsystem);
-
     }
+    
 
     // Called when the command is initially scheduled.
     @Override
@@ -55,7 +56,7 @@ public class AlignWithBranchCommand extends Command{
         timer.start();
         done = false;
 
-        if(alignSide == AlignToBranchSide.RIGHT){
+        if(alignSidSupplier.get() == AlignToBranchSide.RIGHT){
             chassisSpeeds = new ChassisSpeeds(0.0, -yVelocity, 0.0);
         }
         else{

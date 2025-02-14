@@ -17,11 +17,12 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
+import frc.robot.common.AlignToBranchSide;
 
 public class ManualInputInterfaces {
 
   // sets joystick variables to joysticks
-  private CommandXboxController driverController = new CommandXboxController(Constants.portDriverController); 
+  private CommandXboxController driverController = new CommandXboxController(Constants.portDriverController);
   private XboxController driverControllerForRumbleOnly = new XboxController(Constants.portDriverController);
   private CommandXboxController coDriverController = new CommandXboxController(Constants.portCoDriverController);
   private XboxController coDriverControllerForRumbleOnly = new XboxController(Constants.portCoDriverController);
@@ -32,12 +33,14 @@ public class ManualInputInterfaces {
   /**
    * The constructor to build this 'manual input' conduit
    */
-  public ManualInputInterfaces(SubsystemCollection currentCollection){
+  public ManualInputInterfaces(SubsystemCollection currentCollection) {
+    subsystemCollection.setAlignWithBranchDirection(new AlignWithBranchDirection());
     subsystemCollection = currentCollection;
   }
 
   /**
    * A method to return the co driver controller for rumble needs
+   * 
    * @return
    */
   public final XboxController getCoDriverController() {
@@ -46,187 +49,183 @@ public class ManualInputInterfaces {
 
   /**
    * A method to get the arcade drive X componet being input from humans
+   * 
    * @return - a double value associated with the magnitude of the x componet
    */
-  public double getInputArcadeDriveX(){
+  public double getInputArcadeDriveX() {
     return -driverController.getLeftX();
   }
 
   /**
    * A method to get the arcade drive X componet being input from humans
+   * 
    * @return - a double value associated with the magnitude of the x componet
    */
-  public double getInputArcadeDriveY(){
+  public double getInputArcadeDriveY() {
     return -driverController.getLeftY();
   }
 
   /**
    * A method to get the spin drive X componet being input from humans
+   * 
    * @return - a double value associated with the magnitude of the x componet
    */
-  public double getInputSpinDriveX(){
+  public double getInputSpinDriveX() {
     return driverController.getRightX();
   }
 
   /**
    * A method to initialize various commands to the numerous buttons.
-   * Need delayed bindings as some subsystems during testing won't always be there.
+   * Need delayed bindings as some subsystems during testing won't always be
+   * there.
    */
-  public void initializeButtonCommandBindings()
-  {
+  public void initializeButtonCommandBindings() {
     // Configure the driver xbox controller bindings
-    if(InstalledHardware.driverXboxControllerInstalled){
+    if (InstalledHardware.driverXboxControllerInstalled) {
       this.bindCommandsToDriverXboxButtons();
     }
 
     // Configure the co-driver xbox controller bindings
-    if(InstalledHardware.coDriverXboxControllerInstalled){
+    if (InstalledHardware.coDriverXboxControllerInstalled) {
       this.bindCommandsToCoDriverXboxButtons();
     }
   }
 
   /**
-   * Will attach commands to the Driver XBox buttons 
+   * Will attach commands to the Driver XBox buttons
    */
-  private void bindCommandsToDriverXboxButtons(){
-    if(InstalledHardware.driverXboxControllerInstalled){    
+  private void bindCommandsToDriverXboxButtons() {
+    if (InstalledHardware.driverXboxControllerInstalled) {
 
-      if(this.subsystemCollection.isDriveTrainSubsystemAvailable()){
+      if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
         // Back button zeros the gyroscope (as in zero yaw)
         this.driverController.back().onTrue(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              subsystemCollection.getDriveTrainSubsystem()::zeroGyroscope),
-            new ButtonPressCommand(
-              "driverController.back()",
-              "zero gyroscope")
-            )
-          );
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    subsystemCollection.getDriveTrainSubsystem()::zeroGyroscope),
+                new ButtonPressCommand(
+                    "driverController.back()",
+                    "zero gyroscope")));
         DataLogManager.log("FINISHED registering back button to zero navx ... ");
       }
 
-      // x button press will stop all      
+      // x button press will stop all
       this.driverController.x().onTrue(
-        new ParallelCommandGroup(
-          new AllStopCommand(
-            this.subsystemCollection),
-          new ButtonPressCommand(
-            "driverController.x()",
-            "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")
-          )
-      );
+          new ParallelCommandGroup(
+              new AllStopCommand(
+                  this.subsystemCollection),
+              new ButtonPressCommand(
+                  "driverController.x()",
+                  "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-      if(this.subsystemCollection.isDriveTrainPowerSubsystemAvailable() && 
-         this.subsystemCollection.isDriveTrainSubsystemAvailable()){
+      if (this.subsystemCollection.isDriveTrainPowerSubsystemAvailable() &&
+          this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
         // left bumper press will put drivetrain in X stance
         this.driverController.leftBumper().onTrue(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()
-            ),
-            new ButtonPressCommand(
-            "driverController.leftBumper()",
-            "x-stance / immovable")
-          )
-        );
-        // left bumper release will put drivetrain in normal drive mode  
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()),
+                new ButtonPressCommand(
+                    "driverController.leftBumper()",
+                    "x-stance / immovable")));
+        // left bumper release will put drivetrain in normal drive mode
         this.driverController.leftBumper().onFalse(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()
-            ),
-            new ButtonPressCommand(
-            "driverController.leftBumper().onFalse()",
-            "back to normal driving")
-          )
-        );
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()),
+                new ButtonPressCommand(
+                    "driverController.leftBumper().onFalse()",
+                    "back to normal driving")));
 
         // right bumper press will put drivetrain in X stance
         this.driverController.rightBumper().onTrue(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()
-            ),
-            new ButtonPressCommand(
-            "driverController.rightBumper()",
-            "x-stance / immovable")
-          )
-        );
-        // right bumper release will put drivetrain in normal drive mode  
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> subsystemCollection.getDriveTrainSubsystem().setImmovableStance()),
+                new ButtonPressCommand(
+                    "driverController.rightBumper()",
+                    "x-stance / immovable")));
+        // right bumper release will put drivetrain in normal drive mode
         this.driverController.rightBumper().onFalse(
-          new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()
-            ),
-            new ButtonPressCommand(
-            "driverController.rightBumper().onFalse()",
-            "back to normal driving")
-          )
-        );
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> subsystemCollection.getDriveTrainSubsystem().unsetImmovableStance()),
+                new ButtonPressCommand(
+                    "driverController.rightBumper().onFalse()",
+                    "back to normal driving")));
 
-        // left trigger press will ramp down drivetrain to reduced speed mode 
+        // left trigger press will ramp down drivetrain to reduced speed mode
         this.driverController.leftTrigger().onTrue(
-          new ParallelCommandGroup(
-            new InstantCommand(subsystemCollection.getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
-            subsystemCollection.getDriveTrainPowerSubsystem()),
-            new ButtonPressCommand(
-            "driverController.leftTrigger()",
-            "ramp down to reduced speed")
-          )
-        );
+            new ParallelCommandGroup(
+                new InstantCommand(subsystemCollection.getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
+                    subsystemCollection.getDriveTrainPowerSubsystem()),
+                new ButtonPressCommand(
+                    "driverController.leftTrigger()",
+                    "ramp down to reduced speed")));
         // left trigger de-press will ramp up drivetrain to max speed
         this.driverController.leftTrigger().onFalse(
-          new ParallelCommandGroup(
-            new InstantCommand(subsystemCollection.getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
-            subsystemCollection.getDriveTrainPowerSubsystem()),
-            new ButtonPressCommand(
-            "driverController.leftTrigger()",
-            "ramp up to default speed")
-          )
-        );
+            new ParallelCommandGroup(
+                new InstantCommand(subsystemCollection.getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
+                    subsystemCollection.getDriveTrainPowerSubsystem()),
+                new ButtonPressCommand(
+                    "driverController.leftTrigger()",
+                    "ramp up to default speed")));
 
         this.driverController.a().onTrue(
-          new ParallelCommandGroup(
-            new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(), 
-                                    this.subsystemCollection.getCameraSubsystem()),
-            new ButtonPressCommand("driverController.a()", "Align with reef command")
-          )
-        );
-        }      
+            new ParallelCommandGroup(
+                new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(),
+                    this.subsystemCollection.getCameraSubsystem()),
+                new ButtonPressCommand("driverController.a()", "Align with reef command")));
+
+        this.driverController.a().onTrue(
+            new ParallelCommandGroup(
+                new SequentialCommandGroup(
+                    new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(),
+                        this.subsystemCollection.getCameraSubsystem()),
+                    new AlignWithBranchCommand(this.subsystemCollection.getDriveTrainSubsystem(),
+                        this.subsystemCollection.getEndEffectorSubsystem(),
+                        () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide())),
+                new ButtonPressCommand("driverController.a()", "Align with reef command")));
+
+        this.driverController.povLeft().onTrue(
+            new ParallelCommandGroup(
+                new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection()
+                    .setAlignWithBranchSide(AlignToBranchSide.LEFT)),
+                new ButtonPressCommand("driverController.povLeft()", "setting align state to left")));
+
+        this.driverController.povRight().onTrue(
+            new ParallelCommandGroup(
+                new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection()
+                    .setAlignWithBranchSide(AlignToBranchSide.RIGHT)),
+                new ButtonPressCommand("driverController.povRight()", "setting align state to right")));
+      }
     }
   }
-  
+
   /**
-   * Will attach commands to the Co Driver XBox buttons 
+   * Will attach commands to the Co Driver XBox buttons
    */
-  private void bindCommandsToCoDriverXboxButtons()
-  {
-    if(InstalledHardware.coDriverXboxControllerInstalled)
-    {
+  private void bindCommandsToCoDriverXboxButtons() {
+    if (InstalledHardware.coDriverXboxControllerInstalled) {
       // x button press will stop all
       this.coDriverController.x().onTrue(
-        new ParallelCommandGroup(
-          new AllStopCommand(
-            this.subsystemCollection),
-          new ButtonPressCommand(
-            "coDriverController.x()",
-            "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")
-          )
-        );
-
-      if(this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
-
-      // right bumper press will toggle drivetrain reduced acceleration mode
-        this.coDriverController.rightBumper().onTrue(
           new ParallelCommandGroup(
-            new InstantCommand(
-              () -> subsystemCollection.getDriveTrainAccelerationSubsystem().togglePowerReductionFactor()
-            ),
-            new ButtonPressCommand(
-            "coDriverController.rightBumper()",
-            "toggle limited acceleration mode")
-          )
-        );
+              new AllStopCommand(
+                  this.subsystemCollection),
+              new ButtonPressCommand(
+                  "coDriverController.x()",
+                  "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
+
+      if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
+
+        // right bumper press will toggle drivetrain reduced acceleration mode
+        this.coDriverController.rightBumper().onTrue(
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> subsystemCollection.getDriveTrainAccelerationSubsystem().togglePowerReductionFactor()),
+                new ButtonPressCommand(
+                    "coDriverController.rightBumper()",
+                    "toggle limited acceleration mode")));
       }
     }
   }
