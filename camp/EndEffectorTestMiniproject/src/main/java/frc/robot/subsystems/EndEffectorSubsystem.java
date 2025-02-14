@@ -24,9 +24,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
 
-    private final double algaeSpeed = 0.3;
-    private final double handoffSpeed = 0.1;
-    private final double scoringSpeed = 0.3;
+    private final double algaeSpeed = 0.1;
+    private final double handoffSpeed = 0.05;
+    private final double scoringSpeed = 0.1;
 
     public EndEffectorSubsystem() {
         tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
