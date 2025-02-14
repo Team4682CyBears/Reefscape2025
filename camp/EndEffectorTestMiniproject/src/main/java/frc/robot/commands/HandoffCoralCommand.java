@@ -11,7 +11,6 @@ public class HandoffCoralCommand extends Command {
     private final EndEffectorSubsystem endEffector;
 
     private boolean done = false;
-    private Timer tofDetectionTimer = new Timer();
 
     public HandoffCoralCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
@@ -20,7 +19,7 @@ public class HandoffCoralCommand extends Command {
 
     @Override
     public void initialize() {
-        if (!endEffector.isBranchDetected()) {
+        if (endEffector.isBranchDetected()) {
             done = true;
         } else {
             done = false;
@@ -34,17 +33,8 @@ public class HandoffCoralCommand extends Command {
         if (done) {
             return;
         }
-        // TODO
-        if (!Constants.doubleTOF) {
-            if (!endEffector.isBranchDetected()) {
-                tofDetectionTimer.start();
-            } else {
-                tofDetectionTimer.reset();
-            }
-        }
 
-        if ((Constants.doubleTOF && !endEffector.isBranchDetected())
-                || (!Constants.doubleTOF && tofDetectionTimer.hasElapsed(0.05))) {
+        if (endEffector.isBranchDetected()) {
             System.out.println("STOPPING MOTOR");
             done = true;
             endEffector.stop();
