@@ -17,8 +17,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private TalonFX eeMotor = new TalonFX(Constants.eeMotorCANID);
     private final DutyCycleOut eeJoystickController = new DutyCycleOut(0.0);
 
-    private final ToFDetector tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
-    private final ToFDetector tofRight = new ToFDetector(Constants.tofRightCanID, Constants.tofDetectionThresholdInches);
+    private final ToFDetector tofLeft;
+    private ToFDetector tofRight;
 
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
@@ -28,6 +28,10 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private final double scoringSpeed = 0.05;
 
     public EndEffectorSubsystem() {
+        tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
+        if (Constants.doubleTOF) {
+            tofRight = new ToFDetector(Constants.tofRightCanID, Constants.tofDetectionThresholdInches);
+        }
         configureMotor();
     }
 
@@ -75,7 +79,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     }
 
     public boolean isBranchDetected() {
-        return tofLeft.isDetected() || tofRight.isDetected();
+        return tofLeft.isDetected() || (Constants.doubleTOF && tofRight.isDetected());
     }
 
     private void configureMotor() {
