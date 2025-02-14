@@ -39,27 +39,28 @@ public class AlignWithReefCommand extends Command {
 
     FollowPathCommand followPathCommand;
 
-    // TODO These velocities and acccelerations were copied from Ted. May need to be changed for new robot. 
-    //private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+    // TODO These velocities and acccelerations were copied from Ted. May need to be
+    // changed for new robot.
+    // private double maxVelocityMPS =
+    // DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
     private double maxVelocityMPS = 5.3;
     private double maxAccelerationPMSSq = 4; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
 
     private PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-        new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-        new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
+            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
     );
 
-
-
-    public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem){
+    public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem) {
         this.drivetrain = drivetrainSubsystem;
 
         this.camera = cameraSubsystem;
     }
 
-    public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem, double timoutSeconds){
+    public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem,
+            double timoutSeconds) {
         this.drivetrain = drivetrainSubsystem;
 
         this.camera = cameraSubsystem;
@@ -68,93 +69,104 @@ public class AlignWithReefCommand extends Command {
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
         foundReefTag = false;
         alreadyRunTrajectory = false;
         tagID = -1;
         timer.reset();
         timer.start();
-        done = false;       
+        done = false;
     }
 
     @Override
-    public void execute(){
-        if(timer.hasElapsed(this.timeoutSeconds)){
+    public void execute() {
+        if (timer.hasElapsed(this.timeoutSeconds)) {
+            System.out.println("AlignWithReefCommand Timer has expired. Setting done = true");
             done = true;
         }
-        if(!alreadyRunTrajectory){
+        if (!alreadyRunTrajectory) {
             if (foundReefTag) {
-                List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)), 
-                                                                            new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(), new Rotation2d(0)));
+                System.out.println("AlignWithReefCommand found reef tag and calculating trajectory");
+                List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+                        new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
+                        new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(),
+                                new Rotation2d(0)));
 
                 PathPlannerPath path = new PathPlannerPath(
-                    waypoints,
-                    getPathConstraints(),
-                    null,
-                    new GoalEndState(0.0, 
-                    RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation())
-                );
+                        waypoints,
+                        getPathConstraints(),
+                        null,
+                        new GoalEndState(0.0,
+                                RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation()));
 
-                PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(), drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
+                PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
+                        drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
 
-                System.out.println(traj.getTotalTimeSeconds() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                if (!Double.isNaN(traj.getTotalTimeSeconds())) {
+                    System.out.println("Trajectory total time: " + traj.getTotalTimeSeconds());
+                    followPathCommand = new FollowPathCommand(
+                            path,
+                            drivetrain::getRobotPosition, // Pose supplier
+                            drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                            (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive
+                                                                                            // the robot given ROBOT
+                                                                                            // RELATIVE ChassisSpeeds.
+                            // We do not currently use the module feedforwards
+                            pathFollower,
+                            drivetrain.getPathPlannerConfig(), // The robot configuration
+                            () -> mirrorPathForRedAliance(),
+                            (Subsystem) drivetrain);
 
-                followPathCommand = new FollowPathCommand(
-                    path,
-                    drivetrain::getRobotPosition, // Pose supplier
-                    drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                    (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
-                    // We do not currently use the module feedforwards
-                    pathFollower,
-                    drivetrain.getPathPlannerConfig(), // The robot configuration
-                    () -> mirrorPathForRedAliance(),
-                    (Subsystem) drivetrain);
+                    // ParallelCommandGroup commandGroup = new
+                    // ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
+                    // new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
 
-                //ParallelCommandGroup commandGroup = new ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
-                //                                    new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
-                
-                followPathCommand.schedule();
+                    drivetrain.setUseVision(false);
 
-                drivetrain.setUseVision(false);
+                    System.out.println("Scheduling follow Path command!!");
+                    followPathCommand.andThen(()-> System.out.println("ENDING FOLLOW PATH COMMAND")).andThen(()-> drivetrain.setUseVision(true)).schedule();
 
-                alreadyRunTrajectory = true;
-            }
-            else{
+                    alreadyRunTrajectory = true;
+                    done = true;
+
+                    System.out.println("followPathCOmmand Status: " + followPathCommand.toString());
+                }
+            } else {
                 tagID = camera.getTagId();
-                
-                if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)){
+
+                if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
                     foundReefTag = true;
                 }
             }
-        }  
+        }
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return done;
     }
 
     @Override
-    public void end(boolean interrupted){
-        if(interrupted){
+    public void end(boolean interrupted) {
+        System.out.println("Ending AlignWithReefCommand!!");
+        if (interrupted) {
+            System.out.println("AlignWithReefCommand was interrupted.");
             done = true;
         }
-        followPathCommand.end(false);
-        CommandScheduler.getInstance().cancel(followPathCommand);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         drivetrain.setUseVision(true);
+        System.out.println("Comppled closout of AlignWithReefCommand!!");
     }
 
-    private PathConstraints getPathConstraints(){
+    private PathConstraints getPathConstraints() {
         return new PathConstraints(
-          maxVelocityMPS, 
-          maxAccelerationPMSSq, 
-          maxAngularVelocityRadPerSecond, 
-          maxAngularAccelerationRadPerSecondSq);
+                maxVelocityMPS,
+                maxAccelerationPMSSq,
+                maxAngularVelocityRadPerSecond,
+                maxAngularAccelerationRadPerSecondSq);
     }
 
-    private boolean mirrorPathForRedAliance(){
-        //when using paths generated from april tag coords always turn mirroring off
+    private boolean mirrorPathForRedAliance() {
+        // when using paths generated from april tag coords always turn mirroring off
         return false;
     }
 

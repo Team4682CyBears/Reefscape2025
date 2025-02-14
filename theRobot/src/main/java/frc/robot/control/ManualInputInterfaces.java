@@ -186,11 +186,11 @@ public class ManualInputInterfaces {
         );
 
         this.driverController.a().onTrue(
-          new ParallelCommandGroup(
+          //new ParallelCommandGroup(
             new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(), 
-                                    this.subsystemCollection.getCameraSubsystem()),
-            new ButtonPressCommand("driverController.a()", "Align with reef command")
-          )
+                                    this.subsystemCollection.getCameraSubsystem())
+            //new ButtonPressCommand("driverController.a()", "Align with reef command")
+          //)
         );
         }      
     }
