@@ -74,6 +74,7 @@ public class AlignWithReefCommand extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("Starting AlignWithReefCommand.!!!!!!!!!!!!!!!");
         foundReefTag = false;
         tagID = -1;
         timer.reset();
@@ -92,6 +93,8 @@ public class AlignWithReefCommand extends Command {
                     new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
                     new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(),
                             new Rotation2d(0)));
+
+            System.out.println("Path Waypoints: " + waypoints.toString());
 
             PathPlannerPath path = new PathPlannerPath(
                     waypoints,
@@ -125,8 +128,8 @@ public class AlignWithReefCommand extends Command {
                         .andThen(() -> drivetrain.setUseVision(true)).schedule();
 
                 done = true;
-
-                System.out.println("followPathCOmmand Status: " + followPathCommand.toString());
+            } else {
+                System.out.println("PATH HAD NAN TIME !!!!!! ");
             }
         } else {
             tagID = camera.getTagId();
