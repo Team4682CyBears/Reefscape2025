@@ -28,6 +28,10 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private final double handoffSpeed = 0.05;
     private final double scoringSpeed = 0.1;
 
+    /**
+     * Creates a new EndEffectorSubsystem.
+     * Initializes the ToF sensors and configures the motor with default settings.
+     */
     public EndEffectorSubsystem() {
         tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
         if (Constants.doubleTOF) {
@@ -36,6 +40,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
         configureMotor();
     }
 
+    /**
+     * Called periodically by the command scheduler.
+     */
     public void periodic() {
         SmartDashboard.putBoolean("TOF DETECTS OBJECT", isBranchDetected());
         if (eeSpeed == EndEffectorSpeed.STOPPED) {
@@ -67,23 +74,44 @@ public class EndEffectorSubsystem extends SubsystemBase {
         eeMotor.setControl(eeJoystickController);
     }
 
+    /**
+     * Stops the end effector motor and sets speed state to STOPPED.
+     */
     public void stop() {
         eeSpeed = EndEffectorSpeed.STOPPED;
         eeMotor.stopMotor();
     }
 
+    /**
+     * Sets the direction of the end effector motion.
+     * 
+     * @param direction The desired direction (CORAL or ALGAE)
+     */
     public void setDirection(EndEffectorDirection direction) {
         eeDirection = direction;
     }
 
+    /**
+     * Sets the speed mode of the end effector.
+     * 
+     * @param speed The desired speed mode (STOPPED, ALGAE, HANDOFF, or SCORING)
+     */
     public void setSpeed(EndEffectorSpeed speed) {
         eeSpeed = speed;
     }
 
+    /**
+     * Checks if a coral branch is detected by any of the ToF sensors.
+     * 
+     * @return true if either ToF sensor detects an object within the threshold distance
+     */
     public boolean isBranchDetected() {
         return tofLeft.isDetected() || (Constants.doubleTOF && tofRight.isDetected());
     }
 
+    /**
+     * Configures the TalonFX motor with settings for the end effector.
+     */
     private void configureMotor() {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
