@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.common.RobotPosesForReef;
@@ -14,9 +12,7 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
@@ -33,7 +29,6 @@ public class AlignWithReefCommand extends Command {
     private CameraSubsystem camera;
 
     private boolean foundReefTag = false;
-    private boolean alreadyRunTrajectory = false;
 
     private double tagID;
 
@@ -71,7 +66,6 @@ public class AlignWithReefCommand extends Command {
     @Override
     public void initialize() {
         foundReefTag = false;
-        alreadyRunTrajectory = false;
         tagID = -1;
         timer.reset();
         timer.start();
@@ -83,60 +77,53 @@ public class AlignWithReefCommand extends Command {
         if (timer.hasElapsed(this.timeoutSeconds)) {
             System.out.println("AlignWithReefCommand Timer has expired. Setting done = true");
             done = true;
-        }
-        if (!alreadyRunTrajectory) {
-            if (foundReefTag) {
-                System.out.println("AlignWithReefCommand found reef tag and calculating trajectory");
-                List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-                        new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
-                        new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(),
-                                new Rotation2d(0)));
+        } else if (foundReefTag) {
+            System.out.println("AlignWithReefCommand found reef tag and calculating trajectory");
+            List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+                    new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
+                    new Pose2d(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation(),
+                            new Rotation2d(0)));
 
-                PathPlannerPath path = new PathPlannerPath(
-                        waypoints,
-                        getPathConstraints(),
-                        null,
-                        new GoalEndState(0.0,
-                                RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation()));
+            PathPlannerPath path = new PathPlannerPath(
+                    waypoints,
+                    getPathConstraints(),
+                    null,
+                    new GoalEndState(0.0,
+                            RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation()));
 
-                PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
-                        drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
+            PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
+                    drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
 
-                if (!Double.isNaN(traj.getTotalTimeSeconds())) {
-                    System.out.println("Trajectory total time: " + traj.getTotalTimeSeconds());
-                    followPathCommand = new FollowPathCommand(
-                            path,
-                            drivetrain::getRobotPosition, // Pose supplier
-                            drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                            (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive
-                                                                                            // the robot given ROBOT
-                                                                                            // RELATIVE ChassisSpeeds.
-                            // We do not currently use the module feedforwards
-                            pathFollower,
-                            drivetrain.getPathPlannerConfig(), // The robot configuration
-                            () -> mirrorPathForRedAliance(),
-                            (Subsystem) drivetrain);
+            if (!Double.isNaN(traj.getTotalTimeSeconds())) {
+                System.out.println("Trajectory total time: " + traj.getTotalTimeSeconds());
+                followPathCommand = new FollowPathCommand(
+                        path,
+                        drivetrain::getRobotPosition, // Pose supplier
+                        drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                        (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive
+                                                                                        // the robot given ROBOT
+                                                                                        // RELATIVE ChassisSpeeds.
+                        // We do not currently use the module feedforwards
+                        pathFollower,
+                        drivetrain.getPathPlannerConfig(), // The robot configuration
+                        () -> mirrorPathForRedAliance(),
+                        (Subsystem) drivetrain);
 
-                    // ParallelCommandGroup commandGroup = new
-                    // ParallelCommandGroup(followPathCommand.withTimeout(timeoutSeconds),
-                    // new StopCommandAfterDelayCommand(timeoutSeconds, followPathCommand));
+                drivetrain.setUseVision(false);
 
-                    drivetrain.setUseVision(false);
+                System.out.println("Scheduling follow Path command!!");
+                followPathCommand.andThen(() -> System.out.println("ENDING FOLLOW PATH COMMAND"))
+                        .andThen(() -> drivetrain.setUseVision(true)).schedule();
 
-                    System.out.println("Scheduling follow Path command!!");
-                    followPathCommand.andThen(()-> System.out.println("ENDING FOLLOW PATH COMMAND")).andThen(()-> drivetrain.setUseVision(true)).schedule();
+                done = true;
 
-                    alreadyRunTrajectory = true;
-                    done = true;
+                System.out.println("followPathCOmmand Status: " + followPathCommand.toString());
+            }
+        } else {
+            tagID = camera.getTagId();
 
-                    System.out.println("followPathCOmmand Status: " + followPathCommand.toString());
-                }
-            } else {
-                tagID = camera.getTagId();
-
-                if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
-                    foundReefTag = true;
-                }
+            if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
+                foundReefTag = true;
             }
         }
     }
