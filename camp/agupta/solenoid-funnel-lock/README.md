@@ -1,7 +1,7 @@
 # README
 
 Intent: Power solenoid to hold the funnel back during climb
-
+- The solenoid can draw up to 3A of current
 
 ### Solenoid 
 
@@ -27,3 +27,7 @@ Specification (source: https://www.amazon.com/uxcell-XRN-0630T-Frame-Solenoid-El
 Calculated
 - Arm retracted - 27mm
 - 
+
+Wires
+- In order to properly create this magnetic flux, the coil must be wired correctly. Electrical polarity means that an electrical circuit has a positive and negative pole. A common question that is asked about solenoid valve coils is whether polarity needs to be considered. The simple answer is that polarity does not matter on solenoid valve coils. Typically, the lead wires will be the same color so you can connect the positive terminal to either of the two wires.   
+- https://www.gemssensors.com/blog/blog-details/solenoid-valve-coil-polarity
