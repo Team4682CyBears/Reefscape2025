@@ -19,6 +19,7 @@ import frc.robot.subsystems.SolenoidSubsystem;
 
 // import wpi libraries
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
@@ -59,15 +60,18 @@ public class RobotContainer {
       subsystems.setSolenoidSubsystem(new SolenoidSubsystem());
 
       // default command for solenoid is to stop
+      /** 
       subsystems.getSolenoidSubsystem().setDefaultCommand(
         new InstantCommand(
           subsystems.getSolenoidSubsystem()::setAllStop, 
           subsystems.getSolenoidSubsystem()));
+          */
       DataLogManager.log("SUCCESS: SolenoidSubsystem");
     } else {
       DataLogManager.log("FAIL: SolenoidSubsystem");
     }
   }
+
 
   /**
    * A method to init the input interfaces

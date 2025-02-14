@@ -9,6 +9,7 @@
 // declare package containing class
 package frc.robot.control;
 
+import edu.wpi.first.wpilibj.Timer;
 // import wpi libraries
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup; // run commands in parallel
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController; // button commands for Xbox controller
@@ -44,7 +45,7 @@ public class ManualInputInterfaces {
       this.bindCommandsToDriverXboxButtons();
     }
   }
-  
+
   /**
    * Will attach commands to the driver Xbox buttons 
    */
@@ -53,15 +54,15 @@ public class ManualInputInterfaces {
     // check if subsystem is available 
     if(this.subsystemCollection.isSolenoidSubsystemAvailable()) { // push while button is pressed
       // sets solenoid to push
-      this.driverController.x().whileTrue(
-        // not used due to both solenoid commands being under same subsystem
+      this.driverController.x().onTrue(
+      // not used due to both solenoid commands being under same subsystem
         new ParallelCommandGroup( // allows different subsystems to run in parallel
           new RunSolenoidCommand( // run solenoid
             this.subsystemCollection.getSolenoidSubsystem(), SolenoidMode.Push)
         )
       );
       // sets solenoid to pull
-      this.driverController.b().whileTrue( // pull while button is pressed
+      this.driverController.b().onTrue( // pull while button is pressed
         new ParallelCommandGroup(
           new RunSolenoidCommand( // run solenoid
             this.subsystemCollection.getSolenoidSubsystem(), SolenoidMode.Pull)

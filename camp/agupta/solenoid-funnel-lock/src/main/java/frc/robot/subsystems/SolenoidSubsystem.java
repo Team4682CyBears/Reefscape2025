@@ -47,9 +47,9 @@ public class SolenoidSubsystem extends SubsystemBase {
     // set configuration
     // https://api.ctr-electronics.com/phoenix/release/java/com/ctre/phoenix/motorcontrol/can/TalonSRX.html
     TalonSRXConfiguration config = new TalonSRXConfiguration(); // create a new config instance
-    config.peakCurrentLimit = 20; // the peak current, in amps
-    config.peakCurrentDuration = 1500; // the time at the peak current before the limit triggers, in ms
-    config.continuousCurrentLimit = 30; // the current to maintain if the peak limit is triggered
+    config.peakCurrentLimit = 3; // the peak current, in amps
+    config.peakCurrentDuration = 2000; // the time at the peak current before the limit triggers, in ms
+    config.continuousCurrentLimit = 3; // the current to maintain if the peak limit is triggered
     solenoid.configAllSettings(config); // apply the config settings; this selects the quadrature encoder
   }
 
@@ -60,9 +60,9 @@ public class SolenoidSubsystem extends SubsystemBase {
   public void setSolenoidMode(SolenoidMode solenoidMode) {
     // If the solenoid mode is changing, stop the solenoid
     // this prevents the solenoid from going from +1 to -1 abruptly
-    if (solenoidMode != this.solenoidMode){
-      setAllStop();
-    }
+    //if (solenoidMode != this.solenoidMode){
+    //  setAllStop();
+    //}
     this.solenoidMode = solenoidMode;
   }
 
@@ -70,6 +70,7 @@ public class SolenoidSubsystem extends SubsystemBase {
    * A method to stop the intake subsystem
    */
   public void setAllStop() {
+    System.out.println("Solenoid Stopped");
     solenoid.set(TalonSRXControlMode.PercentOutput, 0.0);
   }
 
