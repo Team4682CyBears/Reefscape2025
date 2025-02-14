@@ -12,7 +12,7 @@
 package frc.robot.control;
 
 // import local class
-import frc.robot.subsystems.BagSubsystem;
+import frc.robot.subsystems.SolenoidSubsystem;
 
 public class SubsystemCollection {
    
@@ -20,7 +20,7 @@ public class SubsystemCollection {
     private ManualInputInterfaces manualInput = null;
 
     // declaring and init subsystems  
-    private BagSubsystem bagSubsystem = null;
+    private SolenoidSubsystem solenoidSubsystem = null;
 
     /**
      * Default constructor
@@ -32,9 +32,9 @@ public class SubsystemCollection {
     public void setManualInputInterfaces(ManualInputInterfaces value) { manualInput = value; }
     public boolean isManualInputInterfacesAvailable() { return manualInput != null; }
  
-    // bag subsystem
-    // Uses bag motors, so using it for the 
-    public BagSubsystem getBagSubsystem() { return bagSubsystem; }
-    public void setBagSubsystem(BagSubsystem value) { bagSubsystem = value; }
-    public boolean isBagSubsystemAvailable() { return bagSubsystem != null; } // 
+    // solenoid subsystem
+    // Uses solenoid motors, so using it for the 
+    public SolenoidSubsystem getSolenoidSubsystem() { return solenoidSubsystem; }
+    public void setSolenoidSubsystem(SolenoidSubsystem value) { solenoidSubsystem = value; }
+    public boolean isSolenoidSubsystemAvailable() { return solenoidSubsystem != null; } // 
 }

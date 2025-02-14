@@ -15,7 +15,7 @@ package frc.robot;
 import frc.robot.control.InstalledHardware;
 import frc.robot.control.ManualInputInterfaces;
 import frc.robot.control.SubsystemCollection;
-import frc.robot.subsystems.BagSubsystem;
+import frc.robot.subsystems.SolenoidSubsystem;
 
 // import wpi libraries
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -35,8 +35,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    // bag subsystem init
-    this.initializeBagSubsystem();
+    // solenoid subsystem init
+    this.initializeSolenoidSubsystem();
 
     // init the input system 
     this.initializeManualInputInterfaces();
@@ -52,20 +52,20 @@ public class RobotContainer {
   }
 
   /**
-   * A method to init the bag subsystem
+   * A method to init the solenoid subsystem
    */
-  private void initializeBagSubsystem(){
-    if(InstalledHardware.bagInstalled){
-      subsystems.setBagSubsystem(new BagSubsystem());
+  private void initializeSolenoidSubsystem(){
+    if(InstalledHardware.solenoidInstalled){
+      subsystems.setSolenoidSubsystem(new SolenoidSubsystem());
 
-      // default command for bag is to stop
-      subsystems.getBagSubsystem().setDefaultCommand(
+      // default command for solenoid is to stop
+      subsystems.getSolenoidSubsystem().setDefaultCommand(
         new InstantCommand(
-          subsystems.getBagSubsystem()::setAllStop, 
-          subsystems.getBagSubsystem()));
-      DataLogManager.log("SUCCESS: BagSubsystem");
+          subsystems.getSolenoidSubsystem()::setAllStop, 
+          subsystems.getSolenoidSubsystem()));
+      DataLogManager.log("SUCCESS: SolenoidSubsystem");
     } else {
-      DataLogManager.log("FAIL: BagSubsystem");
+      DataLogManager.log("FAIL: SolenoidSubsystem");
     }
   }
 

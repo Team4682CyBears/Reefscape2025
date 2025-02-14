@@ -2,13 +2,13 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Crescendo - 2024
-// File: BagMode.java
-// Intent: Forms enum of directions of the bag motor.
+// File: SolenoidMode.java
+// Intent: Forms enum of directions of the solenoid.
 // ************************************************************
 
 package frc.robot.common;
 
-public enum BagMode{
-    Forward,
-    Reverse
+public enum SolenoidMode{
+    Push,
+    Pull
 }

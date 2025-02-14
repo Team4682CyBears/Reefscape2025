@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Crescendo - 2024
 // File: FeederSubsystem.java
-// Intent: Forms a command to run the bag motor.
+// Intent: Forms a command to run the solenoid
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -16,38 +16,37 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // import local classes
-import frc.robot.common.BagMode;
+import frc.robot.common.SolenoidMode;
 import frc.robot.control.Constants;
-import frc.robot.subsystems.BagSubsystem;
+import frc.robot.subsystems.SolenoidSubsystem;
 
-public class RunBagCommand extends Command
+public class RunSolenoidCommand extends Command
 {
-  private BagSubsystem bag;
-  private BagMode direction; 
+  private SolenoidSubsystem solenoid;
+  private SolenoidMode direction; 
   private boolean done = false;
  
   /** 
-  * Moves bag motor forward
-  * @param bagSubsystem - the bag subsystem
-  * @param bagMode - the direction for the bag
+  * Makes solenoid push
+  * @param solenoidSubsystem - the solenoid subsystem
+  * @param solenoidMode - the direction for the solenoid
   */
 
-  public RunBagCommand(BagSubsystem bagSubsystem, BagMode bagMode)
+  public RunSolenoidCommand(SolenoidSubsystem solenoidSubsystem, SolenoidMode solenoidMode)
   {
-    this.bag = bagSubsystem;
-    this.direction = bagMode;
+    this.solenoid = solenoidSubsystem;
+    this.direction = solenoidMode;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(bag);
+    addRequirements(solenoid);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize()
   {
-    bag.setBagMode(direction); // set direction (forward or back) of motor
-    bag.setBagSpeed(Constants.bagSpeed); // run bag motor
+    solenoid.setSolenoidMode(direction); // set direction (push or pull)
+    solenoid.setSolenoidSpeed(Constants.solenoidSpeed); // run solenoid
     done = false;
-    //DataLogManager.log("Starting RunBagCommand");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,15 +55,7 @@ public class RunBagCommand extends Command
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
-    // Intentionally *not* setting bag speed to 0 here. 
-    if(interrupted)
-    {
-      bag.setAllStop();
-      done = true;      
-    }
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

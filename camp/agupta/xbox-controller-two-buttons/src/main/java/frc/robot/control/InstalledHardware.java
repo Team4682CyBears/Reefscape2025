@@ -1,10 +1,12 @@
 // ***********************************************************
 // Bishop Blanchet Robotics
 // Home of the Cybears
-// FRC - Crescendo - 2024
+// FRC - Reefscape - 2025
 // File: InstalledHardware.java
 // Intent: Forms a listing of switches that will help to debug code better as hardware is available (or not available).
 // ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot.control;
 
@@ -19,7 +21,6 @@ public class InstalledHardware
     // External Input Hardware
     public static final boolean driverXboxControllerInstalled = true;
 
-    // ** -- bag motors on TED robot
-    // Bag Related Hardware
-    public static final boolean bagInstalled = true;
+    // Solenoid Related Hardware
+    public static final boolean solenoidInstalled = true;
 }

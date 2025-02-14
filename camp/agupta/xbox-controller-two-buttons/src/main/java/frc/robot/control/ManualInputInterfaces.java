@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup; // run commands in p
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController; // button commands for Xbox controller
 
 // import local classes
-import frc.robot.commands.RunBagCommand;
-import frc.robot.common.BagMode;
+import frc.robot.commands.RunSolenoidCommand;
+import frc.robot.common.SolenoidMode;
 
 // define class
 public class ManualInputInterfaces {
@@ -51,20 +51,20 @@ public class ManualInputInterfaces {
   private void bindCommandsToDriverXboxButtons(){
 
     // check if subsystem is available 
-    if(this.subsystemCollection.isBagSubsystemAvailable()) { // runs forward while button is pressed
-      // move bag motor forward
+    if(this.subsystemCollection.isSolenoidSubsystemAvailable()) { // push while button is pressed
+      // sets solenoid to push
       this.driverController.x().whileTrue(
-        // not used due to both bag commands being under same subsystem
+        // not used due to both solenoid commands being under same subsystem
         new ParallelCommandGroup( // allows different subsystems to run in parallel
-          new RunBagCommand( // run bag motor
-            this.subsystemCollection.getBagSubsystem(), BagMode.Forward)
+          new RunSolenoidCommand( // run solenoid
+            this.subsystemCollection.getSolenoidSubsystem(), SolenoidMode.Push)
         )
       );
-      // move bag motor in reverse
-      this.driverController.b().whileTrue( // runs backward while button is pressed
+      // sets solenoid to pull
+      this.driverController.b().whileTrue( // pull while button is pressed
         new ParallelCommandGroup(
-          new RunBagCommand( // run bag motor
-            this.subsystemCollection.getBagSubsystem(), BagMode.Reverse)
+          new RunSolenoidCommand( // run solenoid
+            this.subsystemCollection.getSolenoidSubsystem(), SolenoidMode.Pull)
         )
       );
     }
