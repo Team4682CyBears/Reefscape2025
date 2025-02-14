@@ -1,3 +1,13 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: AlignWithReefCommand.java
+// Intent: Forms a to align with an april tag on a reef
+// ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +31,9 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
+/**
+ *  Class to form a command that will align with an april tag on a reef
+ * */
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
     private double timeoutSeconds = 2;
@@ -48,19 +61,15 @@ public class AlignWithReefCommand extends Command {
             new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
     );
 
+    /**
+     * Constructor to make a command to align with an april tag on the reef
+     * @param drivetrainSubsystem - the drivetrain subsystem
+     * @param cameraSubsystem - the camera subsystem
+     */
     public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem) {
         this.drivetrain = drivetrainSubsystem;
 
         this.camera = cameraSubsystem;
-    }
-
-    public AlignWithReefCommand(DrivetrainSubsystem drivetrainSubsystem, CameraSubsystem cameraSubsystem,
-            double timoutSeconds) {
-        this.drivetrain = drivetrainSubsystem;
-
-        this.camera = cameraSubsystem;
-
-        this.timeoutSeconds = timoutSeconds;
     }
 
     @Override
