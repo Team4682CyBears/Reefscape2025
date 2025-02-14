@@ -45,19 +45,7 @@ public class AlignWithBranchCommand extends Command{
 
         // explicitly not requiring the endEffector here because we are using it in a read-only capacity.
         addRequirements(drivetrainSubsystem);
-    }
 
-    /**
-     * Constructor to make the robot aling with a branch
-     * @param drivetrainsubsystem - the drivetrain subsystems
-     * @param endEffector - the end effector subsystem
-     */
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector){
-        this.drivetrain = drivetrainSubsystem;
-        this.endEffector = endEffector;
-
-        // explicitly not requiring the endEffector here because we are using it in a read-only capacity.
-        addRequirements(drivetrainSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -67,13 +55,10 @@ public class AlignWithBranchCommand extends Command{
         timer.start();
         done = false;
 
-        if(alignSide == null){
-            alignSide = drivetrain.getAlignToBranchSide();
-        }
         if(alignSide == AlignToBranchSide.RIGHT){
             chassisSpeeds = new ChassisSpeeds(0.0, -yVelocity, 0.0);
         }
-        else if (alignSide == AlignToBranchSide.LEFT){
+        else{
             chassisSpeeds = new ChassisSpeeds(0.0, yVelocity, 0.0);
         }
     }
