@@ -27,6 +27,7 @@ public class Constants {
     public static final int solenoidCanId = 15;
     // solenoidSpeed is [0.0 .. 1.0]
     public static final double solenoidSpeed = 1.0;
+    public static final double solenoidDuration = 2.0;
 
     public static class OperatorConstants {
         public static final int kDriverControllerPort = 0;

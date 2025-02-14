@@ -70,7 +70,7 @@ public class SolenoidSubsystem extends SubsystemBase {
    * A method to stop the intake subsystem
    */
   public void setAllStop() {
-    System.out.println("Solenoid Stopped");
+    //System.out.println("Solenoid Stopped");
     solenoid.set(TalonSRXControlMode.PercentOutput, 0.0);
   }
 

@@ -60,12 +60,11 @@ public class RobotContainer {
       subsystems.setSolenoidSubsystem(new SolenoidSubsystem());
 
       // default command for solenoid is to stop
-      /** 
       subsystems.getSolenoidSubsystem().setDefaultCommand(
         new InstantCommand(
           subsystems.getSolenoidSubsystem()::setAllStop, 
           subsystems.getSolenoidSubsystem()));
-          */
+
       DataLogManager.log("SUCCESS: SolenoidSubsystem");
     } else {
       DataLogManager.log("FAIL: SolenoidSubsystem");

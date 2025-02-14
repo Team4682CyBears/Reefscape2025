@@ -31,3 +31,5 @@ Calculated
 Wires
 - In order to properly create this magnetic flux, the coil must be wired correctly. Electrical polarity means that an electrical circuit has a positive and negative pole. A common question that is asked about solenoid valve coils is whether polarity needs to be considered. The simple answer is that polarity does not matter on solenoid valve coils. Typically, the lead wires will be the same color so you can connect the positive terminal to either of the two wires.   
 - https://www.gemssensors.com/blog/blog-details/solenoid-valve-coil-polarity
+- If the operate time is too long,the electromagnet temperature will rise. Too high temperature can affect the life of the electromagnet.
+- https://www.harfington.com/products/p-1080817 
