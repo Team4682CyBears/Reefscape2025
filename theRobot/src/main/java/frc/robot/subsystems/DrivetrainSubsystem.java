@@ -36,6 +36,7 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.common.MotorUtils;
 import frc.robot.common.VisionMeasurement;
+import frc.robot.common.AlignToBranchSide;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -61,6 +62,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private CameraSubsystem cameraSubsystem;
 
   private boolean useVision = true;
+
+  private AlignToBranchSide alignToBranchSide = AlignToBranchSide.RIGHT;
 
   private boolean furtherThanAMeter = false;
 
@@ -219,6 +222,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void setUseVision(boolean shouldUseVision) {
     this.useVision = shouldUseVision;
+  }
+
+  /**
+   * a method that sets the sidey ou want to align to on the branch
+   * @param alignToBranchSide - LEFT or RIGHt depending on which side you want to align to
+   */
+  public void setAlignToBranchSide(AlignToBranchSide alignToBranchSide){
+    this.alignToBranchSide = alignToBranchSide;
+  }
+
+  /**
+   * a method that returns the alignToBranchSide
+   * @return
+   */
+  public AlignToBranchSide getAlignToBranchSide(){
+    return this.alignToBranchSide;
   }
 
   /**
