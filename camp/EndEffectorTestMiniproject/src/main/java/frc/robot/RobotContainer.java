@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ClearAlgaeCommand;
 import frc.robot.commands.HandoffCoralCommand;
@@ -22,10 +24,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
+    StopEndEffectorCommand stopEndEffectorCommand = new StopEndEffectorCommand(endEffectorSubsystem);
+    endEffectorSubsystem.setDefaultCommand(stopEndEffectorCommand);
 
     driverController.y().whileTrue(new ClearAlgaeCommand(endEffectorSubsystem));
     driverController.b().onTrue(new HandoffCoralCommand(endEffectorSubsystem));
     driverController.a().whileTrue(new ScoreCoralCommand(endEffectorSubsystem));
+    driverController.x().onTrue(stopEndEffectorCommand);
   }
 }

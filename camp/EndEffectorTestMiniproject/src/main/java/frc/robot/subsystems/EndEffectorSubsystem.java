@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.common.EndEffectorDirection;
@@ -23,9 +24,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
 
-    private final double algaeSpeed = 0.05;
-    private final double handoffSpeed = 0.05;
-    private final double scoringSpeed = 0.05;
+    private final double algaeSpeed = 0.3;
+    private final double handoffSpeed = 0.1;
+    private final double scoringSpeed = 0.3;
 
     public EndEffectorSubsystem() {
         tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
@@ -36,6 +37,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
+        SmartDashboard.putBoolean("TOF DETECTS OBJECT", isBranchDetected());
         if (eeSpeed == EndEffectorSpeed.STOPPED) {
             eeMotor.stopMotor();
             return;
