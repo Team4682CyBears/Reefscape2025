@@ -78,7 +78,12 @@ public class RobotPosesForReef {
         // scale the directional vector by its own magnitude and then divide by the actual offset distance we desire
         Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReef);
         // add the offset vector to the tag to get the destination coordinates
-        Translation2d destination = tagCoordinate.plus(offsetVector);   
-        return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
+        Translation2d destination = tagCoordinate.plus(offsetVector);
+        if(isRed){   
+            return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
+        }
+        else {
+            return new Pose2d(destination, tagPose.getRotation());
+        }
     }
 }
