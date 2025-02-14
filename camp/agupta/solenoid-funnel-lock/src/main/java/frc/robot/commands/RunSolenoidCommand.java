@@ -60,6 +60,9 @@ public class RunSolenoidCommand extends Command
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute(){
+    if(timer.isRunning() ==false){
+      timer.reset();
+    }
     solenoid.setSolenoidMode(direction); // set direction (push or pull)
     solenoid.setSolenoidSpeed(Constants.solenoidSpeed); // run solenoid
     if (timer.get() >= 2){
@@ -72,6 +75,7 @@ public class RunSolenoidCommand extends Command
   @Override
   public void end(boolean interrupted) {
     System.out.println(timer.get());
+    timer.reset();
     timer.stop();
     solenoid.setAllStop();
 
