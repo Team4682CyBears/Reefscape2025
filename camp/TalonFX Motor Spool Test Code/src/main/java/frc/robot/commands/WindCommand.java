@@ -7,6 +7,7 @@ public class WindCommand extends Command {
     TalonMotorSubsystem motorSubsystem;
 
     public WindCommand(TalonMotorSubsystem motorSubsystem) {
+        System.out.println("----public WindCommand(TalonMotorSubsystem motorSubsystem) in WindCommand.java is running----");
         this.motorSubsystem = motorSubsystem;
         
         addRequirements(motorSubsystem);
@@ -14,11 +15,13 @@ public class WindCommand extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("----public void initialize() in WindCommand.java is running----");
         motorSubsystem.spinMotor(-0.4);
     }
 
     @Override
     public boolean isFinished() {
+        System.out.println("----public boolean isFinished() in WindCommand.java is running----");
         return false;
     }
 }

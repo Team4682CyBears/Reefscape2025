@@ -8,6 +8,7 @@ public class StopCommand extends Command {
     TalonMotorSubsystem motorSubsystem;
 
     public StopCommand(TalonMotorSubsystem motorSubsystem) {
+        System.out.println("----public StopCommand(TalonMotorSubsystem motorSubsysstem) in StopCommand.java is running----");
         this.motorSubsystem = motorSubsystem;
         
         addRequirements(motorSubsystem);
@@ -15,11 +16,13 @@ public class StopCommand extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("----public void initialize() in StopCommand.java is running----");
         motorSubsystem.motorStop();
     }
 
     @Override
     public boolean isFinished() {
+        System.out.println("----public isFinished in StopCommand.java is running----");
         return false;
     }
 }

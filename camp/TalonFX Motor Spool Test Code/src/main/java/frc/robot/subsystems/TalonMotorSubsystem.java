@@ -60,7 +60,7 @@ public class TalonMotorSubsystem extends SubsystemBase {
 
     public void spinMotor(double speedRpm){
         //Sets speed to a specific state for testing
-        motorTalonDutyOut.Output = 0.4;
+        motorTalonDutyOut.Output = speedRpm;
         talonMotor.setControl(this.motorTalonDutyOut);
         System.out.println(" variable speed is " + speedRpm);
         //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
@@ -81,6 +81,7 @@ public class TalonMotorSubsystem extends SubsystemBase {
 
     private void configureMotor(){
         // Config motor
+        System.out.println("!!!!!!!! CONFIGURING MOTOR !!!!!!!!");
         motorTalonMotorConfiguration = new TalonFXConfiguration(); 
         motorTalonMotorConfiguration.MotorOutput.NeutralMode = this.motorTargetNeutralModeValue;
         motorTalonMotorConfiguration.MotorOutput.withDutyCycleNeutralDeadband(kMinDeadband);
