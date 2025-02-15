@@ -60,23 +60,30 @@ public class TalonMotorSubsystem extends SubsystemBase {
 
     public void spinMotor(double speedRpm){
         //Sets speed to a specific state for testing
-        motorTalonDutyOut.Output = speedRpm;
-        talonMotor.setControl(this.motorTalonDutyOut);
+        this.speedRpm = speedRpm;
         System.out.println(" variable speed is " + speedRpm);
-        //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
     }
 
     public void motorStop(){
         //stop voltage
-        speedRpm = 0;
-        motorTalonDutyOut.Output = 0;
-        talonMotor.setControl(this.motorTalonDutyOut);
+        this.speedRpm = 0;
         System.out.println("Motor stopped");
     }
     
     public double getSpeed(){
         //return speed
         return talonMotor.getVelocity().getValueAsDouble();
+    }
+
+    public void periodic(){
+        if (speedRpm != 0){
+            motorTalonDutyOut.Output = speedRpm;
+            talonMotor.setControl(this.motorTalonDutyOut);
+            //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
+        }
+        else {
+            talonMotor.stopMotor();            
+        }
     }
 
     private void configureMotor(){

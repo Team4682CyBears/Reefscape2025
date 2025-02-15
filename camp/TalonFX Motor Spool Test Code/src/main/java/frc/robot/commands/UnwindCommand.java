@@ -15,10 +15,13 @@ public class UnwindCommand extends Command {
 
     @Override
     public void initialize() {
+    }
+
+    @Override
+    public void execute(){
         System.out.println("----public void initialize() in UnwindCommand.java is running----");
         motorSubsystem.spinMotor(0.4);
     }
-
     @Override
     public boolean isFinished() {
         return false;

@@ -15,6 +15,10 @@ public class WindCommand extends Command {
 
     @Override
     public void initialize() {
+    }
+
+    @Override
+    public void execute(){
         System.out.println("----public void initialize() in WindCommand.java is running----");
         motorSubsystem.spinMotor(-0.4);
     }

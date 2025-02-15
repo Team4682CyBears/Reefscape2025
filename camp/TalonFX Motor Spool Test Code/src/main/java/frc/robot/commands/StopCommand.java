@@ -16,6 +16,10 @@ public class StopCommand extends Command {
 
     @Override
     public void initialize() {
+    }
+
+    @Override
+    public void execute(){
         System.out.println("----public void initialize() in StopCommand.java is running----");
         motorSubsystem.motorStop();
     }
