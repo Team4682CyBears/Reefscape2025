@@ -29,8 +29,8 @@ public class AlignWithBranchCommand extends Command{
     private Supplier<AlignToBranchSide> alignSidSupplier;
     private boolean done = false;
     private Timer timer = new Timer();
-    private double durationSeconds = 1;
-    private double yVelocity = .6;
+    private double durationSeconds = 2;
+    private double yVelocity = .4;
     private ChassisSpeeds chassisSpeeds;
     
     /**

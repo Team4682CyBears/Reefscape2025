@@ -14,6 +14,11 @@ public class EndEffectorSubsystem extends SubsystemBase{
 
     }
 
+    public void periodic(){
+        tofLeft.publishTelemetery();
+        tofRight.publishTelemetery();
+    }
+
     /**
      * A method that returns true if either ToF detects something in range
      * @return - if somehthing detected by either ToF is in range

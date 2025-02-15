@@ -34,8 +34,8 @@ public class ManualInputInterfaces {
    * The constructor to build this 'manual input' conduit
    */
   public ManualInputInterfaces(SubsystemCollection currentCollection) {
-    subsystemCollection.setAlignWithBranchDirection(new AlignWithBranchDirection());
     subsystemCollection = currentCollection;
+    currentCollection.setAlignWithBranchDirection(new AlignWithBranchDirection());
   }
 
   /**
@@ -177,15 +177,14 @@ public class ManualInputInterfaces {
                     this.subsystemCollection.getCameraSubsystem()),
                 new ButtonPressCommand("driverController.a()", "Align with reef command")));
 
-        this.driverController.a().onTrue(
+        this.driverController.b().onTrue(
             new ParallelCommandGroup(
-                new SequentialCommandGroup(
                     new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(),
-                        this.subsystemCollection.getCameraSubsystem()),
+                        this.subsystemCollection.getCameraSubsystem()).andThen(
                     new AlignWithBranchCommand(this.subsystemCollection.getDriveTrainSubsystem(),
                         this.subsystemCollection.getEndEffectorSubsystem(),
                         () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide())),
-                new ButtonPressCommand("driverController.a()", "Align with reef command")));
+                new ButtonPressCommand("driverController.b()", "Align with reef command then align with branch")));
 
         this.driverController.povLeft().onTrue(
             new ParallelCommandGroup(

@@ -43,6 +43,8 @@ public class AlignWithReefCommand extends Command {
 
     private boolean foundReefTag = false;
 
+    private boolean alreadyInitializedCommand = false;
+
     private double tagID;
 
     FollowPathCommand followPathCommand;
@@ -76,6 +78,7 @@ public class AlignWithReefCommand extends Command {
     public void initialize() {
         System.out.println("Starting AlignWithReefCommand.!!!!!!!!!!!!!!!");
         foundReefTag = false;
+        alreadyInitializedCommand = false;
         tagID = -1;
         timer.reset();
         timer.start();
@@ -87,7 +90,7 @@ public class AlignWithReefCommand extends Command {
         if (timer.hasElapsed(this.timeoutSeconds)) {
             System.out.println("AlignWithReefCommand Timer has expired. Setting done = true");
             done = true;
-        } else if (foundReefTag) {
+        } else if (foundReefTag && !alreadyInitializedCommand) {
             System.out.println("AlignWithReefCommand found reef tag and calculating trajectory");
             List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                     new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
@@ -124,29 +127,43 @@ public class AlignWithReefCommand extends Command {
                 drivetrain.setUseVision(false);
 
                 System.out.println("Scheduling follow Path command!!");
-                followPathCommand.andThen(() -> System.out.println("ENDING FOLLOW PATH COMMAND"))
-                        .andThen(() -> drivetrain.setUseVision(true)).schedule();
+                followPathCommand.andThen(() -> System.out.println("ENDING FOL LOW PATH COMMAND"))
+                        .andThen(() -> drivetrain.setUseVision(true));
 
-                done = true;
+                followPathCommand.initialize();
+
+                alreadyInitializedCommand = true;
+
+                timer.reset();
+
+                timeoutSeconds = traj.getTotalTimeSeconds();
             } else {
                 System.out.println("PATH HAD NAN TIME !!!!!! ");
             }
-        } else {
+        } else if (!alreadyInitializedCommand){
             tagID = camera.getTagId();
 
             if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
                 foundReefTag = true;
             }
+        } else {
+            followPathCommand.execute();
         }
     }
 
     @Override
     public boolean isFinished() {
+        if(alreadyInitializedCommand){
+            return followPathCommand.isFinished();
+        }
         return done;
     }
 
     @Override
     public void end(boolean interrupted) {
+        if(alreadyInitializedCommand){
+            followPathCommand.end(interrupted);
+        }
         System.out.println("Ending AlignWithReefCommand!!");
         if (interrupted) {
             System.out.println("AlignWithReefCommand was interrupted.");
