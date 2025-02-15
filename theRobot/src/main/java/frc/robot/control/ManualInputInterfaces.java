@@ -173,18 +173,14 @@ public class ManualInputInterfaces {
 
         this.driverController.a().onTrue(
             new ParallelCommandGroup(
-                new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(),
-                    this.subsystemCollection.getCameraSubsystem()),
-                new ButtonPressCommand("driverController.a()", "Align with reef command")));
-
+                new AlignWithReefCommand(this.subsystemCollection, false),
+                    new ButtonPressCommand("driverController.a()", "Align with reef command")));
+        
         this.driverController.b().onTrue(
             new ParallelCommandGroup(
-                    new AlignWithReefCommand(this.subsystemCollection.getDriveTrainSubsystem(),
-                        this.subsystemCollection.getCameraSubsystem()).andThen(
-                    new AlignWithBranchCommand(this.subsystemCollection.getDriveTrainSubsystem(),
-                        this.subsystemCollection.getEndEffectorSubsystem(),
-                        () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide())),
+                new AlignWithReefCommand(this.subsystemCollection, true),
                 new ButtonPressCommand("driverController.b()", "Align with reef command then align with branch")));
+            
 
         this.driverController.povLeft().onTrue(
             new ParallelCommandGroup(
