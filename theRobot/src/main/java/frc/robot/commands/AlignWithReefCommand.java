@@ -112,6 +112,7 @@ public class AlignWithReefCommand extends Command {
                 if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
                     stage = Stage.GETTINGVALIDPATH;
                 }
+                break;
             case GETTINGVALIDPATH:
                 List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                         new Pose2d(drivetrain.getRobotPosition().getTranslation(), new Rotation2d(0)),
@@ -127,7 +128,8 @@ public class AlignWithReefCommand extends Command {
                 PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
                         drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
 
-                if (!Double.isNaN(traj.getTotalTimeSeconds())) {
+                //We cant run a path shorter than .5meters this is "intended" by path planner
+                if (!Double.isNaN(traj.getTotalTimeSeconds()) && drivetrain.getRobotPosition().getTranslation().getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) >= 0.5){
                     followPathCommand = new FollowPathCommand(
                             path,
                             drivetrain::getRobotPosition, // Pose supplier
@@ -143,6 +145,7 @@ public class AlignWithReefCommand extends Command {
 
                     stage = Stage.DRIVINGCOMMAND;
                 }
+                break;
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
 
@@ -156,6 +159,7 @@ public class AlignWithReefCommand extends Command {
                         .schedule();
 
                 done = true;
+                break;
         }
     }
 
