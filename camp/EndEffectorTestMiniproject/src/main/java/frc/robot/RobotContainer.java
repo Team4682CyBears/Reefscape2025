@@ -29,7 +29,7 @@ public class RobotContainer {
     endEffectorSubsystem.setDefaultCommand(stopEndEffectorCommand);
 
     driverController.y().whileTrue(new ClearAlgaeCommand(endEffectorSubsystem));
-    driverController.b().onTrue(new HandoffCoralCommand(endEffectorSubsystem));
+    driverController.b().whileTrue(new HandoffCoralCommand(endEffectorSubsystem));
     driverController.a().whileTrue(new ScoreCoralCommand(endEffectorSubsystem));
     driverController.x().onTrue(stopEndEffectorCommand);
   }

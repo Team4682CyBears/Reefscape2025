@@ -11,7 +11,8 @@ public final class Constants {
   public static final int tofRightCanID = 15;
   public static final double tofDetectionThresholdInches = 20.0;
 
-  public static final boolean doubleTOF = false;
+  public static final boolean leftTOFEnabled = false;
+  public static final boolean rightTOFEnabled = false;
 
   public static final double motorSupplyCurrentMaximumAmps = 50.0;
 

@@ -18,23 +18,25 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private TalonFX eeMotor = new TalonFX(Constants.eeMotorCANID);
     private final DutyCycleOut eeJoystickController = new DutyCycleOut(0.0);
 
-    private final ToFDetector tofLeft;
+    private ToFDetector tofLeft;
     private ToFDetector tofRight;
 
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
 
-    private final double algaeSpeed = 0.1;
-    private final double handoffSpeed = 0.05;
-    private final double scoringSpeed = 0.1;
+    private final double algaeSpeed = 0.20;
+    private final double handoffSpeed = 0.20;
+    private final double scoringSpeed = 0.20;
 
     /**
      * Creates a new EndEffectorSubsystem.
      * Initializes the ToF sensors and configures the motor with default settings.
      */
     public EndEffectorSubsystem() {
-        tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
-        if (Constants.doubleTOF) {
+        if (Constants.leftTOFEnabled) {
+            tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
+        }
+        if (Constants.rightTOFEnabled) {
             tofRight = new ToFDetector(Constants.tofRightCanID, Constants.tofDetectionThresholdInches);
         }
         configureMotor();
@@ -65,12 +67,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
                 return;
         }
 
-        // TODO:
+        int scalar = 1;
+
         if (eeDirection == EndEffectorDirection.ALGAE) {
-            motorSpeed = -motorSpeed;
+            scalar = -1;
         }
 
-        eeJoystickController.withOutput(motorSpeed);
+        eeJoystickController.withOutput(motorSpeed * scalar);
         eeMotor.setControl(eeJoystickController);
     }
 
@@ -106,7 +109,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
      * @return true if either ToF sensor detects an object within the threshold distance
      */
     public boolean isBranchDetected() {
-        return tofLeft.isDetected() || (Constants.doubleTOF && tofRight.isDetected());
+        return (Constants.leftTOFEnabled && tofLeft.isDetected()) || (Constants.rightTOFEnabled && tofRight.isDetected());
     }
 
     /**
