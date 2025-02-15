@@ -21,7 +21,6 @@ public class WindCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        System.out.println("----public boolean isFinished() in WindCommand.java is running----");
         return false;
     }
 }

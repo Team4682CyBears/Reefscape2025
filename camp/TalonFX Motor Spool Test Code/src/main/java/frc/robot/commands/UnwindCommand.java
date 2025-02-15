@@ -21,7 +21,6 @@ public class UnwindCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        System.out.println("----public boolean isFinished() in UnwindCommand.java is running----");
         return false;
     }
 }

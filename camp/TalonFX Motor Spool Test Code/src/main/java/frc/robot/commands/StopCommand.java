@@ -22,7 +22,6 @@ public class StopCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        System.out.println("----public isFinished in StopCommand.java is running----");
         return false;
     }
 }
