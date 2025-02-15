@@ -64,11 +64,9 @@ public class RobotPosesForReef {
         else{
             return new Pose2d();
         }
-        System.out.println("Is Red: " + isRed);
 
         tagCoordinate = tagPose.getTranslation();
         Translation2d directionalVec;
-        System.out.println("Tag coordinates: " + tagCoordinate);
 
         // the direction of the offset vector is the same as the direction from the reef center to the tag. 
         if(isRed) {
@@ -80,8 +78,12 @@ public class RobotPosesForReef {
         // scale the directional vector by its own magnitude and then divide by the actual offset distance we desire
         Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReef);
         // add the offset vector to the tag to get the destination coordinates
-        Translation2d destination = tagCoordinate.plus(offsetVector);   
-        System.out.println("Destination coordinates: " + destination);
-        return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
+        Translation2d destination = tagCoordinate.plus(offsetVector);
+        if(isRed){   
+            return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
+        }
+        else {
+            return new Pose2d(destination, tagPose.getRotation());
+        }
     }
 }
