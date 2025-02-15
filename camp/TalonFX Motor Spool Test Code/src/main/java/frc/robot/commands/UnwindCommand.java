@@ -7,16 +7,18 @@ public class UnwindCommand extends Command {
     TalonMotorSubsystem motorSubsystem;
 
     public UnwindCommand(TalonMotorSubsystem motorSubsystem) {
+        // Setup
         System.out.println("----public UnwindCommand(TalonMotorSubsystem motorSubsystem) in UnwindCommand.java is running----");
-        this.motorSubsystem = motorSubsystem;
+        this.motorSubsystem = motorSubsystem; // Creates a local instance of motorSubsystem
         
-        addRequirements(motorSubsystem);
+        addRequirements(motorSubsystem); // Adds motorSubsystem as a requirement
     }
 
     @Override
     public void initialize() {
+        // The actual command. Sets speedRpm to 0.4 for the purpose of making the motor spin clockwise
         System.out.println("----public void initialize() in UnwindCommand.java is running----");
-        motorSubsystem.spinMotor(0.4);
+        motorSubsystem.spinMotor(0.4); // Calls on the spinMotor command in TalonMotorSubsystem and sets speedRpm to 0.4
     }
 
     @Override
