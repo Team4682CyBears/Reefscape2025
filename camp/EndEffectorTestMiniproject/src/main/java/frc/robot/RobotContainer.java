@@ -23,6 +23,7 @@ public class RobotContainer {
     configureBindings();
   }
 
+  // Configure inputs for the EndEffector
   private void configureBindings() {
     StopEndEffectorCommand stopEndEffectorCommand = new StopEndEffectorCommand(endEffectorSubsystem);
     endEffectorSubsystem.setDefaultCommand(stopEndEffectorCommand);
