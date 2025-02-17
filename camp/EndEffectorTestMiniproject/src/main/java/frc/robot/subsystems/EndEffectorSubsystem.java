@@ -54,13 +54,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
         double motorSpeed;
         switch (eeSpeed) {
             case ALGAE:
-                motorSpeed = algaeSpeed;
+                motorSpeed = SmartDashboard.getNumber("Algae Speed", algaeSpeed);
                 break;
             case HANDOFF:
-                motorSpeed = handoffSpeed;
+                motorSpeed = SmartDashboard.getNumber("Handoff Speed", handoffSpeed);
                 break;
             case SCORING:
-                motorSpeed = scoringSpeed;
+                motorSpeed = SmartDashboard.getNumber("Scoring Speed", scoringSpeed);
                 break;
             default:
                 // Only happens when eeSpeed is invalid
