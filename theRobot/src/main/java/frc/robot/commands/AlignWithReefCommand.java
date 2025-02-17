@@ -144,11 +144,12 @@ public class AlignWithReefCommand extends Command {
                             (Subsystem) drivetrain);
 
                     stage = Stage.DRIVINGCOMMAND;
+                    System.out.println(waypoints);
                 }
                 break;
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
-
+                
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
                                 new AlignWithBranchCommand(drivetrain,
@@ -157,6 +158,7 @@ public class AlignWithReefCommand extends Command {
                                 new InstantCommand(),
                                 () -> shouldAlignBranch))
                         .schedule();
+                
 
                 done = true;
                 break;

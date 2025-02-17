@@ -4,20 +4,21 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.control.Constants;
+import edu.wpi.first.math.util.Units;
 
 public class RobotPosesForReef {
-    private static Pose2d tag6 = new Pose2d(4.700446000000001, -0.7196820000000002, Rotation2d.fromDegrees(-60));
-    private static Pose2d tag7 = new Pose2d(5.116498, -0.00009999999999976694, Rotation2d.fromDegrees(0));
-    private static Pose2d tag8 = new Pose2d(4.700446000000001, 0.7194820000000002, Rotation2d.fromDegrees(60));
-    private static Pose2d tag9 = new Pose2d( 3.869358, 0.7194820000000002, Rotation2d.fromDegrees(120));
-    private static Pose2d tag10 = new Pose2d(3.4533059999999995, -0.00009999999999976694, Rotation2d.fromDegrees(180));
-    private static Pose2d tag11 = new Pose2d(3.869358, -0.7196820000000002, Rotation2d.fromDegrees(-120));
-    private static Pose2d tag17 = new Pose2d(-4.700094, -0.7196820000000002, Rotation2d.fromDegrees(60));
-    private static Pose2d tag18 = new Pose2d(-5.116399999999999,  -0.00009999999999976694, Rotation2d.fromDegrees(0));
-    private static Pose2d tag19 = new Pose2d(-4.700094, 0.7194820000000002, Rotation2d.fromDegrees(-60));
-    private static Pose2d tag20 = new Pose2d(-3.8692599999999997, 0.7194820000000002, Rotation2d.fromDegrees(-120));
-    private static Pose2d tag21 = new Pose2d(-3.452953999999999, -0.00009999999999976694, Rotation2d.fromDegrees(180));
-    private static Pose2d tag22 = new Pose2d(-3.8692599999999997, -0.7196820000000002, Rotation2d.fromDegrees(120));
+    private static Pose2d tag6 = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-60));
+    private static Pose2d tag7 = new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
+    private static Pose2d tag8 = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(60));
+    private static Pose2d tag9 = new Pose2d( Units.inchesToMeters(497.77), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(120));
+    private static Pose2d tag10 = new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
+    private static Pose2d tag11 = new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-120));
+    private static Pose2d tag17 = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60));
+    private static Pose2d tag18 = new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
+    private static Pose2d tag19 = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60));
+    private static Pose2d tag20 = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120));
+    private static Pose2d tag21 = new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
+    private static Pose2d tag22 = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120));
     // TODO rather than storing this in an array, should store it in a hashmap
     // If you stored it in two hash maps (one for red and one for blue), 
     // you could use the presence of it to also know which side you are on without having to do the tag comparison below

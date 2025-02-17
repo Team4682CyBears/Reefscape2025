@@ -36,10 +36,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class RobotContainer {
 
   private SubsystemCollection subsystems = new SubsystemCollection();
-  //private final AutonomousChooser autonomousChooser;
+  private AutonomousChooser autonomousChooser;
 
   public RobotContainer() {
-    
 
     // init the data logging
     this.initializeDataLogging();
@@ -65,7 +64,7 @@ public class RobotContainer {
 
 
     AutonomousChooser.configureAutoBuilder(subsystems);
-    //autonomousChooser  = new AutonomousChooser(subsystems);
+    autonomousChooser  = new AutonomousChooser(subsystems);
 
 
     // Configure the button bindings
@@ -125,8 +124,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new AllStopCommand(this.subsystems);
-    //return autonomousChooser.getCommand();
+    return autonomousChooser.getCommand();
   }
 
    /**
@@ -176,8 +174,8 @@ public class RobotContainer {
       subsystems.getDriveTrainSubsystem().setDefaultCommand(
         new DefaultDriveCommand(
           subsystems.getDriveTrainSubsystem(),
-          () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-          () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
           ));
     }

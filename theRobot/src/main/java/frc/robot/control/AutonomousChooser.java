@@ -11,6 +11,8 @@
 package frc.robot.control;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -19,6 +21,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import frc.robot.commands.AlignWithReefCommand;
 import frc.robot.commands.ButtonPressCommand;
 import frc.robot.commands.UseFusedVisionInAutoCommand;
 
@@ -31,6 +34,8 @@ public class AutonomousChooser {
 
     private Command twoNote;
     private Command doNothing;
+    private Command TestAutoPlanner;
+    private Command TestAutoCommand;
 
     /**
      * Constructor for AutonomousChooser
@@ -46,12 +51,16 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.TWONOTE);
-            autonomousPathChooser.addOption("Do Nothing", AutonomousPath.DONOTHING);
+            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.DONOTHING);
+            autonomousPathChooser.addOption("Do Nothing", AutonomousPath.TWONOTE);
+            autonomousPathChooser.addOption("Test Planner", AutonomousPath.TESTAUTOPLANNER);
+            autonomousPathChooser.addOption("Test Command", AutonomousPath.TESTAUTOCOMMAND);
             SmartDashboard.putData(autonomousPathChooser);
 
             this.twoNote = getTwoNote();
             this.doNothing = getDoNothing();
+            this.TestAutoCommand = getTestAutoCommand();
+            this.TestAutoPlanner = getTestAutoPlanner();
 
         } else {
             DataLogManager.log(">>>>> NO auto routine becuase missing subsystems");
@@ -69,6 +78,10 @@ public class AutonomousChooser {
                 return this.twoNote;
             case DONOTHING:
                 return this.doNothing;
+            case TESTAUTOCOMMAND:
+                return this.TestAutoCommand;
+            case TESTAUTOPLANNER:
+                return this.TestAutoPlanner;
         }
         return new InstantCommand();
     }
@@ -97,9 +110,19 @@ public class AutonomousChooser {
         return AutoBuilder.buildAuto("DoNothing");
     }
 
+    private Command getTestAutoCommand() {
+        return AutoBuilder.buildAuto("TestAutoCommand");
+    }
+
+    private Command getTestAutoPlanner(){
+        return AutoBuilder.buildAuto("TestAutoPlanner");
+    }
+
     private enum AutonomousPath {
         TWONOTE,
-        DONOTHING
+        DONOTHING,
+        TESTAUTOCOMMAND,
+        TESTAUTOPLANNER
     }
 
     /**
@@ -108,7 +131,7 @@ public class AutonomousChooser {
      * @param subsystems
      */
     public static void configureAutoBuilder(SubsystemCollection subsystems) {
-        /*PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+        PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
                 new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
                 new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
                 
@@ -118,13 +141,13 @@ public class AutonomousChooser {
                 subsystems.getDriveTrainSubsystem()::getRobotPosition, // Pose supplier
                 subsystems.getDriveTrainSubsystem()::setRobotPosition, // Position setter
                 subsystems.getDriveTrainSubsystem()::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().drive(speeds), // Method that will drive
+                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().driveRobotCentric(speeds), // Method that will drive
                                                                                              // the robot given ROBOT
                                                                                              // RELATIVE
                 // ChassisSpeeds
                 pathFollower,
                 subsystems.getDriveTrainSubsystem().getPathPlannerConfig(),
-                () -> false,
+                () -> getShouldMirrorPath(),
                 subsystems.getDriveTrainSubsystem());
 
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
@@ -138,7 +161,12 @@ public class AutonomousChooser {
                     new ParallelCommandGroup(
                             new ButtonPressCommand("PathPlanner", "FeedNote"),
                             new InstantCommand())); // TODO populate with real command
+            NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
         }
-        */
+        
+    }
+
+    public static boolean getShouldMirrorPath(){
+        return DriverStation.getAlliance().get() == Alliance.Red;
     }
 }

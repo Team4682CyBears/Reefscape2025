@@ -109,6 +109,13 @@ public class ManualInputInterfaces {
         DataLogManager.log("FINISHED registering back button to zero navx ... ");
       }
 
+      this.driverController.y().onTrue(
+        new ParallelCommandGroup(
+            new InstantCommand(() -> this.subsystemCollection.getDriveTrainSubsystem().seedRobotPositionFromVision()),
+            new ButtonPressCommand("driverController.y()", "seed botpose from vision")
+        )
+        );
+
       // x button press will stop all
       this.driverController.x().onTrue(
           new ParallelCommandGroup(

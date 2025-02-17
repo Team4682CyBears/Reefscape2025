@@ -99,8 +99,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // we use a high variance for the camera yaw because we don't want it to
   // override
   // the odometry yaw, which comes from the very accurate IMU
-  private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 10 });
-  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { .1, .1, 0.1 });
+  private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 100 });
+  private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { .1, .1, 0.01 });
 
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -121,7 +121,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
   private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
   /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
-  private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
+  private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.kZero;
   /* Keep track if we've ever applied the operator perspective before or not */
   private boolean m_hasAppliedOperatorPerspective = false;
 
@@ -290,14 +290,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
       }
       //TODO validate this at test field
       //When disabled countinually set the botpose to what the vision says
+      
       Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-      if (visionBotPose != null) {
-        this.setRobotPosition(visionBotPose);
+      Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
+      if (visionBotPose != null && visonBotPoseOrb != null) {
+        Pose2d combinedBotPose = new Pose2d(visionBotPose.getTranslation(), visonBotPoseOrb.getRotation());
+        if(DriverStation.getAlliance().get() == Alliance.Red){
+          this.setRobotPosition(new Pose2d(combinedBotPose.getTranslation(), combinedBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
+        }
+        else {
+          this.setRobotPosition(combinedBotPose);
+        }
       }
   }
 
     // update robot position with vision
-    if (InstalledHardware.limelightInstalled) {
+    if (InstalledHardware.limelightInstalled && DriverStation.isEnabled()) {
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
     }
 
@@ -375,6 +383,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void zeroRobotPosition() {
     this.setRobotPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+  }
+
+  public void seedRobotPositionFromVision(){
+    Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
+      if (visionBotPose != null) {
+        if(DriverStation.getAlliance().get() == Alliance.Blue){
+          this.setRobotPosition(new Pose2d(visionBotPose.getTranslation(), visionBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
+        }
+        else {
+          this.setRobotPosition(visionBotPose);
+        }
+      }
   }
 
   /**

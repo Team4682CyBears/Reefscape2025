@@ -21,6 +21,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.common.VisionMeasurement;
+import frc.robot.control.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.DistanceMeasurement;
 
@@ -40,7 +41,8 @@ public class CameraSubsystem extends SubsystemBase {
   private final int fieldSpaceYIndex = 1;
   private final int botRotationIndex = 5;
   private final int noTagInSightId = -1;
-  private String botPoseSource = "botpose";
+  private String botPoseSource = "botpose_wpiblue";
+  private String botPoseOrbSource = "botpose_orb_wpiblue";
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   /**
    * a constructor for the camera subsystem class
@@ -56,6 +58,22 @@ public class CameraSubsystem extends SubsystemBase {
   public VisionMeasurement getVisionBotPose(){
     double tagId = this.table.getEntry("tid").getDouble(noTagInSightId);
     NetworkTableEntry botposeEntry = this.table.getEntry(botPoseSource);
+    VisionMeasurement visionMeasurement = new VisionMeasurement(null, 0.0);
+
+    if (botposeEntry.exists() && tagId != noTagInSightId){
+      double[] botpose = botposeEntry.getDoubleArray(new double[this.BotposeDoubleArraySize]);
+      Double timestamp = (botposeEntry.getLastChange() / this.microsecondsInSeconds) - (botpose[this.latencyIndex]/this.milisecondsInSeconds);
+      Translation2d botTranslation = new Translation2d(botpose[this.fieldSpaceXIndex], botpose[this.fieldSpaceYIndex]);
+      Rotation2d botYaw = Rotation2d.fromDegrees(botpose[this.botRotationIndex]);
+      Pose2d realRobotPosition = new Pose2d(botTranslation, botYaw);
+      visionMeasurement = new VisionMeasurement(realRobotPosition, timestamp);
+    }
+    return visionMeasurement;
+  }
+
+  public VisionMeasurement getVisionBotPoseOrb(){
+    double tagId = this.table.getEntry("tid").getDouble(noTagInSightId);
+    NetworkTableEntry botposeEntry = this.table.getEntry(botPoseOrbSource);
     VisionMeasurement visionMeasurement = new VisionMeasurement(null, 0.0);
 
     if (botposeEntry.exists() && tagId != noTagInSightId){
@@ -144,12 +162,17 @@ public class CameraSubsystem extends SubsystemBase {
     }
   }
 
+  public static Pose2d translateLimelightPoseToWPIBlue(Pose2d LLPose){
+    return new Pose2d(LLPose.getTranslation().plus(new Translation2d(Constants.limelightToWPIBlueXOffest, Constants.limelightToWPIBlueYOffset)),
+                       LLPose.getRotation());
+  }
+
   /**
    * A method to run during periodic for the camera subsystem
    * it displays camera-based position to the shuffleboard
    */
   @Override
   public void periodic() {
-    
   }
 }
+    
