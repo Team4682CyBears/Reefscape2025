@@ -24,9 +24,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
 
-    private final double algaeSpeed = 0.5;
-    private final double handoffSpeed = 0.5;
-    private final double scoringSpeed = 0.5;
+    private final double algaeSpeed = 0.2;
+    private final double handoffSpeed = 0.3;
+    private final double scoringSpeed = 0.4;
 
     /**
      * Creates a new EndEffectorSubsystem.
