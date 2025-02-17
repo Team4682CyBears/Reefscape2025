@@ -14,6 +14,8 @@ public final class Constants {
   public static final boolean leftTOFEnabled = false;
   public static final boolean rightTOFEnabled = false;
 
+  public static final double motorStatorCurrentMaximumAmps = 100.0;
+
   public static final double motorSupplyCurrentMaximumAmps = 50.0;
 
   public static final int kDriverControllerPort = 0;
