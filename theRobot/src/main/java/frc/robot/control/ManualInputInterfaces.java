@@ -94,13 +94,13 @@ public class ManualInputInterfaces {
      */
     private void bindCommandsToDriverXboxButtons() {
         if (InstalledHardware.driverXboxControllerInstalled) {
-
             if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
                 // Back button zeros the gyroscope (as in zero yaw)
                 this.driverController.back().onTrue(
                         new ParallelCommandGroup(
                                 new InstantCommand(
-                                        subsystemCollection.getDriveTrainSubsystem()::zeroGyroscope),
+                                        subsystemCollection
+                                                .getDriveTrainSubsystem()::zeroGyroscope),
                                 new ButtonPressCommand(
                                         "driverController.back()",
                                         "zero gyroscope")));
@@ -123,43 +123,47 @@ public class ManualInputInterfaces {
                                     "driverController.leftBumper()",
                                     "Remove Algae")));
 
-            this.driverController.leftBumper().onTrue(
-                    new ParallelCommandGroup(
-                            new InstantCommand(), // TODO: Fill with real command
-                            new ButtonPressCommand(
-                                    "driverController.leftBumper()",
-                                    "Remove Algae")));
-
+            // Enable pit limiter
             this.driverController.leftTrigger().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(
-                                    subsystemCollection.getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
-                                    subsystemCollection.getDriveTrainPowerSubsystem()),
+                                    subsystemCollection
+                                            .getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
+                                    subsystemCollection
+                                            .getDriveTrainPowerSubsystem()),
                             new ButtonPressCommand(
                                     "driverController.leftTrigger()",
-                                    "ramp down to reduced speed (Pit Limiter)")));
+                                    "ramp down to reduced speed")));
 
+            // Disable pit limiter
             this.driverController.leftTrigger().onFalse(
                     new ParallelCommandGroup(
                             new InstantCommand(
-                                    subsystemCollection.getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
-                                    subsystemCollection.getDriveTrainPowerSubsystem()),
+                                    subsystemCollection
+                                            .getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
+                                    subsystemCollection
+                                            .getDriveTrainPowerSubsystem()),
                             new ButtonPressCommand(
                                     "driverController.leftTrigger()",
-                                    "ramp up to default speed (Pit Limiter)")));
+                                    "ramp up to default speed")));
 
+            // Align to branch for scoring
             this.driverController.a().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "driverController.a()",
                                     "Align to branch")));
+
+            // Align to reef for scoring
             this.driverController.b().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "driverController.b()",
                                     "Align to reef")));
+
+            // Shoot coral with EndEffector
             this.driverController.y().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
@@ -183,42 +187,45 @@ public class ManualInputInterfaces {
                             new ButtonPressCommand(
                                     "coDriverController.x()",
                                     "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
+
+            // Move elevator to selected level (L1-L4)
             this.coDriverController.y().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.y()",
                                     "Move to position")));
-            this.coDriverController.b().onTrue(
-                    new ParallelCommandGroup(
-                            new InstantCommand(), // TODO: Fill with real command
-                            new ButtonPressCommand(
-                                    "coDriverController.b()",
-                                    "Collapse Funnel")));
+
+            // Move elevator to lowest height
             this.coDriverController.a().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.a()",
                                     "Stow elevator")));
+
+            // Change target elevator position to L1 (Does not actually move the elevator)
             this.coDriverController.povLeft().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.povLeft()",
                                     "L1")));
+            // Change target elevator position to L2 (Does not actually move the elevator)
             this.coDriverController.povDown().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.povDown()",
                                     "L2")));
+            // Change target elevator position to L3 (Does not actually move the elevator)
             this.coDriverController.povRight().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.povRight()",
                                     "L3")));
+            // Change target elevator position to L4 (Does not actually move the elevator)
             this.coDriverController.povUp().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
@@ -226,26 +233,32 @@ public class ManualInputInterfaces {
                                     "coDriverController.povUp()",
                                     "L4")));
 
-            Trigger doubleButtonTrigger = new Trigger(() -> this.coDriverController.leftBumper().getAsBoolean()
-                    && this.coDriverController.b().getAsBoolean());
+            // Collapse the funnel when both Left Bumper and B are pressed
+            Trigger doubleButtonTrigger = new Trigger(
+                    () -> this.coDriverController.leftBumper().getAsBoolean()
+                            && this.coDriverController.b().getAsBoolean());
             doubleButtonTrigger.onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.leftBumper()",
                                     "Collapse Funnel")));
+
             this.coDriverController.rightBumper().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.rightBumper()",
                                     "Reel Climber")));
+
+            // Change alignment mode to left
             this.coDriverController.leftTrigger().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
                             new ButtonPressCommand(
                                     "coDriverController.leftTrigger()",
                                     "Align Left")));
+            // Change alignment mode to right
             this.coDriverController.rightBumper().onTrue(
                     new ParallelCommandGroup(
                             new InstantCommand(), // TODO: Fill with real command
