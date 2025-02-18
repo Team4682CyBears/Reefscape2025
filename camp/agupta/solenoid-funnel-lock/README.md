@@ -24,6 +24,9 @@ Specification (source: https://www.amazon.com/uxcell-XRN-0630T-Frame-Solenoid-El
 - Size: 30 x 16 x 19mm/1.18" x 0.63" x 0.75"(L*W*H)
 - As an actuating element of anmation equipment, because the current is large, the single cycle can not be electrified for a long time. The best operate time is in 2 seconds. 
 
+Controller:
+- https://www.vexrobotics.com/217-8080.html
+
 Calculated
 - Arm retracted - 27mm
 - 
