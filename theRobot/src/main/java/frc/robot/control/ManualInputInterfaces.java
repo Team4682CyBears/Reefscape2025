@@ -256,6 +256,14 @@ public class ManualInputInterfaces {
                                 new ButtonPressCommand(
                                         "coDriverController.rightBumper()",
                                         "Reel Climber")));
+
+                // TODO: Change button binding
+                this.coDriverController.rightBumper().onFalse(
+                        new ParallelCommandGroup(
+                                new InstantCommand(), // TODO: Fill with real command
+                                new ButtonPressCommand(
+                                        "coDriverController.rightBumper()",
+                                        "Unreel Climber")));
             }
 
             // Change alignment mode to left (changes the align with branch settings)
