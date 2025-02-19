@@ -53,6 +53,8 @@ public class RobotContainer {
     
     driverController.b().whileTrue(new WindCommand(this.climberSubsystem)); // Binds the "b" button to the backwards command.
     driverController.a().whileTrue(new UnwindCommand(this.climberSubsystem)); // Binds the "a" button to the forward command.
+    driverController.x().whileTrue(new (this.climberSubsystem));
+    driverController.y().whileTrue(new (this.climberSubsystem));
 
     //this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     
