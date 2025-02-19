@@ -25,6 +25,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -43,7 +45,6 @@ public class TalonMotorSubsystem extends SubsystemBase {
     private TalonFXConfiguration motorTalonMotorConfiguration = null;
 
     // values found through manual system characterization using Phoenix Tuner X.
-    @SuppressWarnings("unused")
     private double speedRpm = 0.0;
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Brake;
     private static final double kMinDeadband = 0.001;
@@ -59,13 +60,17 @@ public class TalonMotorSubsystem extends SubsystemBase {
 
     public void spinMotor(double speedRpm){
         //Sets speed to a specific state for testing
-        this.speedRpm = speedRpm;
+        motorTalonDutyOut.Output = 0.4;
+        talonMotor.setControl(this.motorTalonDutyOut);
         System.out.println(" variable speed is " + speedRpm);
+        //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
     }
 
     public void motorStop(){
         //stop voltage
-        this.speedRpm = 0;
+        speedRpm = 0;
+        motorTalonDutyOut.Output = 0;
+        talonMotor.setControl(this.motorTalonDutyOut);
         System.out.println("Motor stopped");
     }
     
@@ -74,20 +79,8 @@ public class TalonMotorSubsystem extends SubsystemBase {
         return talonMotor.getVelocity().getValueAsDouble();
     }
 
-    public void periodic(){
-        if (speedRpm != 0){
-            motorTalonDutyOut.Output = speedRpm;
-            talonMotor.setControl(this.motorTalonDutyOut);
-            //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
-        }
-        else {
-            talonMotor.stopMotor();            
-        }
-    }
-
     private void configureMotor(){
         // Config motor
-        System.out.println("!!!!!!!! CONFIGURING MOTOR !!!!!!!!");
         motorTalonMotorConfiguration = new TalonFXConfiguration(); 
         motorTalonMotorConfiguration.MotorOutput.NeutralMode = this.motorTargetNeutralModeValue;
         motorTalonMotorConfiguration.MotorOutput.withDutyCycleNeutralDeadband(kMinDeadband);

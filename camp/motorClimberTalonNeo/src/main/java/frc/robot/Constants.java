@@ -14,12 +14,10 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0; // Sets the controller port to 0
+    public static final int kDriverControllerPort = 0;
   }
-
-<<<<<<< HEAD
-  public static final int motorCanID = 3;
-=======
-  public static final int motorCanID = 1; // Sets the motor's canID
->>>>>>> 1520e6510ce2b170224525aa64c1afdc211a1e2d
+  // climber constants
+  public static final int climberMotorCanId = 13;
+ 
+  public static final int motorCanID = 1;
 }
