@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.common.TestTrajectories;
 import frc.robot.common.LEDState;
+import frc.robot.common.RobotPosesForReef;
 import frc.robot.control.InstalledHardware;
 import frc.robot.control.ManualInputInterfaces;
 import frc.robot.control.SubsystemCollection;
@@ -79,8 +80,15 @@ public class RobotContainer {
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();
 
-    if (subsystems.isDriveTrainSubsystemAvailable()) {
+    if (subsystems.isDriveTrainSubsystemAvailable() || true) {
       TestTrajectories testtrajectories = new TestTrajectories();
+
+      SmartDashboard.putData("One Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Two Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Three Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
       /* 
       SmartDashboard.putData("Basic Forward",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
@@ -121,6 +129,11 @@ public class RobotContainer {
         new ChassisSpeeds(0.6, 0.0, 0.0),
         3.0));
     }
+
+    // TODO remove this debug code!!
+    // just wanting to execute it to see printouts. 
+    RobotPosesForReef.getPoseFromTagIDWithOffset(18);
+
   }
 
   public Command getAutonomousCommand() {

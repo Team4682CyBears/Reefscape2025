@@ -15,8 +15,6 @@ public class EndEffectorSubsystem extends SubsystemBase{
     }
 
     public void periodic(){
-        tofLeft.publishTelemetery();
-        tofRight.publishTelemetery();
     }
 
     /**

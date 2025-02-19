@@ -66,7 +66,7 @@ public class AlignWithReefCommand extends Command {
     // private double maxVelocityMPS =
     // DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
     private double maxVelocityMPS = 5.3;
-    private double maxAccelerationPMSSq = 4; // 6.0 max
+    private double maxAccelerationPMSSq = 3.5; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
 
@@ -144,7 +144,8 @@ public class AlignWithReefCommand extends Command {
                             (Subsystem) drivetrain);
 
                     stage = Stage.DRIVINGCOMMAND;
-                    System.out.println(waypoints);
+                    System.out.println(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation());
+                    System.out.println(drivetrain.getRobotPosition().getTranslation());
                 }
                 break;
             case DRIVINGCOMMAND:

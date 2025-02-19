@@ -66,20 +66,35 @@ public class RobotPosesForReef {
             return new Pose2d();
         }
 
+        System.out.println("Getting PoseFromTagIDWithOffset for tag " + tagID);
+
+        System.out.println("Tag Pose " + tagPose);
+        System.out.println("isRed " + isRed);
+
         tagCoordinate = tagPose.getTranslation();
         Translation2d directionalVec;
 
         // the direction of the offset vector is the same as the direction from the reef center to the tag. 
         if(isRed) {
             directionalVec = tagCoordinate.minus(redReefCenter);
+            System.out.println("Using Red Reef center " + redReefCenter);
         }
         else {
             directionalVec = tagCoordinate.minus(blueReefCenter);
+            System.out.println("Using Blue Reef center " + blueReefCenter);
         }
+
+        System.out.println("directionalVec" + directionalVec);
+
         // scale the directional vector by its own magnitude and then divide by the actual offset distance we desire
-        Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReef);
+        Translation2d offsetVector = directionalVec.div(directionalVec.getNorm()).times(Constants.alignDistanceFromReefMeters);
+
         // add the offset vector to the tag to get the destination coordinates
         Translation2d destination = tagCoordinate.plus(offsetVector);
+        System.out.println("Destination " + destination);
+
+
+        // TODO change this function to use the drivetrain's operator perspective variable. 
         if(isRed){   
             return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
         }
