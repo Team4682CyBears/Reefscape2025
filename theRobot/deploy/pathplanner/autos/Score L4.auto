@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start To Reef 1"
+            "pathName": "Start To Reef 2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L3"
+            "name": "L4"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Reef 1 To Intake"
+            "pathName": "Reef 2 To Far Intake"
           }
         },
         {
@@ -43,19 +43,61 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Intake To Reef 6"
+            "pathName": "Far Intake To Reef 4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L3"
+            "name": "L1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef 4 To Far Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Piece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Far Intake To Reef 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stow"
           }
         }
       ]
