@@ -249,23 +249,6 @@ public class ManualInputInterfaces {
                                         "Collapse Funnel")));
             }
 
-            if (false) { // TODO: Check if climber is installed
-                this.coDriverController.rightBumper().onTrue(
-                        new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
-                                new ButtonPressCommand(
-                                        "coDriverController.rightBumper()",
-                                        "Reel Climber")));
-
-                // TODO: Change button binding
-                this.coDriverController.rightBumper().onFalse(
-                        new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
-                                new ButtonPressCommand(
-                                        "coDriverController.rightBumper()",
-                                        "Unreel Climber")));
-            }
-
             // Change alignment mode to left (changes the align with branch settings)
             this.coDriverController.leftTrigger().onTrue(
                     new ParallelCommandGroup(
