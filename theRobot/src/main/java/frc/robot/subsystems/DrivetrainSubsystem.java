@@ -28,6 +28,7 @@ import static frc.robot.control.Constants.*;
 
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
+import frc.robot.LimelightHelpers;
 import frc.robot.Telemetry;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
@@ -292,15 +293,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
       //When disabled countinually set the botpose to what the vision says
       
       Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-      Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
-      if (visionBotPose != null && visonBotPoseOrb != null) {
-        Pose2d combinedBotPose = new Pose2d(visionBotPose.getTranslation(), visonBotPoseOrb.getRotation());
-        if(DriverStation.getAlliance().get() == Alliance.Red){
-          this.setRobotPosition(new Pose2d(combinedBotPose.getTranslation(), combinedBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
-        }
-        else {
-          this.setRobotPosition(combinedBotPose);
-        }
+      
+      if (visionBotPose != null) {
+        LimelightHelpers.SetRobotOrientation("", visionBotPose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
+        if(visonBotPoseOrb != null){
+          Pose2d combinedBotPose = new Pose2d(visionBotPose.getTranslation(), visonBotPoseOrb.getRotation());
+          if(DriverStation.getAlliance().get() == Alliance.Red){
+            this.setRobotPosition(new Pose2d(combinedBotPose.getTranslation(), combinedBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
+          }
+          else {
+            this.setRobotPosition(combinedBotPose);
+          }
+      }
       }
   }
 
