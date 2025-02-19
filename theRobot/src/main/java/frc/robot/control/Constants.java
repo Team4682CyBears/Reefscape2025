@@ -99,6 +99,6 @@ public final class Constants {
     public static final int eeTofRightCanID = 21;
 
     // Climber
-    public static final int climberMotor1CanID = 22;
-    public static final int climberMotor2CanID = 23;
+    public static final int climberMotorCanID = 22;
+    public static final int funnelMotorCanID = 23;
 }
