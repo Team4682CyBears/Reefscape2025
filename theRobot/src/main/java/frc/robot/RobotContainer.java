@@ -109,11 +109,6 @@ public class RobotContainer {
         new ChassisSpeeds(0.6, 0.0, 0.0),
         3.0));
     }
-
-    // TODO remove this debug code!!
-    // just wanting to execute it to see printouts. 
-    RobotPosesForReef.getPoseFromTagIDWithOffset(18);
-
   }
 
   public Command getAutonomousCommand() {

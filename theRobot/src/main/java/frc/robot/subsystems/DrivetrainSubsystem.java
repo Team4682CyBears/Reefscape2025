@@ -10,6 +10,8 @@
 package frc.robot.subsystems;
 
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -18,7 +20,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
 import frc.robot.LimelightHelpers;
-import frc.robot.Telemetry;
+import frc.robot.generated.Telemetry;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.Telemetry;

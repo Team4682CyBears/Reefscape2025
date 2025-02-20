@@ -70,11 +70,7 @@ public final class Constants {
 
     // ******************************************************************
     // camera constants
-<<<<<<< HEAD
     public static final boolean useFusedVisionInAuto = true;
-=======
-    public static final boolean useFusedVisionInAuto = false;
->>>>>>> main
     public static final double autoUseFusedVisionDuration = 15.0;
 
     // Distance from center of the robot to the reef tag.
