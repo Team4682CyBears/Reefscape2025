@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Reefscape - 2025
 // File: EndEffectorSubsystem.java
-// Intent: Subsystem for EndEffector to score coral
+// Intent: Subsystem for EndEffector which scores coral and clears algae
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
