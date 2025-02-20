@@ -2,8 +2,8 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: NoteTofSensor.java
-// Intent: Subsystem for ToF sensor to detect when note enters its range
+// File: ToFDetector.java
+// Intent: Subsystem for ToF sensor to detect when object enters area
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 

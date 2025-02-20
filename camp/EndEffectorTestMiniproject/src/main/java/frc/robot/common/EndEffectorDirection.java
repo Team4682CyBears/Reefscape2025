@@ -11,6 +11,6 @@
 package frc.robot.common;
 
 public enum EndEffectorDirection {
-    ALGAE, // TBD
-    CORAL // TBD
+    ALGAE, // Direction for picking up algae. Moves the wheels in direction of the elevator
+    CORAL // Direction for scoring coral. Move in opposite direction of the elevator
 }

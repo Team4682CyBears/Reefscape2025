@@ -11,7 +11,7 @@
 package frc.robot.common;
 
 public enum EndEffectorSpeed {
-    ALGAE, // TBD
+    ALGAE, // Don't know if this needs to be slow or fast
     HANDOFF, // Slow (We do need to worry about loosing the piece)
     SCORING, // Fast (We don't need to worry about loosing the piece)
     STOPPED // Stopped
