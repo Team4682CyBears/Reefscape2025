@@ -24,7 +24,7 @@ public class StopEndEffectorCommand extends Command {
      */
     public StopEndEffectorCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
-        addRequirements(subsystem);
+        addRequirements(endEffector);
     }
 
     /**

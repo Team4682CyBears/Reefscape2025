@@ -26,7 +26,7 @@ public class ScoreCoralCommand extends Command {
      */
     public ScoreCoralCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
-        addRequirements(subsystem);
+        addRequirements(endEffector);
     }
 
     /**

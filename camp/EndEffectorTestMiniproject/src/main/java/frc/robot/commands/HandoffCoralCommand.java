@@ -29,7 +29,7 @@ public class HandoffCoralCommand extends Command {
      */
     public HandoffCoralCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
-        addRequirements(subsystem);
+        addRequirements(endEffector);
     }
 
     /**

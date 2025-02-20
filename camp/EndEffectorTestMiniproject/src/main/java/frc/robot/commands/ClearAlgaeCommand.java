@@ -26,7 +26,7 @@ public class ClearAlgaeCommand extends Command {
      */
     public ClearAlgaeCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
-        addRequirements(subsystem); // Ensure no other command uses this subsystem simultaneously
+        addRequirements(endEffector); // Ensure no other command uses this subsystem simultaneously
     }
 
     /**

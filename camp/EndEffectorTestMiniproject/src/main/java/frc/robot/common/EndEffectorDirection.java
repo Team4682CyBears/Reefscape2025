@@ -11,6 +11,6 @@
 package frc.robot.common;
 
 public enum EndEffectorDirection {
-    ALGAE,
-    CORAL
+    ALGAE, // TBD
+    CORAL // TBD
 }
