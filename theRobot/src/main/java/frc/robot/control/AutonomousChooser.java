@@ -52,7 +52,6 @@ public class AutonomousChooser {
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
             autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.DONOTHING);
-            autonomousPathChooser.addOption("Do Nothing", AutonomousPath.TWONOTE);
             autonomousPathChooser.addOption("Test Planner", AutonomousPath.TESTAUTOPLANNER);
             autonomousPathChooser.addOption("Test Command", AutonomousPath.TESTAUTOCOMMAND);
             SmartDashboard.putData(autonomousPathChooser);

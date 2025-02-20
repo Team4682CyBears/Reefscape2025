@@ -12,6 +12,8 @@ package frc.robot;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 
+import java.util.*;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -33,6 +35,7 @@ import frc.robot.control.Constants;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 
 public class RobotContainer {
 
@@ -74,8 +77,6 @@ public class RobotContainer {
       this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
       DataLogManager.log(">>>> Finished initializing button bindings.");
     }
-
-    SmartDashboard.putData("COmmand scheduler", CommandScheduler.getInstance());
     
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();

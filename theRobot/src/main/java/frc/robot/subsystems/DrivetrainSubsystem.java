@@ -65,7 +65,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean furtherThanAMeter = false;
 
-  private boolean displayOdometryDiagnostics = true;
+  private boolean displayOdometryDiagnostics = false;
+
+  private Timer timer = new Timer();
+
 
   StructArrayPublisher<SwerveModuleState> publisher;
 
@@ -103,6 +106,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private Matrix<N3, N1> visionStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { 0.7, 0.7, 100 });
   private Matrix<N3, N1> odometryStdDev = MatBuilder.fill(Nat.N3(), Nat.N1(), new double[] { .1, .1, 0.01 });
 
+  private ArrayList<Double> recentVisionYaws = new ArrayList<Double>();
+  private int recentVisionYawsMaxSize = 15;
+
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private double speedReductionFactor = 1.0;
@@ -122,7 +128,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
   private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
   /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
-  private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.kZero;
+  private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
   /* Keep track if we've ever applied the operator perspective before or not */
   private boolean m_hasAppliedOperatorPerspective = false;
 
@@ -133,6 +139,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if(InstalledHardware.limelightInstalled){
       cameraSubsystem = subsystems.getCameraSubsystem();
     }
+
+    timer.reset();
+    timer.start();
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -279,7 +288,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * occurs during testing.
      */
     if (DriverStation.isDisabled()) {
-
       if (!m_hasAppliedOperatorPerspective){
         DriverStation.getAlliance().ifPresent(allianceColor -> {
           drivetrain.setOperatorPerspectiveForward(
@@ -292,22 +300,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       //TODO validate this at test field
       //When disabled countinually set the botpose to what the vision says
       
-      Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-      
-      if (visionBotPose != null) {
-        LimelightHelpers.SetRobotOrientation("", visionBotPose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
-        if(visonBotPoseOrb != null){
-          Pose2d combinedBotPose = new Pose2d(visionBotPose.getTranslation(), visonBotPoseOrb.getRotation());
-          if(DriverStation.getAlliance().get() == Alliance.Red){
-            this.setRobotPosition(new Pose2d(combinedBotPose.getTranslation(), combinedBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
-          }
-          else {
-            this.setRobotPosition(combinedBotPose);
-          }
-      }
-      }
-  }
+      this.seedRobotPositionFromVision();
+    }
 
     // update robot position with vision
     if (InstalledHardware.limelightInstalled && DriverStation.isEnabled()) {
@@ -390,16 +384,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
     this.setRobotPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
 
-  public void seedRobotPositionFromVision(){
+  public void seedRobotPositionFromVision() {
     Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-      if (visionBotPose != null) {
-        if(DriverStation.getAlliance().get() == Alliance.Blue){
-          this.setRobotPosition(new Pose2d(visionBotPose.getTranslation(), visionBotPose.getRotation().rotateBy(Rotation2d.k180deg)));
-        }
-        else {
-          this.setRobotPosition(visionBotPose);
-        }
+
+    if (visionBotPose != null) {
+      recentVisionYaws.add(visionBotPose.getRotation().getDegrees());
+      while(recentVisionYaws.size() > recentVisionYawsMaxSize){
+        recentVisionYaws.remove(0);
       }
+      LimelightHelpers.SetRobotOrientation("", getMedianOfList(recentVisionYaws), 0, 0, 0, 0, 0);
+      Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
+      if (visonBotPoseOrb != null) {
+        Pose2d combinedBotPose = new Pose2d(visonBotPoseOrb.getTranslation(), Rotation2d.fromDegrees(getMedianOfList(recentVisionYaws)));
+        this.setRobotPosition(combinedBotPose);
+      }
+    }
+  }
+
+  public Double getMedianOfList(ArrayList<Double> list){
+    ArrayList<Double> modifiedList = new ArrayList<Double>(list);
+    Collections.sort(modifiedList);
+    return modifiedList.get((int)(modifiedList.size()/2));
   }
 
   /**
