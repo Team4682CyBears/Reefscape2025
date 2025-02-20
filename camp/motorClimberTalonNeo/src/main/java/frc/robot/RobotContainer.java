@@ -8,7 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.UnwindCommand;
 import frc.robot.commands.WindCommand;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.NeoMotorSubsystem;
 import frc.robot.subsystems.TalonMotorSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,9 +23,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   private final TalonMotorSubsystem talonMotorSubsystem = new TalonMotorSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final NeoMotorSubsystem neoMotorSubsystem = new NeoMotorSubsystem();
+
+  // The robot's subsystems and commands are defined here...
 
   // create instance of xbox controller
   private final CommandXboxController driverController =
@@ -49,10 +50,10 @@ public class RobotContainer {
   private void configureBindings() {
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
-    this.climberSubsystem.setDefaultCommand(new StopCommand(this.climberSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
+    this.neoMotorSubsystem.setDefaultCommand(new StopCommand(this.neoMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     
-    driverController.b().whileTrue(new WindCommand(this.climberSubsystem)); // Binds the "b" button to the backwards command.
-    driverController.a().whileTrue(new UnwindCommand(this.climberSubsystem)); // Binds the "a" button to the forward command.
+    driverController.b().whileTrue(new WindCommand(this.neoMotorSubsystem)); // Binds the "b" button to the backwards command.
+    driverController.a().whileTrue(new UnwindCommand(this.neoMotorSubsystem)); // Binds the "a" button to the forward command.
 
     //this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     

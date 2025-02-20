@@ -25,9 +25,6 @@
 
 package frc.robot.subsystems;
 
-
-import java.util.Random;
-
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 //import com.revrobotics.spark.SparkBase.IdleMode;
@@ -39,11 +36,11 @@ import frc.robot.Constants;
 //import frc.robot.control.InstalledHardware;
 
 
-public class ClimberSubsystem extends SubsystemBase {
+public class NeoMotorSubsystem extends SubsystemBase {
     //configurtition for the motor begins here
     private SparkMax climberMotor = null;//
 
-    public ClimberSubsystem() {
+    public NeoMotorSubsystem() {
 
         climberMotor = new SparkMax(Constants.climberMotorCanId, MotorType.kBrushless);
     }
@@ -63,5 +60,4 @@ public class ClimberSubsystem extends SubsystemBase {
   public void setAllStop() {
     climberMotor.set(0.0);
   }
-
 }

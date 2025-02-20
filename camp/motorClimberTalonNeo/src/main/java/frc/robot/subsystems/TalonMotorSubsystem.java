@@ -25,8 +25,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -45,6 +43,7 @@ public class TalonMotorSubsystem extends SubsystemBase {
     private TalonFXConfiguration motorTalonMotorConfiguration = null;
 
     // values found through manual system characterization using Phoenix Tuner X.
+    @SuppressWarnings("unused")
     private double speedRpm = 0.0;
     private NeutralModeValue motorTargetNeutralModeValue = NeutralModeValue.Brake;
     private static final double kMinDeadband = 0.001;
