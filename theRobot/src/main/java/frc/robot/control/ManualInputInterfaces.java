@@ -156,7 +156,8 @@ public class ManualInputInterfaces {
                                     "driverController.x()",
                                     "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-            if (false) { // TODO: Check if end effector and elevator is enabled
+            if (this.subsystemCollection.isElevatorSubsystemAvailable()
+                    && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
                 this.driverController.leftBumper().onTrue(
                         new ParallelCommandGroup(
                                 new InstantCommand(), // TODO: Fill with real command
@@ -189,7 +190,7 @@ public class ManualInputInterfaces {
                                     "coDriverController.x()",
                                     "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-            if (false) { // TODO: Check if elevator is enabled
+            if (this.subsystemCollection.isElevatorSubsystemAvailable()) {
                 // Move elevator to selected level (L1-L4)
                 this.coDriverController.y().onTrue(
                         new ParallelCommandGroup(
@@ -236,7 +237,7 @@ public class ManualInputInterfaces {
                                         "Set target elevator position to L4")));
             }
 
-            if (false) { // TODO: Check if funnel is installed
+            if (this.subsystemCollection.isFunnelSubsystemAvailable()) {
                 // Collapse the funnel when both Left Bumper and B are pressed
                 Trigger doubleButtonTrigger = new Trigger(
                         () -> this.coDriverController.leftBumper().getAsBoolean()
