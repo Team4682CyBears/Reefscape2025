@@ -36,4 +36,14 @@ public class StopEndEffectorCommand extends Command {
         // Stop all end effector motion
         endEffector.stop();
     }
+
+    /**
+     * Check if the command is finished. StopEndEffectorCommand should continuously
+     * run so this should be just return false
+     *
+     * @return whether the command has finished.
+     */
+    public boolean isFinished() {
+        return false;
+    }
 }

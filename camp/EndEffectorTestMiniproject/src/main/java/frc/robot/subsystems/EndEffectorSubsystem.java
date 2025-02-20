@@ -26,7 +26,7 @@ import frc.robot.common.ToFDetector;
 
 public class EndEffectorSubsystem extends SubsystemBase {
     private TalonFX eeMotor = new TalonFX(Constants.eeMotorCanId);
-    private final DutyCycleOut eeJoystickController = new DutyCycleOut(0.0);
+    private final DutyCycleOut eeDutyCycle = new DutyCycleOut(0.0);
 
     private ToFDetector tofLeft;
     private ToFDetector tofRight;
@@ -37,6 +37,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private final double algaeSpeed = 0.2;
     private final double handoffSpeed = 0.3;
     private final double scoringSpeed = 0.4;
+
+    private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
 
     /**
      * Creates a new EndEffectorSubsystem.
@@ -83,8 +85,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
             scalar = -1;
         }
 
-        eeJoystickController.withOutput(motorSpeed * scalar);
-        eeMotor.setControl(eeJoystickController);
+        eeDutyCycle.withOutput(motorSpeed * scalar);
+        eeMotor.setControl(eeDutyCycle);
     }
 
     /**
@@ -138,7 +140,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimit = Constants.motorSupplyCurrentMaximumAmps;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        config.MotorOutput.Inverted = motorOutputInverted;
 
         StatusCode response = eeMotor.getConfigurator().apply(config);
         if (!response.isOK()) {
