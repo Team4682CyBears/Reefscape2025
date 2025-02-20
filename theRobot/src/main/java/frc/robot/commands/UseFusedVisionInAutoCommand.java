@@ -60,7 +60,7 @@ public class UseFusedVisionInAutoCommand extends Command
   @Override
   public void end(boolean interrupted)
   {
-    drivetrainSubsystem.setUseVision(true);
+    drivetrainSubsystem.setUseVision(false);
     if(interrupted)
     {
     done = true;      

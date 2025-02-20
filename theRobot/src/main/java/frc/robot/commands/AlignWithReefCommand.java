@@ -91,7 +91,6 @@ public class AlignWithReefCommand extends Command {
 
     @Override
     public void initialize() {
-        System.out.println("Starting AlignWithReefCommand.!!!!!!!!!!!!!!!");
         stage = Stage.LOOKINGFORTAG;
         tagID = -1;
         timer.reset();
@@ -102,7 +101,6 @@ public class AlignWithReefCommand extends Command {
     @Override
     public void execute() {
         if (timer.hasElapsed(this.timeoutSeconds)) {
-            System.out.println("AlignWithReefCommand Timer has expired. Setting done = true");
             done = true;
         }
         switch (stage) {
@@ -144,8 +142,6 @@ public class AlignWithReefCommand extends Command {
                             (Subsystem) drivetrain);
 
                     stage = Stage.DRIVINGCOMMAND;
-                    System.out.println(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation());
-                    System.out.println(drivetrain.getRobotPosition().getTranslation());
                 }
                 break;
             case DRIVINGCOMMAND:
@@ -173,15 +169,16 @@ public class AlignWithReefCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("Ending AlignWithReefCommand!!");
         if (interrupted) {
-            System.out.println("AlignWithReefCommand was interrupted.");
             done = true;
         }
         drivetrain.setUseVision(true);
-        System.out.println("Comppled closout of AlignWithReefCommand!!");
     }
 
+    /**
+   * A method to return a new path constraint with the default values
+   * @return PathConstraints
+   */
     private PathConstraints getPathConstraints() {
         return new PathConstraints(
                 maxVelocityMPS,
@@ -190,9 +187,11 @@ public class AlignWithReefCommand extends Command {
                 maxAngularAccelerationRadPerSecondSq);
     }
 
+    /**
+     * a method to return wether or not we want to mirror the path
+     * @return when using paths generated from april tag coords always turn mirroring off
+     */
     private boolean mirrorPathForRedAliance() {
-        // when using paths generated from april tag coords always turn mirroring off
         return false;
     }
-
 }
