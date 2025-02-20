@@ -5,12 +5,12 @@ import frc.robot.common.ToFDetector;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
 
-public class EndEffectorSubsystem extends SubsystemBase{
+public class BranchDetectorSubsystem extends SubsystemBase{
     
     ToFDetector tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.branchDetectionThresholdInches);
     ToFDetector tofRight = new ToFDetector(Constants.tofRightCanID, Constants.branchDetectionThresholdInches);
 
-    public EndEffectorSubsystem(){
+    public BranchDetectorSubsystem(){
 
     }
 

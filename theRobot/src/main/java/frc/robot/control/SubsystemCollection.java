@@ -11,7 +11,7 @@
 package frc.robot.control;
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.EndEffectorSubsystem;
+import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -24,7 +24,7 @@ public class SubsystemCollection
     // declaring and init subsystems  
     private CameraSubsystem cameraSubsystem = null;
     private DrivetrainSubsystem driveTrainSubsystem = null;
-    private EndEffectorSubsystem endEffectorSubsystem = null;
+    private BranchDetectorSubsystem branchDetectorSubsystem = null;
     private DrivetrainPowerSubsystem driveTrainPowerSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null; 
     private LEDSubsystem ledSubsystem = null;
@@ -39,9 +39,9 @@ public class SubsystemCollection
     public void setDriveTrainSubsystem(DrivetrainSubsystem value) { driveTrainSubsystem = value; }
     public boolean isDriveTrainSubsystemAvailable() { return driveTrainSubsystem != null; }
 
-    public EndEffectorSubsystem getEndEffectorSubsystem() { return endEffectorSubsystem; }
-    public void setEndEffectorSubsystem(EndEffectorSubsystem value) { endEffectorSubsystem = value; }
-    public boolean isEndEffectorSubsystemAvailable() { return endEffectorSubsystem != null; }
+    public BranchDetectorSubsystem getBranchDetectorSubsystem() { return branchDetectorSubsystem; }
+    public void setBranchDetectorSubsystem(BranchDetectorSubsystem value) { branchDetectorSubsystem = value; }
+    public boolean isBranchDetectorSubsystemAvailable() { return branchDetectorSubsystem != null; }
 
     public CameraSubsystem getCameraSubsystem() { return cameraSubsystem; }
     public void setCameraSubsystem(CameraSubsystem value) { cameraSubsystem = value; }

@@ -44,5 +44,5 @@ public class InstalledHardware
     public static final boolean LEDSInstalled = true;
 
     // Subsystems
-    public static final boolean endEffectorInstalled = true;
+    public static final boolean branchDetectorInstalled = true;
 }

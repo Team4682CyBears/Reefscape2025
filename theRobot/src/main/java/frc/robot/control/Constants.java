@@ -54,7 +54,7 @@ public final class Constants {
     public static final int portCoDriverController = 1;
 
     // ******************************************************************
-    // EndEffector constants
+    // Branch Detector constants
     public static final double branchDetectionThresholdInches = 20.0;
 
     // ******************************************************************

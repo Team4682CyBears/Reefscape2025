@@ -150,7 +150,7 @@ public class AlignWithReefCommand extends Command {
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
                                 new AlignWithBranchCommand(drivetrain,
-                                        this.subsystemCollection.getEndEffectorSubsystem(),
+                                        this.subsystemCollection.getBranchDetectorSubsystem(),
                                         () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
                                 new InstantCommand(),
                                 () -> shouldAlignBranch))

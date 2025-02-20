@@ -46,7 +46,7 @@ public class RobotContainer {
 
     // init the various subsystems
     this.initializeDrivetrainSubsystem();
-    this.initializeEndEffectorSubsystem();
+    this.initailizeBranchDetectorSubsystem();
 
     // init the input system 
     this.initializeManualInputInterfaces();
@@ -170,15 +170,15 @@ public class RobotContainer {
   }
 
   /**
-   * A method to init the EndEffectorSubsystem
+   * A method to init the BranchDetectorSubsystem
    */
-  private void initializeEndEffectorSubsystem(){
-    if(InstalledHardware.endEffectorInstalled) {
-      subsystems.setEndEffectorSubsystem(new EndEffectorSubsystem());
-      DataLogManager.log("SUCCESS: initializeEndEffector");
+  private void initailizeBranchDetectorSubsystem(){
+    if(InstalledHardware.branchDetectorInstalled) {
+      subsystems.setBranchDetectorSubsystem(new BranchDetectorSubsystem());
+      DataLogManager.log("SUCCESS: initailize Branch Detector Subsystem");
     }
     else {
-      DataLogManager.log("FAIL: initializeEndEffector");
+      DataLogManager.log("FAIL: initialize Branch Detector Subsystem");
     }
   }
 

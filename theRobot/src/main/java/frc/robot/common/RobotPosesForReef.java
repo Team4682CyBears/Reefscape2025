@@ -8,31 +8,45 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.control.Constants;
 import edu.wpi.first.math.util.Units;
 
+/**
+ * The RobotPosesForReef class provides methods to manage and retrieve the positions and orientations
+ * of a robot based on predefined tag IDs for both red and blue alliances. It also calculates the 
+ * reef center coordinates and provides a method to get the robot's pose with an offset from the tag's position.
+ */
 public class RobotPosesForReef {
     private static HashMap<Double, Pose2d> redPoses = new HashMap<>();
     static {
-    redPoses.put(6.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-60));
-    redPoses.put(7.0, new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
-    redPoses.put(8.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(60));
-    redPoses.put(9.0, new Pose2d( Units.inchesToMeters(497.77), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(120));
-    redPoses.put(10.0, new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
-    redPoses.put(11.0, new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-120));
+    redPoses.put(6.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-60)));
+    redPoses.put(7.0, new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0)));
+    redPoses.put(8.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(60)));
+    redPoses.put(9.0, new Pose2d( Units.inchesToMeters(497.77), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(120)));
+    redPoses.put(10.0, new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180)));
+    redPoses.put(11.0, new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-120)));
     }
 
     private static HashMap<Double, Pose2d> bluePoses = new HashMap<>();
     static{
-    redPoses.put(17.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60));
-    redPoses.put(18.0, new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
-    redPoses.put(19.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60));
-    redPoses.put(20.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120));
-    redPoses.put(21.0, new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
-    redPoses.put(22.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120));
+    redPoses.put(17.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60)));
+    redPoses.put(18.0, new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0)));
+    redPoses.put(19.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60)));
+    redPoses.put(20.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120)));
+    redPoses.put(21.0, new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180)));
+    redPoses.put(22.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120)));
     }
 
     // The coordinates of the reef center is the average of the two opposing reef tags
     private static Translation2d redReefCenter = new Translation2d((redPoses.get(7.0).getX()+redPoses.get(10.0).getX())/2.0, redPoses.get(7.0).getY());
     private static Translation2d blueReefCenter = new Translation2d((bluePoses.get(18.0).getX()+bluePoses.get(21.0).getX())/2.0, bluePoses.get(18.0).getY());
 
+    
+    /**
+     * Returns a Pose2d object representing the position and orientation of a robot
+     * based on a given tag ID with an offset from the tag's position.
+     *
+     * @param tagID The ID of the tag to get the pose from. If the tag ID is -1, a default Pose2d is returned.
+     * @return A Pose2d object representing the position and orientation of the robot.
+     *         If the tag ID is not found in either redPoses or bluePoses, a default Pose2d is returned.
+     */
     public static Pose2d getPoseFromTagIDWithOffset(double tagID) {
         Pose2d tagPose;
         Translation2d tagCoordinate;
@@ -76,3 +90,5 @@ public class RobotPosesForReef {
         }
     }
 }
+
+

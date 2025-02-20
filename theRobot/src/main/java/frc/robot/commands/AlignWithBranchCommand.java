@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.common.AlignToBranchSide;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.EndEffectorSubsystem;
+import frc.robot.subsystems.BranchDetectorSubsystem;
 import java.util.function.Supplier;
 
 
@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  */
 public class AlignWithBranchCommand extends Command{
     private DrivetrainSubsystem drivetrain;
-    private EndEffectorSubsystem endEffector;
+    private BranchDetectorSubsystem branchDetector;
     private Supplier<AlignToBranchSide> alignSidSupplier;
     private boolean done = false;
     private Timer timer = new Timer();
@@ -35,15 +35,15 @@ public class AlignWithBranchCommand extends Command{
     /**
      * Constructor to make the robot aling with a branch
      * @param drivetrainsubsystem - the drivetrain subsystems
-     * @param endEffector - the end effector subsystem
+     * @param branchDetector - the branch detector subsystem
      * @param alignSideSupplier - a supplier of an enum that tells us if we want to align right or left
      */
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, EndEffectorSubsystem endEffector, Supplier<AlignToBranchSide> alignSideSupplier){
+    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, BranchDetectorSubsystem branchDetector, Supplier<AlignToBranchSide> alignSideSupplier){
         this.drivetrain = drivetrainSubsystem;
-        this.endEffector = endEffector;
+        this.branchDetector = branchDetector;
         this.alignSidSupplier = alignSideSupplier;
 
-        // explicitly not requiring the endEffector here because we are using it in a read-only capacity.
+        // explicitly not requiring the branch detector here because we are using it in a read-only capacity.
         addRequirements(drivetrainSubsystem);
     }
     
@@ -66,7 +66,7 @@ public class AlignWithBranchCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
-        if(endEffector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
+        if(branchDetector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
             done = true;
         }
         else {

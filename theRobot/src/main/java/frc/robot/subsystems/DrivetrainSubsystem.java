@@ -388,6 +388,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     this.setRobotPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
   }
 
+  /**
+   * Updates the robot's position based on vision data from the camera subsystem.
+   */
   public void seedRobotPositionFromVision() {
     Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
 
@@ -405,6 +408,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
   }
 
+  /**
+   * Calculates the median value of a list of Double values.
+   *
+   * @param list the list of Double values to find the median of
+   * @return the median value of the list
+   */
   public Double getMedianOfList(ArrayList<Double> list){
     ArrayList<Double> modifiedList = new ArrayList<Double>(list);
     Collections.sort(modifiedList);
