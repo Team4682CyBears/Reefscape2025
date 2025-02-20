@@ -8,26 +8,30 @@
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
+// package containing class
 package frc.robot.subsystems;
 
+// ctre library imports for controlling motor
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.StrictFollower;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-//import com.ctre.phoenix6.signals.AbsoluteSensorRangeVaAue;
-//import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+// wpilib import for math & logging
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+// wpilib import for base class for subsystems
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+// local class imports
 import frc.robot.Constants;
 import frc.robot.HardwareConstants;
 import frc.robot.InstalledHardware;
@@ -41,23 +45,34 @@ import frc.robot.common.ShooterPosition;
  */
 public class ShooterAngleSubsystem extends SubsystemBase {
 
+  // Initiate fields and class instances
+
   // Shooter gearing 
-  private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
   private static final double angleEncoderGearRatio = 1.0; // angle encoder is mounted directly onto shaft
-  //private static final double angleMotorGearRatio = 45.0; // remove 1 10x gearbox stage for testing
+  // unused gear ratio but may need later
+  //private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
 
   // Tolerance
-  private static final double shooterAngleLowVelocityTol = 10; // rotations per second (max 512)
+  // rotations per second (max 512)
+  private static final double shooterAngleLowVelocityTol = 10;   
 
+  // CanIds to "talk" to hardware
   private TalonFX angleMotor = new TalonFX(Constants.shooterMotorCanId);
   private CANcoder angleEncoder = new CANcoder(Constants.shooterEncoderCanId);
-  private final MotionMagicVoltage angleLeftVoltageController = new MotionMagicVoltage(0);
-  private boolean shooterIsAtDesiredAngle = true; // don't start moving until angle is set. 
+
+  // control class
+  private final MotionMagicVoltage angleVoltageController = new MotionMagicVoltage(0);
+
+  // don't start moving until angle is set. 
+  private boolean shooterIsAtDesiredAngle = true; 
   private double desiredAngleDegrees; 
-  private double internalAngleOffsetDegrees = 0; // used when running from intenral motor encoder, ignored when using CanCoder
 
   // Motor controller gains
-  private Slot0Configs angleMotorGainsForAbsoluteEncoder = new Slot0Configs().withKP(150).withKI(0.125).withKD(0.05).withKV(0);
+  private Slot0Configs angleMotorGainsForAbsoluteEncoder = new Slot0Configs()
+    .withKP(Constants.kp)
+    .withKI(Constants.ki)
+    .withKD(Constants.kd)
+    .withKV(Constants.kv);
 
   /**
    * Constructor for shooter subsystem
@@ -66,7 +81,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
     configureAngleEncoder();
     configureAngleMotors();  
     /* Make control requests synchronous */
-    angleLeftVoltageController.UpdateFreqHz = 0;
+    angleVoltageController.UpdateFreqHz = 0;
   }
 
   /**
@@ -98,7 +113,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   public void periodic() {
     if (!shooterIsAtDesiredAngle) {
         // use motionMagic voltage control
-        angleMotor.setControl(angleLeftVoltageController.withPosition(degreesToRotations(desiredAngleDegrees - getOffset())));
+        angleMotor.setControl(angleVoltageController.withPosition(degreesToRotations(desiredAngleDegrees - getOffset())));
         // angleRightMotor acts as a follower
         // keep moving until it reaches target angle
         shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
@@ -203,7 +218,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
     }
 
   private double getOffset(){
-    return InstalledHardware.shooterAngleCanCoderInstalled ? 0 : internalAngleOffsetDegrees;
+    return 0;
   }
 
   private double degreesToRotations(double degrees)

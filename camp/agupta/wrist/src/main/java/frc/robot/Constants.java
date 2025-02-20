@@ -32,6 +32,14 @@ public final class Constants {
   public static final double shooterAngle = 0;
   public static final double algaeAngle = 90;
 
+  // Shooter pid constants
+  public static final double kp = 150;
+  public static final double ki = 0.125;
+  public static final double kd = 0.5;
+  public static final double kv = 0;
+
+
+
   public static InvertedValue angleLeftTalonShooterMotorDefaultDirection = InvertedValue.CounterClockwise_Positive;
   public static InvertedValue angleRightTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
   public static final double shooterStartingAngleOffsetDegrees = 20.0;

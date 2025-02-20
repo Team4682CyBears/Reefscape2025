@@ -45,7 +45,8 @@ public class RobotContainer {
   private void configureBindings() {
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
-    //this.shooterAngleSubsystem.setDefaultCommand(); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
+    // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
+    //this.shooterAngleSubsystem.setDefaultCommand(); 
    
     // Rotate to shooterAngle
     driverController.a().onTrue(new ShooterSetAngleCommand(Constants.shooterAngle, this.shooterAngleSubsystem));
