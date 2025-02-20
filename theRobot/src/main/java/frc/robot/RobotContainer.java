@@ -73,26 +73,13 @@ public class RobotContainer {
       // Path Planner Path Commands
       // commands to drive path planner test trajectories
       TestTrajectories testtrajectories = new TestTrajectories();
-
+      /**
       SmartDashboard.putData("One Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Two Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Three Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
-      /* 
-      SmartDashboard.putData("Basic Forward",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Forward Arc",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Turn 90",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.turn90, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Backward Arc",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Zig Zag",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Simple Left",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
       */
     }
 
