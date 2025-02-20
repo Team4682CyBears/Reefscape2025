@@ -9,62 +9,45 @@ import frc.robot.control.Constants;
 import edu.wpi.first.math.util.Units;
 
 public class RobotPosesForReef {
-    private static Pose2d tag6 = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-60));
-    private static Pose2d tag7 = new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
-    private static Pose2d tag8 = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(60));
-    private static Pose2d tag9 = new Pose2d( Units.inchesToMeters(497.77), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(120));
-    private static Pose2d tag10 = new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
-    private static Pose2d tag11 = new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-120));
-    private static Pose2d tag17 = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60));
-    private static Pose2d tag18 = new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
-    private static Pose2d tag19 = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60));
-    private static Pose2d tag20 = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120));
-    private static Pose2d tag21 = new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
-    private static Pose2d tag22 = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120));
-    // TODO rather than storing this in an array, should store it in a hashmap
-    // If you stored it in two hash maps (one for red and one for blue), 
-    // you could use the presence of it to also know which side you are on without having to do the tag comparison below
-    private static Pose2d[] listOfPoses = {tag6, tag7, tag8, tag9, tag10, tag11, 
-                            tag17, tag18, tag19, tag20, tag21, tag22};
+    private static HashMap<Double, Pose2d> redPoses = new HashMap<>();
+    static {
+    redPoses.put(6.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-60));
+    redPoses.put(7.0, new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
+    redPoses.put(8.0, new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(60));
+    redPoses.put(9.0, new Pose2d( Units.inchesToMeters(497.77), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(120));
+    redPoses.put(10.0, new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
+    redPoses.put(11.0, new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(-120));
+    }
+
+    private static HashMap<Double, Pose2d> bluePoses = new HashMap<>();
+    static{
+    redPoses.put(17.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60));
+    redPoses.put(18.0, new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0));
+    redPoses.put(19.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60));
+    redPoses.put(20.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120));
+    redPoses.put(21.0, new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180));
+    redPoses.put(22.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120));
+    }
 
     // The coordinates of the reef center is the average of the two opposing reef tags
-    private static Translation2d redReefCenter = new Translation2d((tag7.getX()+tag10.getX())/2.0, tag7.getY());
-    private static Translation2d blueReefCenter = new Translation2d((tag18.getX()+tag21.getX())/2.0, tag18.getY());
-
-    public static Pose2d getPoseFromTagID(double tagID) {
-        if (tagID == -1){
-            return new Pose2d();
-        }
-        else if(tagID <= 11 && tagID >= 6){
-            return listOfPoses[(int)(tagID - 6.0)];
-        }
-        else if (tagID <= 22 && tagID >= 17){
-            return listOfPoses[(int)(tagID - 11.0)];
-        }
-        else{
-            return new Pose2d();
-        }
-    }
+    private static Translation2d redReefCenter = new Translation2d((redPoses.get(7.0).getX()+redPoses.get(10.0).getX())/2.0, redPoses.get(7.0).getY());
+    private static Translation2d blueReefCenter = new Translation2d((bluePoses.get(18.0).getX()+bluePoses.get(21.0).getX())/2.0, bluePoses.get(18.0).getY());
 
     public static Pose2d getPoseFromTagIDWithOffset(double tagID) {
         Pose2d tagPose;
         Translation2d tagCoordinate;
         boolean isRed;
 
-        //-1 is the id when we dont see a tag
-        if (tagID == -1){
+        // -1 is the id when we don't see a tag
+        if (tagID == -1) {
             return new Pose2d();
-        }
-        else if(tagID <= 11 && tagID >= 6){
-            tagPose = listOfPoses[(int)(tagID - 6.0)];
+        } else if (redPoses.containsKey(tagID)) {
+            tagPose = redPoses.get(tagID);
             isRed = true;
-
-        }
-        else if (tagID <= 22 && tagID >= 17){
-            tagPose = listOfPoses[(int)(tagID - 11.0)];
+        } else if (bluePoses.containsKey(tagID)) {
+            tagPose = bluePoses.get(tagID);
             isRed = false;
-        }
-        else{
+        } else {
             return new Pose2d();
         }
 
@@ -85,7 +68,6 @@ public class RobotPosesForReef {
         // add the offset vector to the tag to get the destination coordinates
         Translation2d destination = tagCoordinate.plus(offsetVector);
 
-        // TODO change this function to use the drivetrain's operator perspective variable. 
         if(isRed){   
             return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
         }
