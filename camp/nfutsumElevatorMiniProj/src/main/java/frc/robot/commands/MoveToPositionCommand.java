@@ -55,11 +55,14 @@ public class MoveToPositionCommand extends Command{
         // based on the selected target position, move the robot to the preset position
         if(targetPosition == ElevatorPositions.STOW){
             elevatorSubsystem.moveToPosition(Constants.stowHeight);
-        }else if(targetPosition == ElevatorPositions.L2){
+        }
+        else if(targetPosition == ElevatorPositions.L2){
             elevatorSubsystem.moveToPosition(Constants.L2Height);
-        }else if(targetPosition == ElevatorPositions.L3){
+        }
+        else if(targetPosition == ElevatorPositions.L3){
             elevatorSubsystem.moveToPosition(Constants.L3Height);
-        }else if(targetPosition == ElevatorPositions.L4){
+        }
+        else if(targetPosition == ElevatorPositions.L4){
             elevatorSubsystem.moveToPosition(Constants.L4Height);
         }
     }
@@ -74,7 +77,6 @@ public class MoveToPositionCommand extends Command{
     // command run when command is over
     @Override
     public void end(boolean interrupted){
-
         // print how command ended
         if (interrupted){
             System.out.println("Command interrupted!");
@@ -82,5 +84,6 @@ public class MoveToPositionCommand extends Command{
         else {
             System.out.println("Command ended!");
         }
+        elevatorSubsystem.stopElevator();
     }
 }

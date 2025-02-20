@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Charged Up - 2023
-// File: public enum CorrectableEncoder.java
+// File: public interface CorrectableEncoder.java
 // Intent: Forms an interface that will help keep a motor encoder from drifting with use of external sensor.
 // ************************************************************
 
