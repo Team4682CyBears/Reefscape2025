@@ -51,15 +51,10 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.DONOTHING);
-            autonomousPathChooser.addOption("Test Planner", AutonomousPath.TESTAUTOPLANNER);
-            autonomousPathChooser.addOption("Test Command", AutonomousPath.TESTAUTOCOMMAND);
+            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.TWONOTE);
             SmartDashboard.putData(autonomousPathChooser);
 
             this.twoNote = getTwoNote();
-            this.doNothing = getDoNothing();
-            this.TestAutoCommand = getTestAutoCommand();
-            this.TestAutoPlanner = getTestAutoPlanner();
 
         } else {
             DataLogManager.log(">>>>> NO auto routine becuase missing subsystems");
@@ -75,12 +70,6 @@ public class AutonomousChooser {
         switch (autonomousPathChooser.getSelected()) {
             case TWONOTE:
                 return this.twoNote;
-            case DONOTHING:
-                return this.doNothing;
-            case TESTAUTOCOMMAND:
-                return this.TestAutoCommand;
-            case TESTAUTOPLANNER:
-                return this.TestAutoPlanner;
         }
         return new InstantCommand();
     }
@@ -92,7 +81,7 @@ public class AutonomousChooser {
      */
     public Command getCommand() {
         Command fusedVisionCommand = new InstantCommand();
-        if (Constants.useFusedVisionInAuto) {
+        if (!Constants.useFusedVisionInAuto) {
             fusedVisionCommand = new UseFusedVisionInAutoCommand(subsystems.getDriveTrainSubsystem());
         }
 
@@ -105,23 +94,8 @@ public class AutonomousChooser {
         return AutoBuilder.buildAuto("TwoNote");
     }
 
-    private Command getDoNothing() {
-        return AutoBuilder.buildAuto("DoNothing");
-    }
-
-    private Command getTestAutoCommand() {
-        return AutoBuilder.buildAuto("TestAutoCommand");
-    }
-
-    private Command getTestAutoPlanner(){
-        return AutoBuilder.buildAuto("TestAutoPlanner");
-    }
-
     private enum AutonomousPath {
-        TWONOTE,
-        DONOTHING,
-        TESTAUTOCOMMAND,
-        TESTAUTOPLANNER
+        TWONOTE;
     }
 
     /**
@@ -152,14 +126,6 @@ public class AutonomousChooser {
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
-            NamedCommands.registerCommand("IntakeNote",
-                    new ParallelCommandGroup(
-                            new ButtonPressCommand("PathPlanner", "IntakeNote"),
-                            new InstantCommand())); // TODO populate with real command
-            NamedCommands.registerCommand("FeedNote",
-                    new ParallelCommandGroup(
-                            new ButtonPressCommand("PathPlanner", "FeedNote"),
-                            new InstantCommand())); // TODO populate with real command
             NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
         }
         
