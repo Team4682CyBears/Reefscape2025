@@ -26,13 +26,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Piece"
+            "name": "Score Piece"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stow"
+            "name": "Reset Elevator Position"
           }
         },
         {
@@ -69,13 +69,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Piece"
+            "name": "Score Piece"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stow"
+            "name": "Reset Elevator Position"
           }
         },
         {
@@ -112,13 +112,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot Piece"
+            "name": "Score Piece"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stow"
+            "name": "Reset Elevator Position"
           }
         }
       ]
