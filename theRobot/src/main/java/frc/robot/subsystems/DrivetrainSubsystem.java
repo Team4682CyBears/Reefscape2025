@@ -19,11 +19,9 @@ import com.pathplanner.lib.config.RobotConfig;
 
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
-import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.Telemetry;
 import frc.robot.generated.TedTunerConstants;
-import frc.robot.generated.TedTunerConstants.TunerSwerveDrivetrain;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.common.MotorUtils;
 import frc.robot.common.VisionMeasurement;
@@ -55,10 +53,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private final double deltaTimeSeconds = 0.02; // 20ms scheduler time tick
 
-  private static final DrivetrainSwerveConfig swerveConfig = InstalledHardware.tedDrivetrainInstalled
-      ? Constants.tedDrivertainConfig
-      : Constants.fooDrivetrainConfig;
-
   public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
   // TODO change this to something reasonable. Was 6 in TED
   public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 100.0;
@@ -70,10 +64,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * The maximum angular velocity of the robot in radians per second.
    * This is a measure of how fast the robot can rotate in place.
    */
-  // Here we calculate the theoretical maximum angular velocity. You can also
-  // replace this with a measured amount.
-  public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = Constants.SWERVE_MAX_SPEED /
-      Math.hypot(swerveConfig.getTrackwidthMeters() / 2.0, swerveConfig.getWheelbaseMeters() / 2.0);
+  public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = Constants.SWERVE_MAX_ANGULAR_SPEED;
   public static final double MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND = MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
       * 0.06; // 0.06 a magic number based on testing
   private double MAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 70.0;
@@ -95,6 +86,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
 
+  // TODO when the second TunerConstants is generated, change this to 
+  // InstalledHardware.tedDrivetrainInstalled ? 
+  // new TedTunerConstants.TunerSwerveDrivetrain(...) :
+  // new FooTunerConstants.TunerSwerveDrivetrain(...)
   private SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = new TedTunerConstants.TunerSwerveDrivetrain(TedTunerConstants.DrivetrainConstants, 0,
       odometryStdDev, visionStdDev,
       TedTunerConstants.FrontLeft, TedTunerConstants.FrontRight, TedTunerConstants.BackLeft, TedTunerConstants.BackRight);
