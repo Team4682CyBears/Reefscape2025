@@ -5,10 +5,10 @@
 package frc.robot;
 
 public final class Constants {
-  public static final int eeMotorCANID = 5;
+  public static final int eeMotorCanId = 5;
 
-  public static final int tofLeftCanID = 14;
-  public static final int tofRightCanID = 15;
+  public static final int tofLeftCanId = 14;
+  public static final int tofRightCanId = 15;
   public static final double tofDetectionThresholdInches = 20.0;
 
   public static final boolean leftTOFEnabled = false;

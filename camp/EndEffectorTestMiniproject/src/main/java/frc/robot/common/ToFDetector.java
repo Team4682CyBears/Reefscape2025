@@ -24,18 +24,18 @@ public class ToFDetector {
 
   private double detectionThresholdInches;
   private TimeOfFlight tofSensor;
-  private int canID;
+  private int canId;
   private String displayName;
 
-  public ToFDetector(int canID, double detectionThresholdInches){
-    tofSensor = new TimeOfFlight(canID);
+  public ToFDetector(int canId, double detectionThresholdInches){
+    tofSensor = new TimeOfFlight(canId);
     this.detectionThresholdInches = detectionThresholdInches;
-    this.canID = canID;
-    this.displayName = "TOF ID " + this.canID;
+    this.canId = canId;
+    this.displayName = "TOF ID " + this.canId;
     // short mode is accurate to 1.3m 
     // 20ms sample time matches robot update rate
     tofSensor.setRangingMode(RangingMode.Short, 20);
-    DataLogManager.log("==== DONE CONFIG of TOF SENSOR at CanID " + canID);
+    DataLogManager.log("==== DONE CONFIG of TOF SENSOR at CanID " + canId);
   }
   
   /**

@@ -15,7 +15,7 @@ import frc.robot.common.EndEffectorSpeed;
 import frc.robot.common.ToFDetector;
 
 public class EndEffectorSubsystem extends SubsystemBase {
-    private TalonFX eeMotor = new TalonFX(Constants.eeMotorCANID);
+    private TalonFX eeMotor = new TalonFX(Constants.eeMotorCanId);
     private final DutyCycleOut eeJoystickController = new DutyCycleOut(0.0);
 
     private ToFDetector tofLeft;
@@ -34,10 +34,10 @@ public class EndEffectorSubsystem extends SubsystemBase {
      */
     public EndEffectorSubsystem() {
         if (Constants.leftTOFEnabled) {
-            tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.tofDetectionThresholdInches);
+            tofLeft = new ToFDetector(Constants.tofLeftCanId, Constants.tofDetectionThresholdInches);
         }
         if (Constants.rightTOFEnabled) {
-            tofRight = new ToFDetector(Constants.tofRightCanID, Constants.tofDetectionThresholdInches);
+            tofRight = new ToFDetector(Constants.tofRightCanId, Constants.tofDetectionThresholdInches);
         }
         configureMotor();
     }
