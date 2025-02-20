@@ -4,20 +4,42 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  // climber constants
-  public static final int climberMotorCanId = 13;
- 
-  public static final int motorCanID = 1;
+
+  // Can IDs
+  public static final int shooterMotorCanId = 22;
+  public static final int shooterEncoderCanId = 23;
+
+  // public static final double shooterAngleShootFromSpeaker = 54.5;
+  public static final double shooterAngle = 0;
+  public static final double algaeAngle = 90;
+
+  public static InvertedValue angleLeftTalonShooterMotorDefaultDirection = InvertedValue.CounterClockwise_Positive;
+  public static InvertedValue angleRightTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
+  public static final double shooterStartingAngleOffsetDegrees = 20.0;
+
+  // *******************************************************************
+  // shooter angle constants 
+  public static SensorDirectionValue shooterAngleSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+  public static final double shooterAbsoluteAngleOffsetDegrees = 59.445 - 308.09 +359.9 + .23 + 3; // ?????????????????
+  public static final double shooterAngleToleranceDegrees = 0.5;
+
 }

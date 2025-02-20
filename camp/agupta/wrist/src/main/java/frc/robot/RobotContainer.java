@@ -5,11 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.StopCommand;
-import frc.robot.commands.UnwindCommand;
-import frc.robot.commands.WindCommand;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.TalonMotorSubsystem;
+import frc.robot.commands.ShooterSetAngleCommand;
+import frc.robot.subsystems.ShooterAngleSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,8 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final TalonMotorSubsystem talonMotorSubsystem = new TalonMotorSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final ShooterAngleSubsystem shooterAngleSubsystem = new ShooterAngleSubsystem();
 
   // create instance of xbox controller
   private final CommandXboxController driverController =
@@ -49,12 +45,14 @@ public class RobotContainer {
   private void configureBindings() {
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
-    this.climberSubsystem.setDefaultCommand(new StopCommand(this.climberSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
-    
-    driverController.b().whileTrue(new WindCommand(this.climberSubsystem)); // Binds the "b" button to the backwards command.
-    driverController.a().whileTrue(new UnwindCommand(this.climberSubsystem)); // Binds the "a" button to the forward command.
-    driverController.x().whileTrue(new (this.climberSubsystem));
-    driverController.y().whileTrue(new (this.climberSubsystem));
+    //this.shooterAngleSubsystem.setDefaultCommand(); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
+   
+    // Rotate to shooterAngle
+    driverController.a().onTrue(new ShooterSetAngleCommand(Constants.shooterAngle, this.shooterAngleSubsystem));
+              //new ShooterSetAngleCommand(Constants.shooterAngleShootFromSpeaker,this.subsystemCollection.getShooterAngleSubsystem());
+
+    // Rotate to algaeRemoverAngle
+    driverController.b().onTrue(new ShooterSetAngleCommand(Constants.algaeAngle, this.shooterAngleSubsystem));
 
     //this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     
