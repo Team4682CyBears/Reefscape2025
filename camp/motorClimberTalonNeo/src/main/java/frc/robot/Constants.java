@@ -20,4 +20,7 @@ public final class Constants {
   public static final int climberMotorCanId = 13;
  
   public static final int motorCanID = 1;
+  
+  public static final double windSpeed = -0.4;
+  public static final double unwindSpeed = 0.4;
 }

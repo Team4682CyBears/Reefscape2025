@@ -15,7 +15,7 @@ public class UnwindCommand extends Command {
 
     @Override
     public void initialize() {
-        climberSubsystem.setClimberSpeed(0.4);
+        climberSubsystem.setClimberSpeed(Constants.unwindSpeed);
     }
 
     @Override

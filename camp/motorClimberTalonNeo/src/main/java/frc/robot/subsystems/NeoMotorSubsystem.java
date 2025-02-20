@@ -58,6 +58,6 @@ public class NeoMotorSubsystem extends SubsystemBase {
    * A method to stop the intake subsystem
    */
   public void setAllStop() {
-    climberMotor.set(0.0);
+    climberMotor.setIdleMode(motor.IdleMode.kBrake);
   }
 }
