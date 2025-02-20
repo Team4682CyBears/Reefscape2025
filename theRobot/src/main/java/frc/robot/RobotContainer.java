@@ -24,7 +24,6 @@ import frc.robot.control.AutonomousChooser;
 import frc.robot.control.Constants;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 
 public class RobotContainer {
 
