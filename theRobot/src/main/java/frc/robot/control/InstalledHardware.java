@@ -51,4 +51,7 @@ public class InstalledHardware
 
     // Funnel
     public static final boolean funnelInstalled = false;
+
+    // Climber
+    public static final boolean climberInstalled = false;
 }

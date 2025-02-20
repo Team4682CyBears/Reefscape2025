@@ -14,6 +14,7 @@ import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class SubsystemCollection {
@@ -29,6 +30,7 @@ public class SubsystemCollection {
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
     private Object funnelSubsystem = null; // TODO: Replace with real subsystem
+    private ClimberSubsystem climberSubsystem = null;
 
     /**
      * Default constructor
@@ -142,5 +144,17 @@ public class SubsystemCollection {
 
     public boolean isFunnelSubsystemAvailable() {
         return funnelSubsystem != null;
+    }
+
+    public ClimberSubsystem getClimberSubsystem() {
+        return climberSubsystem;
+    }
+
+    public void setClimberSubsystem(ClimberSubsystem value) {
+        climberSubsystem = value;
+    }
+
+    public boolean isClimberSubsystemAvailable() {
+        return climberSubsystem != null;
     }
 }
