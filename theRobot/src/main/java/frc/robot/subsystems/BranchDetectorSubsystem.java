@@ -22,8 +22,8 @@ public class BranchDetectorSubsystem extends SubsystemBase{
      * @return - if somehthing detected by either ToF is in range
      */
     public boolean isBranchDetected(){
-        boolean leftDetected = InstalledHardware.EEToFLeft && tofLeft.isDetected();
-        boolean rightDetected = InstalledHardware.EEToFRight && tofRight.isDetected();
+        boolean leftDetected = InstalledHardware.BranchTofLeft && tofLeft.isDetected();
+        boolean rightDetected = InstalledHardware.BranchTofRight && tofRight.isDetected();
 
         return leftDetected || rightDetected;
     }
