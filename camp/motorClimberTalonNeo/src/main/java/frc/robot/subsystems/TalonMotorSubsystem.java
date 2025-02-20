@@ -65,7 +65,11 @@ public class TalonMotorSubsystem extends SubsystemBase {
         //System.out.println("NewMotor should be " + SmartDashboard.getNumber("Set Motor Speed", -1000)); //set a ridiculous default value so we will really know if it didn't load
     }
 
-    public void motorStop(){
+    
+    /**
+    * A method to stop the intake subsystem
+    */
+    public void setAllStop(){
         //stop voltage
         speedRpm = 0;
         motorTalonDutyOut.Output = 0;
