@@ -50,8 +50,6 @@ public class TestTrajectories {
   public TestTrajectories() {
     traverseZigZag = buildZigZag();
     traverseSimpleLeft = buildTraverseSimpleLeft();
-    traverseTurn270 = buildTraverseTurn270();
-    turn90 = buildTurn90();
     traverseForwardArc = buildTraverseForwardArc();
     traverseBackwardArc = buildTraverseBackwardArc();
 
@@ -164,51 +162,6 @@ public class TestTrajectories {
         getPathConstraints(),
         null, // do not specify ideal starting state
         new GoalEndState(0.0, Rotation2d.fromDegrees(0)) // Goal end state. You can set a holonomic rotation here.
-    );
-
-    // Prevent the path from being flipped if the coordinates are already correct
-    p.preventFlipping = true;
-
-    return p;
-  }
-
-  private PathPlannerPath buildTraverseTurn270() {
-    // Create a list of waypoints from poses. Each pose represents one waypoint.
-    // The rotation component of the pose should be the direction of travel. Do not
-    // use holonomic rotation.
-    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
-
-    // Create the path using the waypoints created above
-    PathPlannerPath p = new PathPlannerPath(
-        waypoints,
-        getPathConstraints(),
-        null, // do not specify ideal starting state
-        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
-    );
-
-    // Prevent the path from being flipped if the coordinates are already correct
-    p.preventFlipping = true;
-
-    return p;
-  }
-
-  // Test purely rotational trajectory.
-  private PathPlannerPath buildTurn90() {
-    // Create a list of waypoints from poses. Each pose represents one waypoint.
-    // The rotation component of the pose should be the direction of travel. Do not
-    // use holonomic rotation.
-    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
-
-    // Create the path using the waypoints created above
-    PathPlannerPath p = new PathPlannerPath(
-        waypoints,
-        getPathConstraints(),
-        null, // do not specify ideal starting state
-        new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here.
     );
 
     // Prevent the path from being flipped if the coordinates are already correct

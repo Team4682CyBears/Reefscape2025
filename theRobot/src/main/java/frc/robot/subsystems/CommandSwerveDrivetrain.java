@@ -3,8 +3,8 @@
 // Home of the Cybears
 // FRC - Reefscape - 2025
 // File: CommandSwerveDrivetrain.java
-// Intent: Forms a class to extend the Phoenix 6 SwerveDrivetrain class and implements
-// Subsystem so it can easily be used in command-based projects.
+// Intent: This is a stub for the Phoenix 6 SwerveDrivetrain class 
+// because their generated code TunerConstants.java depends on it.
 // *************************************************************
 
 package frc.robot.subsystems;
@@ -13,7 +13,7 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
 /**
-* Stub CTRE's CommandSwerveDrivetrain because their generated code TunerConstants depends on it circularly!!
+* Stub CTRE's CommandSwerveDrivetrain because their generated code TunerConstants.java depends on it.
  */
 public class CommandSwerveDrivetrain {
 

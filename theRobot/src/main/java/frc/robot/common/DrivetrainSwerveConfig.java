@@ -25,41 +25,11 @@ public class DrivetrainSwerveConfig {
      */
     private double wheelbaseMeters;
 
-    // TODO - START HERE!! unpack module config fields into this class natively
-    private double frontLeftModuleSteerOffset;
-    private double frontRightModuleSteerOffset;
-    private double backLeftModuleSteerOffset;
-    private double backRightModuleSteerOffset;
-
     public DrivetrainSwerveConfig(
             double trackWidthMeters,
-            double wheelbaseMeters,
-            double frontLeftModuleSteerOffset,
-            double frontRightModuleSteerOffset,
-            double backLeftModuleSteerOffset,
-            double backRightModuleSteerOffset) {
+            double wheelbaseMeters) {
         this.trackwidthMeters = trackWidthMeters;
         this.wheelbaseMeters = wheelbaseMeters;
-        this.frontLeftModuleSteerOffset = frontLeftModuleSteerOffset;
-        this.frontRightModuleSteerOffset = frontRightModuleSteerOffset;
-        this.backLeftModuleSteerOffset = backLeftModuleSteerOffset;
-        this.backRightModuleSteerOffset = backRightModuleSteerOffset;
-    }
-
-    public double getBackLeftModuleSteerOffset() {
-        return backLeftModuleSteerOffset;
-    }
-
-    public double getBackRightModuleSteerOffset() {
-        return backRightModuleSteerOffset;
-    }
-
-    public double getFrontLeftModuleSteerOffset() {
-        return frontLeftModuleSteerOffset;
-    }
-
-    public double getFrontRightModuleSteerOffset() {
-        return frontRightModuleSteerOffset;
     }
 
     public double getTrackwidthMeters() {
@@ -68,22 +38,6 @@ public class DrivetrainSwerveConfig {
 
     public double getWheelbaseMeters() {
         return wheelbaseMeters;
-    }
-
-    public void setBackLeftModuleSteerOffset(double backLeftModuleSteerOffset) {
-        this.backLeftModuleSteerOffset = backLeftModuleSteerOffset;
-    }
-
-    public void setBackRightModuleSteerOffset(double backRightModuleSteerOffset) {
-        this.backRightModuleSteerOffset = backRightModuleSteerOffset;
-    }
-
-    public void setFrontLeftModuleSteerOffset(double frontLeftModuleSteerOffset) {
-        this.frontLeftModuleSteerOffset = frontLeftModuleSteerOffset;
-    }
-
-    public void setFrontRightModuleSteerOffset(double frontRightModuleSteerOffset) {
-        this.frontRightModuleSteerOffset = frontRightModuleSteerOffset;
     }
 
     public void setTrackwidthMeters(double trackwidthMeters) {

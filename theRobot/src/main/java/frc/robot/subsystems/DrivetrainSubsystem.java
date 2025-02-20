@@ -7,24 +7,13 @@
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
-
-// TODO - START HERE!! need to merge this with CommandSwerveDrivetrain. 
-// map existing functionality into available swerve actions from list here: 
-// https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/swerve/SwerveRequest.html
-
 package frc.robot.subsystems;
 
-import java.util.*;
 import java.lang.Math;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
-import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
-import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
-
-import static frc.robot.control.Constants.*;
 
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
@@ -32,6 +21,7 @@ import frc.robot.LimelightHelpers;
 import frc.robot.Telemetry;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;
+import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.control.SubsystemCollection;
@@ -43,7 +33,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
@@ -79,7 +68,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
       : Constants.fooDrivetrainConfig;
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.SWERVE_MAX_SPEED;
+  // TODO change this to something reasonable. Was 6 in TED
   public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 100.0;
+  // TODO change this to something reasonable. Was 12 in TED
   public static final double MAX_DECELERATION_METERS_PER_SECOND_SQUARED = 100.0;
 
   private final Telemetry logger = new Telemetry(MAX_VELOCITY_METERS_PER_SECOND);
@@ -149,6 +140,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
+    // TODO change this to use the explicit config below (one debugged)
+    // We don't want to rely on accessing PathPlanner GUI in a match. 
     // get Path Planner config from GUI settings.
     try{
       pathPlannerRobotConfig = RobotConfig.fromGUISettings();
@@ -181,8 +174,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveFieldCentric(ChassisSpeeds updatedChassisSpeeds) {
+    // if we are switching from robot centric to field centric, 
+    // convert the previous chassis speeds to the correct frame of reference. 
+    if (swerveDriveMode == SwerveDriveMode.ROBOT_CENTRIC_DRIVING){
+      this.previousChassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
+    }
     this.swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
+    
   }
 
   /**
@@ -196,6 +195,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveRobotCentric(ChassisSpeeds updatedChassisSpeeds) {
+    // if we are switching from field centric to robot centric, 
+    // convert the previous chassis speeds to the correct frame of reference. 
+    if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING){
+      this.previousChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
+    }
     this.swerveDriveMode = SwerveDriveMode.ROBOT_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
   }
@@ -206,7 +210,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return chassis speeds
    */
   public ChassisSpeeds getChassisSpeeds() {
-    return chassisSpeeds;
+    return drivetrain.getState().Speeds;
   }
 
   /**
@@ -248,8 +252,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @return A Rotation2d that describes the current orentation of the robot.
    */
   public Rotation2d getGyroscopeRotation() {
-    return new Rotation2d(0.0);
-    // return drivetrain.getPigeon2().getRotation2d();
+    return drivetrain.getState().Pose.getRotation();
   }
 
   /**
@@ -374,7 +377,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * 'forwards' direction.
    */
   public void zeroGyroscope() {
-    // drivetrain.seedFieldCentric();
+    drivetrain.seedFieldCentric();
   }
 
   /**
@@ -467,34 +470,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     translation = translation.times(scale);
     return new ChassisSpeeds(translation.getX(), translation.getY(), chassisSpeeds.omegaRadiansPerSecond);
   }
-
-  /**
-   * Clamps the chassis speeds between the drivetrain min and max velocities
-   * 
-   * @param chassisSpeeds
-   * @return clamped chassisSpeeds
-   */
-  private ChassisSpeeds clampChassisSpeeds(ChassisSpeeds chassisSpeeds) {
-    return this.clampChassisSpeeds(chassisSpeeds,
-        0, // TODO this used to be MIN_VELOCITY_BOUNDARY_METERS_PER_SECOND
-        Constants.SWERVE_MAX_SPEED,
-        MIN_ANGULAR_VELOCITY_BOUNDARY_RADIANS_PER_SECOND,
-        MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
-  }
-
-  private SwerveModuleState[] getImmovableStanceStates() {
-    // set wheels in "X" pattern
-    return new SwerveModuleState[] {
-        // frontLeftModule
-        new SwerveModuleState(0.0, Rotation2d.fromDegrees(45)),
-        // frontRightModule
-        new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
-        // backLeftModule
-        new SwerveModuleState(0.0, Rotation2d.fromDegrees(-45)),
-        // backRightModule
-        new SwerveModuleState(0.0, Rotation2d.fromDegrees(45))
-    };
-  };
 
   /**
    * Limits chassis speeds based on max allowable acceleration

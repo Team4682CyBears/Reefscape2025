@@ -10,21 +10,11 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-
-import java.util.*;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.common.TestTrajectories;
-import frc.robot.common.LEDState;
-import frc.robot.common.RobotPosesForReef;
 import frc.robot.control.InstalledHardware;
 import frc.robot.control.ManualInputInterfaces;
 import frc.robot.control.SubsystemCollection;
@@ -32,7 +22,6 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import frc.robot.control.AutonomousChooser;
 import frc.robot.control.Constants;
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -81,7 +70,9 @@ public class RobotContainer {
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();
 
-    if (subsystems.isDriveTrainSubsystemAvailable() || true) {
+    if (subsystems.isDriveTrainSubsystemAvailable()) {
+      // Path Planner Path Commands
+      // commands to drive path planner test trajectories
       TestTrajectories testtrajectories = new TestTrajectories();
 
       SmartDashboard.putData("One Meter",
@@ -106,24 +97,12 @@ public class RobotContainer {
       */
     }
 
-    // Path Planner Path Commands
-    // commands to drive path planner test trajectories
     // Register Named Commands
-
-      //Command shootPickShootAuto = AutoBuilder.buildAuto("ShootPickShoot");
-      //SmartDashboard.putData("ShootPickShoot Auto", shootPickShootAuto);
-
-      //Command sourceSideWingAuto = AutoBuilder.buildAuto("SourceSideWing");
-      //SmartDashboard.putData("SourceSideWing Auto", sourceSideWingAuto);
-
-      //Command oneTwoThreeSourceSideAuto = AutoBuilder.buildAuto("123SourceSide");
-      //SmartDashboard.putData("123SourceSide Auto", oneTwoThreeSourceSideAuto);
 
     // Put command scheduler on dashboard
     SmartDashboard.putData(CommandScheduler.getInstance());
 
     if(this.subsystems.isDriveTrainPowerSubsystemAvailable()) {
-      // TODO fix this command, need to expose robot-centric drive mode in drivetrainSubsystem.
       SmartDashboard.putData(
         "DriveForwardRobotCentric",
         new DriveTimeCommand(this.subsystems.getDriveTrainSubsystem(),
@@ -176,8 +155,6 @@ public class RobotContainer {
       // The robot's subsystems and commands are defined here...
       subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
       subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
-      subsystems.setDriveTrainAccelerationSubsystem(new DrivetrainAccelerationSubsystem(subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Debug: DrivetrainSub", subsystems.getDriveTrainSubsystem());
       DataLogManager.log("SUCCESS: initializeDrivetrain");
 
       // Set up the default command for the drivetrain.

@@ -22,37 +22,18 @@ public final class Constants {
     public final static double DriveVoltageScalar = 1.0;
 
     //////////////////// FOO DRIVETRAIN ////////////////////
+    // TODO update above with new robot name
     public static final DrivetrainSwerveConfig fooDrivetrainConfig = new DrivetrainSwerveConfig(
         Units.inchesToMeters(28), 
-        Units.inchesToMeters(28), 
-        // SUBTRACT the values you find in shuffleboard
-        Math.toRadians(0), // FRONT LEFT
-        Math.toRadians(0), // FRONT RIGHT 
-        Math.toRadians(0), // BACK LEFT
-        Math.toRadians(0)); // BACK RIGHT
+        Units.inchesToMeters(28));
 
     //////////////////// TED DRIVETRAIN ////////////////////
     public static final DrivetrainSwerveConfig tedDrivertainConfig = new DrivetrainSwerveConfig(
         Units.inchesToMeters(23.25), 
-        Units.inchesToMeters(22.75), 
-        // SUBTRACT the values you find in shuffleboard
-        //Math.toRadians(-215.15 - 178.76 - 358.7 - 43.9 - 354.5), // FRONT LEFT
-        //Math.toRadians(-180.61 - 95.27 - 358.6 -169.8 - 150.59), // FRONT RIGHT 
-        //Math.toRadians(-191.33 - 257.52 -357.3  - 3.6 - 355.67 - 230.9 - 180), // BACK LEFT
-        //Math.toRadians(-58.35 - 177.27 - 2.0 - 358.50 - 51.9 - 136)); // BACK RIGHT
-        Math.toRadians(0), // FRONT LEFT
-        Math.toRadians(0), // FRONT RIGHT 
-        Math.toRadians(0), // BACK LEFT
-        Math.toRadians(0)); // BACK RIGHT
-        
+        Units.inchesToMeters(22.75));
 
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
-    public static final double SWERVE_WHEEL_DIAMETER = 0.1016;  //4" in meters
-    public static final double SWERVE_DRIVE_REDUCTION = 1/5.46; // 5.46:1 (12:34 -> 28:18 -> 15:45)
-    public static final boolean SWERVE_DRIVE_INVERTED = true; //three reductions
-    public static final double SWERVE_STEER_REDUCTION = 1/15.43; // 15.43:1 (8:24 -> 14:72)
-    public static final boolean SWERVE_STEER_INVERTED = false; //two reductions
 
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.
@@ -66,7 +47,6 @@ public final class Constants {
     public static final double RevNeoEncoderTicksPerRevolution = 42;
     // CTRE motor constants
     public static final double talonMaximumRevolutionsPerMinute = 6380;
-    public static final double CtreTalonFx500EncoderTicksPerRevolution = 2048; 
 
     // *****************************************************************
     // input device constants
@@ -90,7 +70,11 @@ public final class Constants {
 
     // ******************************************************************
     // camera constants
+<<<<<<< HEAD
     public static final boolean useFusedVisionInAuto = true;
+=======
+    public static final boolean useFusedVisionInAuto = false;
+>>>>>>> main
     public static final double autoUseFusedVisionDuration = 15.0;
 
     // Distance from center of the robot to the reef tag.

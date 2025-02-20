@@ -12,7 +12,6 @@ package frc.robot.control;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -211,24 +210,14 @@ public class ManualInputInterfaces {
     if (InstalledHardware.coDriverXboxControllerInstalled) {
       // x button press will stop all
       this.coDriverController.x().onTrue(
-          new ParallelCommandGroup(
-              new AllStopCommand(
-                  this.subsystemCollection),
-              new ButtonPressCommand(
-                  "coDriverController.x()",
-                  "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
-
-      if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
-
-        // right bumper press will toggle drivetrain reduced acceleration mode
-        this.coDriverController.rightBumper().onTrue(
-            new ParallelCommandGroup(
-                new InstantCommand(
-                    () -> subsystemCollection.getDriveTrainAccelerationSubsystem().togglePowerReductionFactor()),
-                new ButtonPressCommand(
-                    "coDriverController.rightBumper()",
-                    "toggle limited acceleration mode")));
-      }
+        new ParallelCommandGroup(
+          new AllStopCommand(
+            this.subsystemCollection),
+          new ButtonPressCommand(
+            "coDriverController.x()",
+            "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")
+          )
+        );
     }
   }
 }
