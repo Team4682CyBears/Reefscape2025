@@ -157,7 +157,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
     CANcoderConfiguration encoderConfigs = new CANcoderConfiguration();
 
     // Create MagnetSensorConfigs and set the AbsoluteSensorRange to Unsigned 0 to 1
-    encoderConfigs.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0;
+    encoderConfigs.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
     //MagnetSensor.AbsoluteSensorDiscontinuityPoint.Unsigned_0To1;
     encoderConfigs.MagnetSensor.MagnetOffset = degreesToRotations(Constants.shooterAbsoluteAngleOffsetDegrees);
     encoderConfigs.MagnetSensor.SensorDirection = Constants.shooterAngleSensorDirection;
