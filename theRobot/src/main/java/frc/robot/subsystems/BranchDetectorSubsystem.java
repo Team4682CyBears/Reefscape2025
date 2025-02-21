@@ -1,3 +1,11 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: BranchDetectorSubsystem.java
+// Intent: Forms a subsystem to detect branches using ToFs.
+// ************************************************************
+
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
