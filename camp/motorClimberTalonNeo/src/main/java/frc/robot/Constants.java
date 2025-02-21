@@ -17,7 +17,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   // climber constants
-  public static final int climberMotorCanId = 13;
+  public static final int climberMotorCanId = 24;
  
-  public static final int motorCanID = 1;
+  public static final int motorCanID = 24;
 }

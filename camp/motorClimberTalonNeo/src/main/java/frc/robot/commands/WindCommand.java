@@ -14,7 +14,7 @@ public class WindCommand extends Command {
 
     @Override
     public void initialize() {
-        climberSubsystem.setClimberSpeed(-0.4);
+        climberSubsystem.setClimberSpeed(-0.075);
     }
 
     @Override

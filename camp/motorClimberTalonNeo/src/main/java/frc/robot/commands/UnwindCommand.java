@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.TalonMotorSubsystem;
 
+
 public class UnwindCommand extends Command {
     ClimberSubsystem climberSubsystem;
 
@@ -15,7 +16,7 @@ public class UnwindCommand extends Command {
 
     @Override
     public void initialize() {
-        climberSubsystem.setClimberSpeed(0.4);
+        climberSubsystem.setClimberSpeed(0.075);
     }
 
     @Override
