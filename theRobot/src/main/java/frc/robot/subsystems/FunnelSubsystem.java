@@ -18,41 +18,52 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.common.ToFSensor;
 import frc.robot.control.Constants;;
 
-public class ClimberSubsystem extends SubsystemBase {
+public class FunnelSubsystem extends SubsystemBase {
     // configurtition for the motor begins here
-    private SparkMax climberMotor = null;
+    private SparkMax funnelMotor = null;
+    private ToFSensor funnelToF = null;
 
-    // Value from 0.0 to 1.0 scaling the joystick input
-    public static double maxClimberSpeed = 0.4;
+    private double tofDetectionThresholdInches = 20; // TODO: Set to real value
 
-    public ClimberSubsystem() {
-
-        climberMotor = new SparkMax(Constants.climberMotorCanID, MotorType.kBrushless);
+    public FunnelSubsystem() {
+        funnelMotor = new SparkMax(Constants.funnelMotorCanID, MotorType.kBrushless);
+        funnelToF = new ToFSensor(Constants.funnelTofCanID);
 
         // Configure motor to break when stopped
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
 
         // Apply config
-        climberMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        funnelMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
     /**
-     * A method to set the climber speed
+     * A method to set the funnel speed
      * 
      * @param speed (between -1 and 1)
      */
-    public void setClimberSpeed(double speed) {
-        climberMotor.set(clamp(speed, -1.0, 1.0));
+    public void setFunnelSpeed(double speed) {
+        funnelMotor.set(clamp(speed, -1.0, 1.0));
     }
 
     /**
-     * A method to stop the climber subsystem
+     * A method to stop the funnel subsystem
      */
-    public void stopClimber() {
-        climberMotor.stopMotor();
+    public void stopFunnel() {
+        funnelMotor.stopMotor();
+    }
+
+    /**
+     * Determines if an object is detected by the ToF sensor.
+     * 
+     * @return true if an object is detected within the threshold distance, false
+     *         otherwise
+     */
+    public boolean isObjectDetected() {
+        return funnelToF.getRangeInches() <= tofDetectionThresholdInches;
     }
 
     /**

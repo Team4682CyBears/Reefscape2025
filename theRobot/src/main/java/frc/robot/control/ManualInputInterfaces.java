@@ -250,20 +250,21 @@ public class ManualInputInterfaces {
             }
 
             if (this.subsystemCollection.isFunnelSubsystemAvailable()) {
-                // Collapse the funnel when both Left Bumper and B are pressed
+                // Open the funnel when both Left Bumper and B are pressed
                 Trigger doubleButtonTrigger = new Trigger(
                         () -> this.coDriverController.leftBumper().getAsBoolean()
                                 && this.coDriverController.b().getAsBoolean());
                 doubleButtonTrigger.onTrue(
                         new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
+                                new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
                                 new ButtonPressCommand(
                                         "coDriverController leftBumper && b",
-                                        "Collapse Funnel")));
+                                        "Open Funnel")));
             }
 
             // TODO: need to check whether the subsystem that holds the left/right state is
             // installed.
+
             // Change alignment mode to left (changes the align with branch settings)
             this.coDriverController.leftTrigger().onTrue(
                     new ParallelCommandGroup(

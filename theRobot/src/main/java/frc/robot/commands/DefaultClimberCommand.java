@@ -33,7 +33,7 @@ public class DefaultClimberCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        this.climberSubsystem.setAllStop();
+        this.climberSubsystem.stopClimber();
     }
 
     @Override

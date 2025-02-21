@@ -50,6 +50,9 @@ public class RobotContainer {
         // init the climber
         this.initializeClimberSubsystem();
 
+        // init the funnel
+        this.initializeFunnelSubsystem();
+
         // init the input system
         this.initializeManualInputInterfaces();
 
@@ -175,6 +178,9 @@ public class RobotContainer {
         }
     }
 
+    /**
+     * A method to init the ClimberSubsystem
+     */
     private void initializeClimberSubsystem() {
         if (InstalledHardware.climberInstalled) {
             subsystems.setClimberSubsystem(new ClimberSubsystem());
@@ -186,6 +192,17 @@ public class RobotContainer {
                             * ClimberSubsystem.maxClimberSpeed));
         } else {
             DataLogManager.log("FAIL: initializeClimber");
+        }
+    }
+
+    /**
+     * A method to init the FunnelSubsystem
+     */
+    private void initializeFunnelSubsystem() {
+        if (InstalledHardware.funnelInstalled) {
+            subsystems.setFunnelSubsystem(new FunnelSubsystem());
+        } else {
+            DataLogManager.log("FAIL: initializeFunnel");
         }
     }
 

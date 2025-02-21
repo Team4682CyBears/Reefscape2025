@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: NoteTofSensor.java
+// File: ToFSensor.java
 // Intent: Subsystem for ToF sensor to detect when note enters its range
 // ************************************************************
 
@@ -20,14 +20,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Forms a class for the TofSubsystem that detects when a note is present. 
  */
-public class NoteTofSensor {
+public class ToFSensor {
 
-  private static final double noteDetectedThreshold = 8.0;
+  private static final double detectedThreshold = 8.0;
   private TimeOfFlight tofSensor;
   private int canID;
   private String displayName;
 
-  public NoteTofSensor(int canID){
+  public ToFSensor(int canID){
     tofSensor = new TimeOfFlight(canID);
     this.canID = canID;
     this.displayName = "TOF ID " + this.canID;
@@ -69,12 +69,12 @@ public class NoteTofSensor {
   }
 
   /**
-   * A method to detect the presence of a note
-   * @return true if note is detected
+   * A method to detect the presence of an object
+   * @return true if object is detected
    */
-  public boolean isNoteDetected(){
+  public boolean isObjectDetected(){
     double currentRangeInches = this.getRangeInches();
-    if(this.isRangeValid() && (currentRangeInches < noteDetectedThreshold)){
+    if(this.isRangeValid() && (currentRangeInches < detectedThreshold)){
       return true;
     }
     return false;
@@ -93,7 +93,7 @@ public class NoteTofSensor {
    */
   public void publishTelemetery(){
     SmartDashboard.putNumber(displayName + " Range Inches" , this.getRangeInches());
-    SmartDashboard.putBoolean(displayName + " Note Detected", this.isNoteDetected());
+    SmartDashboard.putBoolean(displayName + " Object Detected", this.isObjectDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
     SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
   } 
