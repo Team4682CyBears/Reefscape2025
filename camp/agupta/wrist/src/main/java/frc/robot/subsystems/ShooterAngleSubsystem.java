@@ -48,7 +48,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   // Initiate fields and class instances
 
   // Shooter gearing 
-  private static final double angleEncoderGearRatio = 1.0; // angle encoder is mounted directly onto shaft
+  private static final double angleEncoderGearRatio = 4.0; // angle encoder is mounted directly onto shaft
   // unused gear ratio but may need later
   //private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
 
@@ -78,8 +78,13 @@ public class ShooterAngleSubsystem extends SubsystemBase {
    * Constructor for shooter subsystem
    */
   public ShooterAngleSubsystem() {
+
+    // set direction, offset, and range of encoder
     configureAngleEncoder();
+
+    // sets motionMagic movement max's configs 
     configureAngleMotors();  
+
     /* Make control requests synchronous */
     angleVoltageController.UpdateFreqHz = 0;
   }
@@ -150,13 +155,21 @@ public class ShooterAngleSubsystem extends SubsystemBase {
    */
   public void setAngleDegrees(double degrees){
     // DataLogManager.log("Setting Shooter Angle to " + degrees + " degrees.");
-    double clampedDegrees = MotorUtils.clamp(degrees, degrees + 3, degrees - 3);
+
+    // check if set angle is in between max and min angle range
+    double clampedDegrees = MotorUtils.clamp(degrees, Constants.shooterAngleMinDegrees, Constants.shooterAngleMaxDegrees);
+    
+    // if out of range, return warning that we outta range
     if (clampedDegrees != degrees){
       DataLogManager.log("Warning: Shooter Angle requested degrees of " + degrees + 
       "exceeded bounds of [" + (degrees + 3) + " .. " + (degrees - 3) +
       "]. Clamped to " + clampedDegrees + ".");
     }
+
+    // set desired angle based on clamped min/max
     desiredAngleDegrees = clampedDegrees;
+
+    // cehck if angle within tolerance
     shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
   }
 
@@ -167,6 +180,9 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
   }
 
+  /**
+   * This method sets config parameters for encoder
+   */
   private void configureAngleEncoder() {
     // Config CanCoder
     CANcoderConfiguration encoderConfigs = new CANcoderConfiguration();
@@ -184,16 +200,20 @@ public class ShooterAngleSubsystem extends SubsystemBase {
     }
   }
 
+  /**
+   * This method sets configuration parameters for motors
+   */
   private void configureAngleMotors() {
     // Config angle motor
     TalonFXConfiguration angleConfigs = new TalonFXConfiguration();
     angleConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    angleConfigs.MotorOutput.Inverted = Constants.angleLeftTalonShooterMotorDefaultDirection;
+    angleConfigs.MotorOutput.Inverted = Constants.angleTalonShooterMotorDefaultDirection;
     angleConfigs.CurrentLimits.StatorCurrentLimit = HardwareConstants.shooterAngleStatorCurrentMaximumAmps;
     angleConfigs.CurrentLimits.StatorCurrentLimitEnable = true; 
     angleConfigs.CurrentLimits.SupplyCurrentLimit = HardwareConstants.shooterAngleSupplyCurrentMaximumAmps;
     angleConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
     angleConfigs.Voltage.SupplyVoltageTimeConstant = HardwareConstants.shooterAngleSupplyVoltageTimeConstant;
+
     // FeedbackConfigs and offsets
     if (InstalledHardware.shooterAngleCanCoderInstalled) {
       DataLogManager.log("Configuring Shooter Angle Motor with CanCoder Feedback.");
@@ -203,29 +223,38 @@ public class ShooterAngleSubsystem extends SubsystemBase {
       angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.shooterEncoderCanId;
       // offset is set in CanCoder config above
     } 
-    angleConfigs.MotionMagic.MotionMagicCruiseVelocity = 800.0;
-    angleConfigs.MotionMagic.MotionMagicAcceleration = 160;
-    angleConfigs.MotionMagic.MotionMagicJerk = 800; 
+
+    // set motion magic speed configs
+    angleConfigs.MotionMagic.MotionMagicCruiseVelocity = Constants.cruiseVelocity;
+    angleConfigs.MotionMagic.MotionMagicAcceleration = Constants.acceleration;
+    angleConfigs.MotionMagic.MotionMagicJerk = Constants.jerk; 
+
     // apply configs
     StatusCode response = angleMotor.getConfigurator().apply(angleConfigs);
     if (!response.isOK()) {
       DataLogManager.log(
           "TalonFX ID " + angleMotor.getDeviceID() + " failed config with error " + response.toString());
     }
-    // change invert for angleRightMotor
-    angleConfigs.MotorOutput.Inverted = Constants.angleRightTalonShooterMotorDefaultDirection;
-    // apply configs
     }
 
+  /**
+   * This method sets offset of the motor
+   */
   private double getOffset(){
     return 0;
   }
 
+  /**
+   * This method converts degrees to rotations
+   */
   private double degreesToRotations(double degrees)
   {
     return degrees/360;
   }
 
+  /**
+   * This method converts rotations to degrees
+   */
   private double rotationsToDegrees(Angle rotations)
   {
     return rotations.in(Units.Degrees); // Convert the angle to degrees

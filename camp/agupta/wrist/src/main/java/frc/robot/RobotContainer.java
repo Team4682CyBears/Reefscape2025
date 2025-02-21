@@ -47,13 +47,19 @@ public class RobotContainer {
 
     // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     //this.shooterAngleSubsystem.setDefaultCommand(); 
+
+    // TODO: Figure out if we are using subsystem collection, if so call the getter from that function instead of direct
    
     // Rotate to shooterAngle
-    driverController.a().onTrue(new ShooterSetAngleCommand(Constants.shooterAngle, this.shooterAngleSubsystem));
-              //new ShooterSetAngleCommand(Constants.shooterAngleShootFromSpeaker,this.subsystemCollection.getShooterAngleSubsystem());
+    driverController.a().onTrue(new ShooterSetAngleCommand(
+      Constants.shooterAngle, 
+      this.shooterAngleSubsystem));
+        //new ShooterSetAngleCommand(Constants.shooterAngleShootFromSpeaker,this.subsystemCollection.getShooterAngleSubsystem());
 
     // Rotate to algaeRemoverAngle
-    driverController.b().onTrue(new ShooterSetAngleCommand(Constants.algaeAngle, this.shooterAngleSubsystem));
+    driverController.b().onTrue(new ShooterSetAngleCommand(
+      Constants.algaeAngle, 
+      this.shooterAngleSubsystem));
 
     //this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
     

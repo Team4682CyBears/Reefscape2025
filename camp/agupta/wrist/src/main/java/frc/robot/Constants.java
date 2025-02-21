@@ -38,10 +38,16 @@ public final class Constants {
   public static final double kd = 0.5;
   public static final double kv = 0;
 
+  // MotionMagic 
+  public static final double cruiseVelocity = 800.0;
+  public static final double acceleration = 160;
+  public static final double jerk = 800; 
 
+  //Motor angle min/max
+  public static final double shooterAngleMaxDegrees = 110;
+  public static final double shooterAngleMinDegrees = -20;  
 
-  public static InvertedValue angleLeftTalonShooterMotorDefaultDirection = InvertedValue.CounterClockwise_Positive;
-  public static InvertedValue angleRightTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
+  public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.CounterClockwise_Positive;
   public static final double shooterStartingAngleOffsetDegrees = 20.0;
 
   // *******************************************************************
