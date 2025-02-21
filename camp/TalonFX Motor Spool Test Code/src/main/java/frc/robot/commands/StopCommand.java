@@ -17,14 +17,7 @@ public class StopCommand extends Command {
 
     @Override
     public void initialize() {
-<<<<<<< HEAD
-    }
-
-    @Override
-    public void execute(){
-=======
         // The actual command. Stops the motor when no buttons are being pressed.
->>>>>>> 1520e6510ce2b170224525aa64c1afdc211a1e2d
         System.out.println("----public void initialize() in StopCommand.java is running----");
         motorSubsystem.motorStop(); // Calls on the motorStop command in TalonMotorSubsystem
     }

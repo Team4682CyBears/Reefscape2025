@@ -1,14 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimberSubsystem;
-//import frc.robot.subsystems.TalonMotorSubsystem;
+import frc.robot.subsystems.NeoMotorSubsystem;
+import frc.robot.subsystems.TalonMotorSubsystem;
 
 
 public class StopCommand extends Command {
-    ClimberSubsystem climberSubsystem;
+    Object climberSubsystem;
 
-    public StopCommand(ClimberSubsystem climberSubsystem) {
+    public StopCommand(Class<?> climberSubsystem) {
+        this.climberSubsystem = climberSubsystem;
+        
+        addRequirements(climberSubsystem);
+    }
+
+    public StopCommand(NeoMotorSubsystem climberSubsystem) {
         this.climberSubsystem = climberSubsystem;
         
         addRequirements(climberSubsystem);

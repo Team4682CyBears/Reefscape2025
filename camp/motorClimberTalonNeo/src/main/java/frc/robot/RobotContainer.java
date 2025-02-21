@@ -8,7 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.UnwindCommand;
 import frc.robot.commands.WindCommand;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.NeoMotorSubsystem;
 import frc.robot.subsystems.TalonMotorSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,9 +23,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  //private final TalonMotorSubsystem climberSubsystem = new TalonMotorSubsystem();
+  private final NeoMotorSubsystem climberSubsystem = new NeoMotorSubsystem();
+
   // The robot's subsystems and commands are defined here...
-  private final TalonMotorSubsystem talonMotorSubsystem = new TalonMotorSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   // create instance of xbox controller
   private final CommandXboxController driverController =
