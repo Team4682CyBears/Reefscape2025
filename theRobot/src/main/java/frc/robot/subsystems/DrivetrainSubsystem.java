@@ -57,9 +57,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean displayOdometryDiagnostics = false;
 
-  private Timer timer = new Timer();
-
-
   StructArrayPublisher<SwerveModuleState> publisher;
 
   private final double deltaTimeSeconds = 0.02; // 20ms scheduler time tick
@@ -131,9 +128,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if(InstalledHardware.limelightInstalled){
       cameraSubsystem = subsystems.getCameraSubsystem();
     }
-
-    timer.reset();
-    timer.start();
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
