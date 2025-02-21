@@ -25,8 +25,8 @@ public final class Constants {
   }
 
   // Can IDs
-  public static final int shooterMotorCanId = 22;
-  public static final int shooterEncoderCanId = 23;
+  public static final int shooterMotorCanId = 5;
+  public static final int shooterEncoderCanId = 24;
 
   // public static final double shooterAngleShootFromSpeaker = 54.5;
   public static final double shooterAngle = 0;
