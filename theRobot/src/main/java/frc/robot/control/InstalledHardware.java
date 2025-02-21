@@ -43,6 +43,15 @@ public class InstalledHardware
     //LED Hardware
     public static final boolean LEDSInstalled = true;
 
-    // Subsystems
+    // Branch Detector
     public static final boolean branchDetectorInstalled = true;
+
+    // EndEffector
+    public static final boolean endEffectorInstalled = false;
+    
+    // Elevator
+    public static final boolean elevatorInstalled = false;
+
+    // Funnel
+    public static final boolean funnelInstalled = false;
 }

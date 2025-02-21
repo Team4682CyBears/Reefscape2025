@@ -48,6 +48,9 @@ public class RobotContainer {
     this.initializeDrivetrainSubsystem();
     this.initailizeBranchDetectorSubsystem();
 
+    // init the climber
+    this.initializeClimberSubsystem();
+
     // init the input system 
     this.initializeManualInputInterfaces();
 
@@ -149,11 +152,15 @@ public class RobotContainer {
           () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
           () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-          ));
+        ));
     }
     else {
       DataLogManager.log("FAIL: initializeDrivetrain");
     }
+  }
+
+  private void initializeClimberSubsystem() {
+    // TODO: Set default command to control climber with joystick
   }
 
   /**
