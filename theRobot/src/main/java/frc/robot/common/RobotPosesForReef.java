@@ -37,12 +37,12 @@ public class RobotPosesForReef {
 
     private static HashMap<Double, Pose2d> bluePoses = new HashMap<>();
     static{
-    redPoses.put(17.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60)));
-    redPoses.put(18.0, new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0)));
-    redPoses.put(19.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60)));
-    redPoses.put(20.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120)));
-    redPoses.put(21.0, new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180)));
-    redPoses.put(22.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120)));
+    bluePoses.put(17.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(60)));
+    bluePoses.put(18.0, new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(0)));
+    bluePoses.put(19.0, new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83), Rotation2d.fromDegrees(-60)));
+    bluePoses.put(20.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.23), Rotation2d.fromDegrees(-120)));
+    bluePoses.put(21.0, new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50), Rotation2d.fromDegrees(180)));
+    bluePoses.put(22.0, new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17), Rotation2d.fromDegrees(120)));
     }
 
     // The coordinates of the reef center is the average of the two opposing reef tags
