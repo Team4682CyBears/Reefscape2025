@@ -15,7 +15,7 @@ public final class Constants {
 
   public static final int tofLeftCanId = 20;
   public static final int tofRightCanId = 21;
-  public static final double tofDetectionThresholdInches = 20.0;
+  public static final double tofDetectionThresholdInches = 6.0;
 
   public static final boolean leftTOFEnabled = true;
   public static final boolean rightTOFEnabled = true;
