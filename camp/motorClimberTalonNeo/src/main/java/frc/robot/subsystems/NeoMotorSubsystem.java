@@ -27,8 +27,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-//import com.revrobotics.spark.SparkBase.IdleMode;
-//import com.revrobotics.spark.SparkBase.IdleMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.common.NoteTofSensor;
@@ -43,6 +44,13 @@ public class NeoMotorSubsystem extends SubsystemBase {
     public NeoMotorSubsystem() {
 
         climberMotor = new SparkMax(Constants.climberMotorCanId, MotorType.kBrushless);
+
+        // Configure motor to break when stopped
+        SparkMaxConfig config = new SparkMaxConfig();
+        config.idleMode(IdleMode.kBrake);
+
+        // Apply config
+        climberMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
       /**
@@ -58,6 +66,6 @@ public class NeoMotorSubsystem extends SubsystemBase {
    * A method to stop the intake subsystem
    */
   public void setAllStop() {
-    climberMotor.setIdleMode(motor.IdleMode.kBrake);
+    climberMotor.stopMotor();
   }
 }
