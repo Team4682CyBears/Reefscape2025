@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.common.RobotPosesForReef;
 import frc.robot.control.SubsystemCollection;
+import frc.robot.control.Constants;
 import frc.robot.subsystems.CameraSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -65,11 +66,6 @@ public class AlignWithReefCommand extends Command {
     private double maxAccelerationPMSSq = 3.5; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
-
-    private PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
-    );
 
     /**
      * Constructor to make a command to align with an april tag on the reef
@@ -134,7 +130,7 @@ public class AlignWithReefCommand extends Command {
                                                                                             // the robot given ROBOT
                                                                                             // RELATIVE ChassisSpeeds.
                             // We do not currently use the module feedforwards
-                            pathFollower,
+                            Constants.pathFollower,
                             drivetrain.getPathPlannerConfig(), // The robot configuration
                             () -> mirrorPathForRedAliance(),
                             (Subsystem) drivetrain);
@@ -145,6 +141,7 @@ public class AlignWithReefCommand extends Command {
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
                 
+                //We are launching a string of commands from this command because we want to use path planners follow path command and then do stuff after
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
                                 new AlignWithBranchCommand(drivetrain,

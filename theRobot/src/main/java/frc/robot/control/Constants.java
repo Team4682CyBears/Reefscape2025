@@ -13,6 +13,8 @@ package frc.robot.control;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 public final class Constants {
 
@@ -21,6 +23,13 @@ public final class Constants {
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
     public static final double SWERVE_MAX_ANGULAR_SPEED = 405; // rad/s
+
+    // *****************************************************************
+    // Auto Constants
+    public static final PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+        new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
+        new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants 
+    );
 
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.

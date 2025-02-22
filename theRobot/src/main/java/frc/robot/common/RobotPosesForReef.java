@@ -63,10 +63,7 @@ public class RobotPosesForReef {
         Translation2d tagCoordinate;
         boolean isRed;
 
-        // -1 is the id when we don't see a tag
-        if (tagID == -1) {
-            return new Pose2d();
-        } else if (redPoses.containsKey(tagID)) {
+        if (redPoses.containsKey(tagID)) {
             tagPose = redPoses.get(tagID);
             isRed = true;
         } else if (bluePoses.containsKey(tagID)) {

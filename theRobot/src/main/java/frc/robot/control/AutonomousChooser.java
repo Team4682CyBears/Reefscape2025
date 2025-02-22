@@ -23,7 +23,6 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import frc.robot.commands.AlignWithReefCommand;
 import frc.robot.commands.ButtonPressCommand;
-import frc.robot.commands.UseFusedVisionInAutoCommand;
 
 /**
  * a class for choosing different auto modes from shuffleboard
@@ -77,14 +76,8 @@ public class AutonomousChooser {
      * @return command
      */
     public Command getCommand() {
-        Command fusedVisionCommand = new InstantCommand();
-        if (!Constants.useFusedVisionInAuto) {
-            fusedVisionCommand = new UseFusedVisionInAutoCommand(subsystems.getDriveTrainSubsystem());
-        }
-
         return new ParallelCommandGroup(
-                fusedVisionCommand,
-                getAutoPath());
+            getAutoPath());
     }
 
     private Command getTestAuto() {
@@ -101,11 +94,6 @@ public class AutonomousChooser {
      * @param subsystems
      */
     public static void configureAutoBuilder(SubsystemCollection subsystems) {
-        PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-                new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-                new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
-                
-        );
 
         AutoBuilder.configure(
                 subsystems.getDriveTrainSubsystem()::getRobotPosition, // Pose supplier
@@ -115,7 +103,7 @@ public class AutonomousChooser {
                                                                                              // the robot given ROBOT
                                                                                              // RELATIVE
                 // ChassisSpeeds
-                pathFollower,
+                Constants.pathFollower,
                 subsystems.getDriveTrainSubsystem().getPathPlannerConfig(),
                 () -> getShouldMirrorPath(),
                 subsystems.getDriveTrainSubsystem());
