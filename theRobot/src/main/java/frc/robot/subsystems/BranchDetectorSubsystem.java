@@ -13,18 +13,20 @@ import frc.robot.common.ToFDetector;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
 
+/**
+ * The BranchDetectorSubsystem class is responsible for detecting branches using ToFs
+ */
 public class BranchDetectorSubsystem extends SubsystemBase{
     
     ToFDetector tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.branchDetectionThresholdInches);
     ToFDetector tofRight = new ToFDetector(Constants.tofRightCanID, Constants.branchDetectionThresholdInches);
 
+    /**
+     * Constructs a BranchDetectorSubsystem object
+     */
     public BranchDetectorSubsystem(){
-
     }
-
-    public void periodic(){
-    }
-
+    
     /**
      * A method that returns true if either ToF detects something in range
      * @return - if somehthing detected by either ToF is in range

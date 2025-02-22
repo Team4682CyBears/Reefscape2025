@@ -90,6 +90,7 @@ public class RobotPosesForReef {
         // add the offset vector to the tag to get the destination coordinates
         Translation2d destination = tagCoordinate.plus(offsetVector);
 
+        //we make an assumption that when we see a red tag we are on the red alliance to simplify code
         if(isRed){   
             return new Pose2d(destination, tagPose.getRotation().plus(new Rotation2d(Math.PI)));
         }

@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 /**
  * Class to form a command to align with branch using ToFs
  */
-public class AlignWithBranchCommand extends Command{
+public class AlignToBranchCommand extends Command{
     private DrivetrainSubsystem drivetrain;
     private BranchDetectorSubsystem branchDetector;
     private Supplier<AlignToBranchSide> alignSideSupplier;
@@ -38,7 +38,7 @@ public class AlignWithBranchCommand extends Command{
      * @param branchDetector - the branch detector subsystem
      * @param alignSideSupplier - a supplier of an enum that tells us if we want to align right or left
      */
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, BranchDetectorSubsystem branchDetector, Supplier<AlignToBranchSide> alignSideeSupplier){
+    public AlignToBranchCommand(DrivetrainSubsystem drivetrainSubsystem, BranchDetectorSubsystem branchDetector, Supplier<AlignToBranchSide> alignSideeSupplier){
         this.drivetrain = drivetrainSubsystem;
         this.branchDetector = branchDetector;
         this.alignSideSupplier = alignSideeSupplier;
