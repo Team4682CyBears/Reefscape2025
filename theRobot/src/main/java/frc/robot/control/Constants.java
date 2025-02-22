@@ -92,6 +92,10 @@ public final class Constants {
     public static final double overcurrentRumbleTimeSeconds = 0.25;
 
     // ********************************************************************
+    // Diagnostic Constants
+    public static final boolean putDiagnosticPaths = false;
+
+    // ********************************************************************
     // CAN IDs
 
     // Funnel

@@ -100,6 +100,10 @@ public class RobotPosesForReef {
             return new Pose2d(destination, tagPose.getRotation());
         }
     }
+
+    public static boolean isReefTag(double id){
+        return (id <= 11 && id >= 6) || (id <= 22 && id >= 17);
+    }
 }
 
 

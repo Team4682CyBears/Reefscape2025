@@ -35,7 +35,7 @@ import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 /**
- * Class to form a command that will align with an april tag on a reef
+ * Class to form a command that will make a command to align with an april tag on a reef
  */
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
@@ -61,10 +61,6 @@ public class AlignWithReefCommand extends Command {
 
     FollowPathCommand followPathCommand;
 
-    // TODO These velocities and acccelerations were copied from Ted. May need to be
-    // changed for new robot.
-    // private double maxVelocityMPS =
-    // DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
     private double maxVelocityMPS = 5.3;
     private double maxAccelerationPMSSq = 3.5; // 6.0 max
     private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
@@ -87,6 +83,8 @@ public class AlignWithReefCommand extends Command {
         this.camera = this.subsystemCollection.getCameraSubsystem();
 
         this.shouldAlignBranch = shouldAlignBranch;
+
+        //We dont require any subsystems because we call a command later that requires the drivetrain
     }
 
     @Override
@@ -107,7 +105,7 @@ public class AlignWithReefCommand extends Command {
             case LOOKINGFORTAG:
                 tagID = camera.getTagId();
 
-                if ((tagID <= 11 && tagID >= 6) || (tagID <= 22 && tagID >= 17)) {
+                if (RobotPosesForReef.isReefTag(tagID)) {
                     stage = Stage.GETTINGVALIDPATH;
                 }
                 break;

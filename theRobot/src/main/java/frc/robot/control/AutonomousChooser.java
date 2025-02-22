@@ -32,10 +32,7 @@ public class AutonomousChooser {
     private SubsystemCollection subsystems;
     private final SendableChooser<AutonomousPath> autonomousPathChooser = new SendableChooser<>();
 
-    private Command twoNote;
-    private Command doNothing;
-    private Command TestAutoPlanner;
-    private Command TestAutoCommand;
+    private Command testAuto;
 
     /**
      * Constructor for AutonomousChooser
@@ -51,10 +48,10 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.TWONOTE);
+            autonomousPathChooser.setDefaultOption("Test Auto", AutonomousPath.TESTAUTO);
             SmartDashboard.putData(autonomousPathChooser);
 
-            this.twoNote = getTwoNote();
+            this.testAuto = getTestAuto();
 
         } else {
             DataLogManager.log(">>>>> NO auto routine becuase missing subsystems");
@@ -68,8 +65,8 @@ public class AutonomousChooser {
      */
     public Command getAutoPath() {
         switch (autonomousPathChooser.getSelected()) {
-            case TWONOTE:
-                return this.twoNote;
+            case TESTAUTO:
+                return this.testAuto;
         }
         return new InstantCommand();
     }
@@ -90,12 +87,12 @@ public class AutonomousChooser {
                 getAutoPath());
     }
 
-    private Command getTwoNote() {
-        return AutoBuilder.buildAuto("TwoNote");
+    private Command getTestAuto() {
+        return AutoBuilder.buildAuto("TestAuto");
     }
 
     private enum AutonomousPath {
-        TWONOTE;
+        TESTAUTO;
     }
 
     /**

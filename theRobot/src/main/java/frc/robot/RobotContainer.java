@@ -72,31 +72,18 @@ public class RobotContainer {
     // TODO For debugging. Can remove for final competition build. 
     this.initializeDebugDashboard();
 
-    if (subsystems.isDriveTrainSubsystemAvailable()) {
+    if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
       // commands to drive path planner test trajectories
       TestTrajectories testtrajectories = new TestTrajectories();
-      /**
+
       SmartDashboard.putData("One Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Two Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Three Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
-      */
-    }
 
-    // Register Named Commands
-
-    // Put command scheduler on dashboard
-    SmartDashboard.putData(CommandScheduler.getInstance());
-
-    if(this.subsystems.isDriveTrainPowerSubsystemAvailable()) {
-      SmartDashboard.putData(
-        "DriveForwardRobotCentric",
-        new DriveTimeCommand(this.subsystems.getDriveTrainSubsystem(),
-        new ChassisSpeeds(0.6, 0.0, 0.0),
-        3.0));
     }
   }
 

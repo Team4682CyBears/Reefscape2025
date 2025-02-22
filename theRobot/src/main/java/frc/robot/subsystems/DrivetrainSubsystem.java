@@ -19,7 +19,7 @@ import com.pathplanner.lib.config.RobotConfig;
 
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
-import frc.robot.LimelightHelpers;
+import frc.robot.generated.LimelightHelpers;
 import frc.robot.generated.Telemetry;
 import frc.robot.common.DrivetrainSwerveConfig;
 import frc.robot.control.SwerveDriveMode;

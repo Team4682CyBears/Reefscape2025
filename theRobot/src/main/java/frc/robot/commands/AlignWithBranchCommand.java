@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 public class AlignWithBranchCommand extends Command{
     private DrivetrainSubsystem drivetrain;
     private BranchDetectorSubsystem branchDetector;
-    private Supplier<AlignToBranchSide> alignSidSupplier;
+    private Supplier<AlignToBranchSide> alignSideSupplier;
     private boolean done = false;
     private Timer timer = new Timer();
     private double durationSeconds = 2;
@@ -38,10 +38,10 @@ public class AlignWithBranchCommand extends Command{
      * @param branchDetector - the branch detector subsystem
      * @param alignSideSupplier - a supplier of an enum that tells us if we want to align right or left
      */
-    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, BranchDetectorSubsystem branchDetector, Supplier<AlignToBranchSide> alignSideSupplier){
+    public AlignWithBranchCommand(DrivetrainSubsystem drivetrainSubsystem, BranchDetectorSubsystem branchDetector, Supplier<AlignToBranchSide> alignSideeSupplier){
         this.drivetrain = drivetrainSubsystem;
         this.branchDetector = branchDetector;
-        this.alignSidSupplier = alignSideSupplier;
+        this.alignSideSupplier = alignSideeSupplier;
 
         // explicitly not requiring the branch detector here because we are using it in a read-only capacity.
         addRequirements(drivetrainSubsystem);
@@ -55,7 +55,7 @@ public class AlignWithBranchCommand extends Command{
         timer.start();
         done = false;
 
-        if(alignSidSupplier.get() == AlignToBranchSide.RIGHT){
+        if(alignSideSupplier.get() == AlignToBranchSide.RIGHT){
             chassisSpeeds = new ChassisSpeeds(0.0, -yVelocity, 0.0);
         }
         else{
