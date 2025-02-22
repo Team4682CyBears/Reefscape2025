@@ -13,7 +13,7 @@ package frc.robot.common;
 
 // positions from lowest to highest on reef
 public enum ElevatorPositions {
-    STOW,
+    STOW, // A middle state to more quickly move from one resting to another position
     L1,
     L2,
     L3,
