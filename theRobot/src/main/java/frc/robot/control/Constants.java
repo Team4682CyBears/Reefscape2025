@@ -10,7 +10,9 @@
 
 package frc.robot.control;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 
@@ -67,14 +69,31 @@ public final class Constants {
     public static final double overcurrentRumbleTimeSeconds = 0.25;
 
     // ********************************************************************
+    // Elevator Constants
+    public static final Distance L1Height = Inches.of(0.0); // TODO: Change to real value
+    public static final Distance L2Height = Inches.of(32.0);
+    public static final Distance L3Height = Inches.of(48.0);
+    public static final Distance L4Height = Inches.of(72.0);
+    public static final Distance stowHeight = Inches.of(0.0); // TODO: Change to real value
+
+    public static final int elevatorMageneticSensorID = 0;
+    
+    // Motor Config constant variables
+    public static final double elevatorMotorStatorCurrentMaximumAmps = 100.0;
+    public static final double elevatorMotorSupplyCurrentMaximumAmps = 50.0;
+    public static final double elevatorMotorSupplyVoltageTimeConstant = 0.02;
+    public static final double elevatorFalconMaxVoltage = 12.0;
+    public static final double elevatorMinimumMotorSpeedRpm = 0.25 * 60;
+
+    // ********************************************************************
     // CAN IDs
 
     // Funnel
     public static final int funnelTofCanID = 16;
 
     // Elevator
-    public static final int elevatorMotorLeftCanID = 14;
-    public static final int elevatorMotorRightCanID = 15;
+    public static final int elevatorMotorLeaderCanID = 14;
+    public static final int elevatorMotorFollowerCanID = 15;
 
     // Wrist
     public static final int wristMotorCanID = 17;
@@ -88,4 +107,6 @@ public final class Constants {
     // Climber
     public static final int climberMotorCanID = 22;
     public static final int funnelMotorCanID = 23;
+    
+    // ************************************************************************
 }
