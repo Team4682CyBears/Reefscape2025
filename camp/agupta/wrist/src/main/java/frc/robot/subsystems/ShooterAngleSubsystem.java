@@ -48,9 +48,8 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   // Initiate fields and class instances
 
   // Shooter gearing 
-  private static final double angleEncoderGearRatio = 4.0; // angle encoder is mounted directly onto shaft
-  // unused gear ratio but may need later
-  //private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
+  private static final double angleEncoderGearRatio = 1.0; // angle encoder is mounted directly onto shaft
+  private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
 
   // Tolerance
   // rotations per second (max 512)
@@ -68,11 +67,13 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   private double desiredAngleDegrees; 
 
   // Motor controller gains
+  // copying gains from CoralTof miniproject.
   private Slot0Configs angleMotorGainsForAbsoluteEncoder = new Slot0Configs()
-    .withKP(Constants.kp)
-    .withKI(Constants.ki)
-    .withKD(Constants.kd)
-    .withKV(Constants.kv);
+    .withKS(0.09)
+    .withKV(0.45)
+    .withKP(0.35)
+    .withKD(0.0) // DO NOT SET KD!!
+    .withKI(0.5);
 
   /**
    * Constructor for shooter subsystem
@@ -119,7 +120,6 @@ public class ShooterAngleSubsystem extends SubsystemBase {
     if (!shooterIsAtDesiredAngle) {
         // use motionMagic voltage control
         angleMotor.setControl(angleVoltageController.withPosition(degreesToRotations(desiredAngleDegrees - getOffset())));
-        // angleRightMotor acts as a follower
         // keep moving until it reaches target angle
         shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
     }
@@ -219,6 +219,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
       DataLogManager.log("Configuring Shooter Angle Motor with CanCoder Feedback.");
       angleConfigs.Slot0 = angleMotorGainsForAbsoluteEncoder;
       angleConfigs.Feedback.SensorToMechanismRatio = angleEncoderGearRatio;
+      angleConfigs.Feedback.RotorToSensorRatio =   angleMotorGearRatio;
       angleConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
       angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.shooterEncoderCanId;
       // offset is set in CanCoder config above

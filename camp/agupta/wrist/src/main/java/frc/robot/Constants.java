@@ -32,12 +32,6 @@ public final class Constants {
   public static final double shooterAngle = 0;
   public static final double algaeAngle = 90;
 
-  // Shooter pid constants
-  public static final double kp = 150;
-  public static final double ki = 0.125;
-  public static final double kd = 0.5;
-  public static final double kv = 0;
-
   // MotionMagic 
   public static final double cruiseVelocity = 800.0;
   public static final double acceleration = 160;
@@ -47,13 +41,13 @@ public final class Constants {
   public static final double shooterAngleMaxDegrees = 110;
   public static final double shooterAngleMinDegrees = -20;  
 
-  public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.CounterClockwise_Positive;
+  public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
   public static final double shooterStartingAngleOffsetDegrees = 20.0;
 
   // *******************************************************************
   // shooter angle constants 
   public static SensorDirectionValue shooterAngleSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-  public static final double shooterAbsoluteAngleOffsetDegrees = 59.445 - 308.09 +359.9 + .23 + 3; // ?????????????????
+  public static final double shooterAbsoluteAngleOffsetDegrees = -166.11;
   public static final double shooterAngleToleranceDegrees = 0.5;
 
 }
