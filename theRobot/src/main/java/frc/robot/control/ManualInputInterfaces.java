@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AllStopCommand;
 import frc.robot.commands.ButtonPressCommand;
+import frc.robot.commands.ClearAlgaeCommand;
 import frc.robot.commands.MoveToPositionCommand;
+import frc.robot.commands.ScoreCoralCommand;
 import frc.robot.common.ElevatorPositions;
 
 public class ManualInputInterfaces {
@@ -168,7 +170,7 @@ public class ManualInputInterfaces {
                     && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
                 this.driverController.leftBumper().onTrue(
                         new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
+                                new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
                                 new ButtonPressCommand(
                                         "driverController.leftBumper()",
                                         "Remove Algae")));
@@ -176,7 +178,7 @@ public class ManualInputInterfaces {
                 // Score Coral with EndEffector
                 this.driverController.y().onTrue(
                         new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
+                                new ScoreCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
                                 new ButtonPressCommand(
                                         "driverController.y()",
                                         "Score Coral")));

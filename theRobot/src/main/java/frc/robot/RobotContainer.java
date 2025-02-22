@@ -55,6 +55,9 @@ public class RobotContainer {
         // init the elevator
         this.initializeElevatorSubsystem();
 
+        // init the end effector
+        this.initializeEndEffectorSubsystem();
+
         // init the input system
         this.initializeManualInputInterfaces();
 
@@ -177,10 +180,16 @@ public class RobotContainer {
         }
     }
 
+    /**
+     * A method to init the ClimberSubsystem
+     */
     private void initializeClimberSubsystem() {
         // TODO: Set default command to control climber with joystick
     }
 
+    /**
+     * A method to init the ElevatorSubsystem
+     */
     private void initializeElevatorSubsystem() {
         if (InstalledHardware.elevatorInstalled) {
 
@@ -203,6 +212,24 @@ public class RobotContainer {
             DataLogManager.log("SUCCESS: initializeElevator");
         } else {
             DataLogManager.log("FAIL: initializeElevator");
+        }
+    }
+
+    /**
+     * A method to init the EndEffectorSubsystem
+     */
+    private void initializeEndEffectorSubsystem() {
+        if (InstalledHardware.endEffectorInstalled) {
+
+            EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
+
+            endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
+
+            subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
+
+            DataLogManager.log("SUCCESS: initializeEndEffector");
+        } else {
+            DataLogManager.log("FAIL: initializeEndEffector");
         }
     }
 

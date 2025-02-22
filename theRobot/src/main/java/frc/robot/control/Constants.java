@@ -39,6 +39,13 @@ public final class Constants {
     // CTRE motor constants
     public static final double talonMaximumRevolutionsPerMinute = 6380;
 
+    // Motor Constants for End Effector and Elevator
+    public static final double motorStatorCurrentMaximumAmps = 100.0;
+    public static final double motorSupplyCurrentMaximumAmps = 50.0;
+    
+    public static final double motorSupplyVoltageTimeConstant = 0.02;
+    public static final double falconMaxVoltage = 12.0;
+
     // *****************************************************************
     // input device constants
     public static final int portDriverController = 0;
@@ -70,6 +77,7 @@ public final class Constants {
 
     // ********************************************************************
     // Elevator Constants
+
     public static final Distance L1Height = Inches.of(0.0); // TODO: Change to real value
     public static final Distance L2Height = Inches.of(32.0);
     public static final Distance L3Height = Inches.of(48.0);
@@ -77,13 +85,14 @@ public final class Constants {
     public static final Distance stowHeight = Inches.of(0.0); // TODO: Change to real value
 
     public static final int elevatorMageneticSensorID = 0;
-    
-    // Motor Config constant variables
-    public static final double elevatorMotorStatorCurrentMaximumAmps = 100.0;
-    public static final double elevatorMotorSupplyCurrentMaximumAmps = 50.0;
-    public static final double elevatorMotorSupplyVoltageTimeConstant = 0.02;
-    public static final double elevatorFalconMaxVoltage = 12.0;
+
+    // Elevator Motor Config constant variables
     public static final double elevatorMinimumMotorSpeedRpm = 0.25 * 60;
+
+    // ********************************************************************
+    // End Effector Constants
+
+    public static final double tofDetectionThresholdInches = 6.0;
 
     // ********************************************************************
     // CAN IDs
@@ -103,10 +112,11 @@ public final class Constants {
     public static final int eeMotorCanID = 19;
     public static final int eeTofLeftCanID = 20;
     public static final int eeTofRightCanID = 21;
+    public static final int eeMotorCanId = 5;
 
     // Climber
     public static final int climberMotorCanID = 22;
     public static final int funnelMotorCanID = 23;
-    
+
     // ************************************************************************
 }

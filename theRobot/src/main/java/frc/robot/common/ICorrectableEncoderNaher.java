@@ -12,7 +12,7 @@ package frc.robot.common;
 
 import edu.wpi.first.units.measure.Angle;
 
-public interface ICorrectableEncoderNaher {
+public interface ICorrectableEncoderNaher { // TODO: Merge with ICorrectableEncoder.java
     
     /**
      * An interface method that will be used to return the current motor encoder position.
