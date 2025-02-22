@@ -34,9 +34,10 @@ public class EndEffectorSubsystem extends SubsystemBase {
     private EndEffectorDirection eeDirection = EndEffectorDirection.CORAL;
     private EndEffectorSpeed eeSpeed = EndEffectorSpeed.STOPPED;
 
-    private final double algaeSpeed = 0.2;
-    private final double handoffSpeed = 0.3;
-    private final double scoringSpeed = 0.4;
+    // Speeds between [-1, 1]
+    private final double algaeSpeedFractional = 0.2;
+    private final double handoffSpeedFractional = 0.3;
+    private final double scoringSpeedFractional = 0.4;
 
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
 
@@ -66,13 +67,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
         double motorSpeed;
         switch (eeSpeed) {
             case ALGAE:
-                motorSpeed = SmartDashboard.getNumber("Algae Speed", algaeSpeed);
+                motorSpeed = SmartDashboard.getNumber("Algae Speed", algaeSpeedFractional);
                 break;
             case HANDOFF:
-                motorSpeed = SmartDashboard.getNumber("Handoff Speed", handoffSpeed);
+                motorSpeed = SmartDashboard.getNumber("Handoff Speed", handoffSpeedFractional);
                 break;
             case SCORING:
-                motorSpeed = SmartDashboard.getNumber("Scoring Speed", scoringSpeed);
+                motorSpeed = SmartDashboard.getNumber("Scoring Speed", scoringSpeedFractional);
                 break;
             default:
                 // Only happens when eeSpeed is invalid
@@ -85,7 +86,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
             scalar = -1;
         }
 
-        eeDutyCycle.withOutput(motorSpeed * scalar);
+        eeDutyCycle.withOutput(clamp(motorSpeed * scalar, -1, 1));
         eeMotor.setControl(eeDutyCycle);
     }
 
@@ -118,10 +119,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
     /**
      * Checks if a coral branch is detected by any of the ToF sensors.
      * 
-     * @return true if either ToF sensor detects an object within the threshold distance
+     * @return true if either ToF sensor detects an object within the threshold
+     *         distance
      */
     public boolean isBranchDetected() {
-        return (Constants.leftTOFEnabled && tofLeft.isDetected()) || (Constants.rightTOFEnabled && tofRight.isDetected());
+        return (Constants.leftTOFEnabled && tofLeft.isDetected())
+                || (Constants.rightTOFEnabled && tofRight.isDetected());
     }
 
     /**
@@ -147,5 +150,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
             System.out.println(
                     "TalonFX ID " + eeMotor.getDeviceID() + " failed config with error " + response.toString());
         }
+    }
+
+    private double clamp(double x, double min, double max) {
+        return Math.max(min, Math.min(x, max));
     }
 }
