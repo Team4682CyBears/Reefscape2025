@@ -144,7 +144,7 @@ public class AlignWithReefCommand extends Command {
                 //We are launching a string of commands from this command because we want to use path planners follow path command and then do stuff after
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
-                                new AlignWithBranchCommand(drivetrain,
+                                new AlignToBranchCommand(drivetrain,
                                         this.subsystemCollection.getBranchDetectorSubsystem(),
                                         () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
                                 new InstantCommand(),

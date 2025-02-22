@@ -24,17 +24,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.control.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * Forms a class to buid trajectory-following commands
  */
 public class FollowTrajectoryCommandBuilder {
-
-    public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
-    );
 
     /**
      * A method to build a follow trajectory command
@@ -59,7 +55,7 @@ public class FollowTrajectoryCommandBuilder {
                         drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                         (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
                         // We do not currently use the module feedforwards
-                        pathFollower,
+                        Constants.pathFollower,
                         drivetrain.getPathPlannerConfig(), // The robot configuration
                         () -> mirrorPathForRedAliance(),
                         (Subsystem) drivetrain));

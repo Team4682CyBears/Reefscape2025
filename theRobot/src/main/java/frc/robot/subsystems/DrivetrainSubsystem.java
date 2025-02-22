@@ -56,7 +56,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean useVision = true;
 
-  private boolean furtherThanAMeter = false;
+  private boolean lessThanAMeter = false;
 
   private boolean displayOdometryDiagnostics = false;
 
@@ -301,6 +301,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
       this.seedRobotPositionFromVision();
     }
 
+    if (InstalledHardware.limelightInstalled) {
+      Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
+
+      if (visionBotPose != null) {
+        recentVisionYaws.add(visionBotPose.getRotation().getDegrees());
+        while (recentVisionYaws.size() > recentVisionYawsMaxSize) {
+          recentVisionYaws.remove(0);
+        }
+      }
+    }
+
     // update robot position with vision
     if (InstalledHardware.limelightInstalled && DriverStation.isEnabled()) {
       this.addVisionMeasurement(cameraSubsystem.getVisionBotPose());
@@ -384,15 +395,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /**
    * Updates the robot's position based on vision data from the camera subsystem.
+   * Take the median of multiple vision-based yaws from botPose
+   * Seed that yaw into the camera.
+   * Read the botPoseOrb
+   * Use the combination of botPoseOrb translation with median rotation to set robot position
+   * this should only be called when robot is stationary (i.e. when disabled or otherwise not moving)
    */
   public void seedRobotPositionFromVision() {
-    Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
-
-    if (visionBotPose != null) {
-      recentVisionYaws.add(visionBotPose.getRotation().getDegrees());
-      while(recentVisionYaws.size() > recentVisionYawsMaxSize){
-        recentVisionYaws.remove(0);
-      }
+    if (recentVisionYaws.size() != 0) {
+      //TODO check the latency between SetRobotOrientation and being able to getVisionBotPoseOrb based on that updated orientation being set
       LimelightHelpers.SetRobotOrientation("", getMedianOfList(recentVisionYaws), 0, 0, 0, 0, 0);
       Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
       if (visonBotPoseOrb != null) {
@@ -428,8 +439,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (visionComputedMeasurement != null) {
         // we want to reject vision measurements that are more than 1 meter away in case
         // vison gives a bad read
-        furtherThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2;
-        if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2) {
+        lessThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1;
+        if (lessThanAMeter) {
           drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
         }
       }
@@ -519,12 +530,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   private void displayDiagnostics() {
-    SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
-    SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
-    SmartDashboard.putBoolean("VisionWithinAMeter", furtherThanAMeter);
-    SmartDashboard.putBoolean("UseVision", useVision);
-    
     if (displayOdometryDiagnostics) {
       VisionMeasurement visionBotPose = cameraSubsystem.getVisionBotPose();
       if (visionBotPose.getRobotPosition() != null){
@@ -534,6 +539,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("vision timestamp", visionBotPose.getTimestamp());
         SmartDashboard.putNumber("current timestamp", Utils.fpgaToCurrentTime(visionBotPose.getTimestamp()));
         SmartDashboard.putNumber("robot timestamp", Timer.getFPGATimestamp());
+
+        SmartDashboard.putNumber("RobotFieldHeadingDegrees", drivetrain.getState().Pose.getRotation().getDegrees());
+        SmartDashboard.putNumber("RobotFieldXCoordinateMeters", drivetrain.getState().Pose.getX());
+        SmartDashboard.putNumber("RobotFieldYCoordinateMeters", drivetrain.getState().Pose.getY());
+        SmartDashboard.putBoolean("VisionWithinAMeter", lessThanAMeter);
+        SmartDashboard.putBoolean("UseVision", useVision);
       }
     }
   }
