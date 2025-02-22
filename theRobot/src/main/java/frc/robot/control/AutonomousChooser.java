@@ -117,6 +117,11 @@ public class AutonomousChooser {
     }
 
     public static boolean getShouldMirrorPath(){
-        return DriverStation.getAlliance().get() == Alliance.Red;
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return alliance.get() == Alliance.Red;
+        }
+         
+        return false;
     }
 }

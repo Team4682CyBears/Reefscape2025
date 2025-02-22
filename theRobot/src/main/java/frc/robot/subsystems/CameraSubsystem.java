@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -37,7 +40,9 @@ public class CameraSubsystem extends SubsystemBase {
   private final int fieldSpaceYIndex = 1;
   private final int botRotationIndex = 5;
   private final int noTagInSightId = -1;
+  //we use this for teleop vision udpates with an origin in the bottom left blue side
   private String botPoseSource = "botpose_wpiblue";
+  //we use this for disabled vision seeding with an origin in the bottom left blue side
   private String botPoseOrbSource = "botpose_orb_wpiblue";
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   /**
@@ -62,7 +67,7 @@ public class CameraSubsystem extends SubsystemBase {
       Translation2d botTranslation = new Translation2d(botpose[this.fieldSpaceXIndex], botpose[this.fieldSpaceYIndex]);
       Rotation2d botYaw = Rotation2d.fromDegrees(botpose[this.botRotationIndex]);
       Pose2d realRobotPosition = new Pose2d(botTranslation, botYaw);
-      visionMeasurement = new VisionMeasurement(realRobotPosition, timestamp);
+      visionMeasurement = new VisionMeasurement(realRobotPosition, Utils.fpgaToCurrentTime(timestamp));
     }
     return visionMeasurement;
   }
@@ -78,7 +83,7 @@ public class CameraSubsystem extends SubsystemBase {
       Translation2d botTranslation = new Translation2d(botpose[this.fieldSpaceXIndex], botpose[this.fieldSpaceYIndex]);
       Rotation2d botYaw = Rotation2d.fromDegrees(botpose[this.botRotationIndex]);
       Pose2d realRobotPosition = new Pose2d(botTranslation, botYaw);
-      visionMeasurement = new VisionMeasurement(realRobotPosition, timestamp);
+      visionMeasurement = new VisionMeasurement(realRobotPosition, Utils.fpgaToCurrentTime(timestamp));
     }
     return visionMeasurement;
   }
@@ -157,7 +162,13 @@ public class CameraSubsystem extends SubsystemBase {
       return realRobotPosition;
     }
   }
-
+ 
+  /**
+   * Translates the given Limelight pose to the WPI Blue coordinate system.
+   *
+   * @param LLPose The pose obtained from the Limelight camera.
+   * @return A new Pose2d object representing the translated pose in the WPI Blue coordinate system.
+   */
   public static Pose2d translateLimelightPoseToWPIBlue(Pose2d LLPose){
     return new Pose2d(LLPose.getTranslation().plus(new Translation2d(Constants.limelightToWPIBlueXOffest, Constants.limelightToWPIBlueYOffset)),
                        LLPose.getRotation());

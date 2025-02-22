@@ -430,7 +430,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // vison gives a bad read
         furtherThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2;
         if (visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 2) {
-          drivetrain.addVisionMeasurement(visionComputedMeasurement, Utils.fpgaToCurrentTime(visionMeasurement.getTimestamp()));
+          drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
         }
       }
     }
