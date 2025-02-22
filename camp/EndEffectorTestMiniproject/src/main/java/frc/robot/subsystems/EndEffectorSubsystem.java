@@ -152,6 +152,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
         }
     }
 
+    // TODO when integrating into theRobot, use the clamp in MotorUtils.
     private double clamp(double x, double min, double max) {
         return Math.max(min, Math.min(x, max));
     }
