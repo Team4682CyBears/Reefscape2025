@@ -63,8 +63,8 @@ public final class Constants {
     public static final int ledBlinkFrquencyInHertz = 2;
     public static final double ledBrightness = 0.5;
     public static final LEDStripType ledStripType = LEDStripType.RGB;
-    public static final int tofLeftCanID = 21;
-    public static final int tofRightCanID = 22;
+    public static final int tofLeftCanID = 20;
+    public static final int tofRightCanID = 21;
 
     // ******************************************************************
     // camera constants

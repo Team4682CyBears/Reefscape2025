@@ -20,6 +20,7 @@ import frc.robot.control.ManualInputInterfaces;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.control.AlignWithBranchDirection;
 import frc.robot.control.AutonomousChooser;
 import frc.robot.control.Constants;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -57,6 +58,7 @@ public class RobotContainer {
     // do late binding of default commands
     this.lateBindDefaultCommands();
 
+    subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
     AutonomousChooser.configureAutoBuilder(subsystems);
     autonomousChooser  = new AutonomousChooser(subsystems);

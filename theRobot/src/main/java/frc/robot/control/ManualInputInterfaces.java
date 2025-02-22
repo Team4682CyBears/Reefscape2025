@@ -35,7 +35,6 @@ public class ManualInputInterfaces {
          */
         public ManualInputInterfaces(SubsystemCollection currentCollection) {
                 subsystemCollection = currentCollection;
-                currentCollection.setAlignWithBranchDirection(new AlignWithBranchDirection());
         }
 
         /**
