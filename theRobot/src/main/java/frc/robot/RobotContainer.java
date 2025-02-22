@@ -47,6 +47,9 @@ public class RobotContainer {
     // init the various subsystems
     this.initializeDrivetrainSubsystem();
 
+    // init the climber
+    this.initializeClimberSubsystem();
+
     // init the input system 
     this.initializeManualInputInterfaces();
 
@@ -77,8 +80,6 @@ public class RobotContainer {
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Forward Arc",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
-      SmartDashboard.putData("Turn 90",
-          FollowTrajectoryCommandBuilder.build(testtrajectories.turn90, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Backward Arc",
           FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Zig Zag",
@@ -156,11 +157,15 @@ public class RobotContainer {
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-          ));
+        ));
     }
     else {
       DataLogManager.log("FAIL: initializeDrivetrain");
     }
+  }
+
+  private void initializeClimberSubsystem() {
+    // TODO: Set default command to control climber with joystick
   }
 
   /**

@@ -3,3 +3,10 @@ https://v6.docs.ctr-electronics.com/en/stable/docs/tuner/tuner-swerve/index.html
 * TunerConstants.java
 * Telemetry.java
 * tuner-swerve-project.json
+
+In order to support multiple drive bases to be used with this code, 
+Rename both the TunerConstants.java and tuner-swerve-project.json files
+to be specific for each robot. 
+
+For example the TuneConstants.java for Ted is renamed TedTunerConstants.java and 
+tuner-swerve-project.json is renamed ted-tuner-swerve-project.json
