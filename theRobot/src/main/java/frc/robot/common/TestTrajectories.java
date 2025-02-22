@@ -28,8 +28,6 @@ public class TestTrajectories {
   public PathPlannerPath traverseSimpleForward;
   public PathPlannerPath traverseZigZag;
   public PathPlannerPath traverseSimpleLeft;
-  public PathPlannerPath traverseTurn270;
-  public PathPlannerPath turn90;
   public PathPlannerPath traverseForwardArc;
   public PathPlannerPath traverseBackwardArc;
   public PathPlannerPath oneMeter;
