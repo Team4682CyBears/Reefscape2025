@@ -39,7 +39,7 @@ public class HandoffCoralCommand extends Command {
     @Override
     public void initialize() {
         // If branch is already detected, mark as done immediately
-        if (endEffector.isBranchDetected()) {
+        if (endEffector.isCoralDetected()) {
             done = true;
         } else {
             done = false;
@@ -58,7 +58,7 @@ public class HandoffCoralCommand extends Command {
         }
 
         // Check for branch detection and stop if detected
-        if (endEffector.isBranchDetected()) {
+        if (endEffector.isCoralDetected()) {
             System.out.println("STOPPING MOTOR");
             done = true;
             endEffector.stop();

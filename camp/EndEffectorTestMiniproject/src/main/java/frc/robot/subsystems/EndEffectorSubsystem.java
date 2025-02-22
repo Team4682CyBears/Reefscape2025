@@ -59,7 +59,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
      * Called periodically by the command scheduler.
      */
     public void periodic() {
-        SmartDashboard.putBoolean("TOF DETECTS OBJECT", isBranchDetected());
+        SmartDashboard.putBoolean("TOF DETECTS OBJECT", isCoralDetected());
         if (eeSpeed == EndEffectorSpeed.STOPPED) {
             eeMotor.stopMotor();
             return;
@@ -67,13 +67,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
         double motorSpeed;
         switch (eeSpeed) {
             case ALGAE:
-                motorSpeed = SmartDashboard.getNumber("Algae Speed", algaeSpeedFractional);
+                motorSpeed = algaeSpeedFractional;
                 break;
             case HANDOFF:
-                motorSpeed = SmartDashboard.getNumber("Handoff Speed", handoffSpeedFractional);
+                motorSpeed = handoffSpeedFractional;
                 break;
             case SCORING:
-                motorSpeed = SmartDashboard.getNumber("Scoring Speed", scoringSpeedFractional);
+                motorSpeed = scoringSpeedFractional;
                 break;
             default:
                 // Only happens when eeSpeed is invalid
@@ -117,12 +117,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
     }
 
     /**
-     * Checks if a coral branch is detected by any of the ToF sensors.
+     * Checks if a coral is detected by any of the ToF sensors.
      * 
      * @return true if either ToF sensor detects an object within the threshold
      *         distance
      */
-    public boolean isBranchDetected() {
+    public boolean isCoralDetected() {
         return (Constants.leftTOFEnabled && tofLeft.isDetected())
                 || (Constants.rightTOFEnabled && tofRight.isDetected());
     }
