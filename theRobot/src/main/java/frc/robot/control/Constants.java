@@ -10,10 +10,7 @@
 
 package frc.robot.control;
 
-import edu.wpi.first.math.util.Units;
-
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import frc.robot.common.DrivetrainSwerveConfig;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 
@@ -21,19 +18,9 @@ public final class Constants {
 
     public final static double DriveVoltageScalar = 1.0;
 
-    //////////////////// FOO DRIVETRAIN ////////////////////
-    // TODO update above with new robot name
-    public static final DrivetrainSwerveConfig fooDrivetrainConfig = new DrivetrainSwerveConfig(
-            Units.inchesToMeters(28),
-            Units.inchesToMeters(28));
-
-    //////////////////// TED DRIVETRAIN ////////////////////
-    public static final DrivetrainSwerveConfig tedDrivertainConfig = new DrivetrainSwerveConfig(
-            Units.inchesToMeters(23.25),
-            Units.inchesToMeters(22.75));
-
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
+    public static final double SWERVE_MAX_ANGULAR_SPEED = 405; // rad/s
 
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.
