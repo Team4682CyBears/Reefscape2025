@@ -27,4 +27,20 @@ public class HardwareConstants {
     public static final double ctreSensorStatusFramePeriodFrequencyHertz = 1000.0/(double)HardwareConstants.ctreSensorStatusFramePeriodMilliseconds;
     // playing with fusion
     public static final double playingWithFusionSensorPeriodMilliseconds = 24; // 24ms refresh rate as specified in their documentation (max refresh rate)
+
+    // ********************************************************************
+    // Wrist
+   
+    // *******************************************************************
+    // shooter outfeed motor constants
+    public static final double shooterOutfeedStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
+    public static final double shooterOutfeedSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
+    public static final double shooterOutfeedSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
+      
+    // *******************************************************************
+    // shooter angle motor constants
+    public static final double shooterAngleStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
+    public static final double shooterAngleSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
+    public static final double shooterAngleSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
+
 }
