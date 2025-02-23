@@ -26,7 +26,7 @@ public class ManualInputInterfaces {
 	private XboxController driverControllerForRumbleOnly = new XboxController(Constants.portDriverController);
 	private CommandXboxController coDriverController = new CommandXboxController(Constants.portCoDriverController);
 	private XboxController coDriverControllerForRumbleOnly = new XboxController(Constants.portCoDriverController);
-  private final ShooterAngleSubsystem shooterAngleSubsystem = new ShooterAngleSubsystem();
+  //private final ShooterAngleSubsystem shooterAngleSubsystem = new ShooterAngleSubsystem();
 
 	// subsystems needed for inputs
 	private SubsystemCollection subsystemCollection = null;
@@ -158,21 +158,25 @@ public class ManualInputInterfaces {
 		if (this.subsystemCollection.isElevatorSubsystemAvailable()
 			&& this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
 
-				// Rotate to shooterAngle
-				this.driverController.rightBumper().onTrue(
-					new ParallelCommandGroup(
-						new InstantCommand(),
-						new ShooterSetAngleCommand(
-							Constants.shooterAngle, 
-							this.shooterAngleSubsystem)));
-
-				// Rotate to algaeRemoverAngle
-				this.driverController.leftBumper().onTrue(
+				if(this.subsystemCollection.isShooterAngleSubsystemAvailable()) {
+					// Rotate to shooterAngle
+					this.driverController.rightBumper().onTrue(
 						new ParallelCommandGroup(
 							new InstantCommand(),
 							new ShooterSetAngleCommand(
-								Constants.algaeAngle, 
-								this.shooterAngleSubsystem)));
+								Constants.shooterAngle, 
+								this.subsystemCollection.getShooterAngleSubsystem())));
+								//this.shooterAngleSubsystem)));
+
+					// Rotate to algaeRemoverAngle
+					this.driverController.leftBumper().onTrue(
+							new ParallelCommandGroup(
+								new InstantCommand(),
+								new ShooterSetAngleCommand(
+									Constants.algaeAngle, 
+									this.subsystemCollection.getShooterAngleSubsystem())));
+									//this.shooterAngleSubsystem)));
+				}
 
 				// Score Coral with EndEffector
 				this.driverController.y().onTrue(

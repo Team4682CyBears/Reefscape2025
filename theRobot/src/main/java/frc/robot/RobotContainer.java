@@ -57,6 +57,9 @@ public class RobotContainer {
     // do late binding of default commands
     this.lateBindDefaultCommands();
 
+    // shooter subsystem init
+    this.initializeShooterAngleSubsystem();
+
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
     AutonomousChooser.configureAutoBuilder(subsystems);
@@ -234,5 +237,20 @@ public class RobotContainer {
     value = Math.copySign(value * value, value);
 
     return value;
+  }
+
+  /**
+   * A method to init the shooter angle
+   */
+  private void initializeShooterAngleSubsystem() {
+    if(InstalledHardware.shooterAngleInstalled) {
+      // The robot's subsystems and commands are defined here...
+      subsystems.setShooterAngleSubsystem(new ShooterAngleSubsystem());
+      SmartDashboard.putData("Debug: ShooterAngleSubsystem", subsystems.getShooterAngleSubsystem());
+      DataLogManager.log("SUCCESS: ShooterAngleSubsystem");
+    }
+    else {
+      DataLogManager.log("FAIL: ShooterAngleSubsystem");
+    }
   }
 }
