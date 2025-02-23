@@ -76,41 +76,19 @@ public class RobotContainer {
             // Path Planner Path Commands
             // commands to drive path planner test trajectories
             TestTrajectories testtrajectories = new TestTrajectories();
-
+            
             SmartDashboard.putData("Basic Forward",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward,
-                            this.subsystems.getDriveTrainSubsystem()));
+                FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
             SmartDashboard.putData("Forward Arc",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc,
-                            this.subsystems.getDriveTrainSubsystem()));
-            SmartDashboard.putData("Turn 90",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.turn90,
-                            this.subsystems.getDriveTrainSubsystem()));
+                FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
             SmartDashboard.putData("Backward Arc",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc,
-                            this.subsystems.getDriveTrainSubsystem()));
+                FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc, this.subsystems.getDriveTrainSubsystem()));
             SmartDashboard.putData("Zig Zag",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag,
-                            this.subsystems.getDriveTrainSubsystem()));
+                FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
             SmartDashboard.putData("Simple Left",
-                    FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft,
-                            this.subsystems.getDriveTrainSubsystem()));
-
+                FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
+            }
         }
-
-        // Register Named Commands
-
-        // Put command scheduler on dashboard
-        SmartDashboard.putData(CommandScheduler.getInstance());
-
-        if (this.subsystems.isDriveTrainPowerSubsystemAvailable()) {
-            SmartDashboard.putData(
-                    "DriveForwardRobotCentric",
-                    new DriveTimeCommand(this.subsystems.getDriveTrainSubsystem(),
-                            new ChassisSpeeds(0.6, 0.0, 0.0),
-                            3.0));
-        }
-    }
 
     public Command getAutonomousCommand() {
         // TODO restore autonomous chooser command once PathPlanner autos have been
