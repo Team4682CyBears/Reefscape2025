@@ -12,6 +12,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.control.SubsystemCollection;
 
 /**
@@ -28,7 +29,7 @@ public class AllStopCommand extends Command {
     public AllStopCommand(SubsystemCollection collection) {
         subsystems = collection;
         // TODO add all subsystems this command relies on
-        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
+        if(!this.subsystems.isDriveTrainSubsystemAvailable()) {
             addRequirements(this.subsystems.getDriveTrainSubsystem());
         }
     }
@@ -42,6 +43,9 @@ public class AllStopCommand extends Command {
         if(this.subsystems.isDriveTrainSubsystemAvailable()) {
             this.subsystems.getDriveTrainSubsystem().driveFieldCentric(new ChassisSpeeds(0.0,0.0,0.0));
         }
+        CommandScheduler.getInstance().cancelAll();
+        System.out.println("I CLEARED ALL COMMANDS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        
         // TODO add stop commands for all other subsystems here. 
     }
 

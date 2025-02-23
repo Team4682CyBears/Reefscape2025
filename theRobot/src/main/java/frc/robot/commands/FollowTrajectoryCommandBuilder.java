@@ -12,30 +12,23 @@ package frc.robot.commands;
 
 import java.util.Optional;
 
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.control.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * Forms a class to buid trajectory-following commands
  */
 public class FollowTrajectoryCommandBuilder {
-
-    public static PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
-    );
 
     /**
      * A method to build a follow trajectory command
@@ -60,7 +53,7 @@ public class FollowTrajectoryCommandBuilder {
                         drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                         (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
                         // We do not currently use the module feedforwards
-                        pathFollower,
+                        Constants.pathFollower,
                         drivetrain.getPathPlannerConfig(), // The robot configuration
                         () -> mirrorPathForRedAliance(),
                         (Subsystem) drivetrain));
@@ -84,12 +77,9 @@ public class FollowTrajectoryCommandBuilder {
     public static boolean mirrorPathForRedAliance() {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
-            boolean mirrorPaths = alliance.get() == Alliance.Red;
-            DataLogManager.log("Path planner alliance: " + alliance.get());
-            DataLogManager.log("Setting path planner mirroring to " + mirrorPaths);
-            return mirrorPaths;
+            return alliance.get() == Alliance.Red;
         }
-        DataLogManager.log("FAIL: NO DRIVER STATION ALLIANCE DETECTED. NOT MIRRORING PATH PLANNER PATHS.");
+         
         return false;
     }
 
@@ -98,6 +88,7 @@ public class FollowTrajectoryCommandBuilder {
      * Used for paths that should never be mirrored
      */
     public static boolean neverMirrorPath() {
+        //when using paths generated from april tag coords always turn mirroring off
         return false;
     }
 
