@@ -300,13 +300,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     if (InstalledHardware.limelightInstalled) {
-      Pose2d visionBotPose = cameraSubsystem.getVisionBotPose().getRobotPosition();
+      VisionMeasurement visionMeasurement = cameraSubsystem.getVisionBotPose();
 
-      if (visionBotPose != null) {
-        recentVisionYaws.add(visionBotPose.getRotation().getDegrees());
+      if (visionMeasurement.getRobotPosition() != null) {
+        recentVisionYaws.add(visionMeasurement.getRobotPosition().getRotation().getDegrees());
         while (recentVisionYaws.size() > recentVisionYawsMaxSize) {
           recentVisionYaws.remove(0);
         }
+      }
+      if(DriverStation.isEnabled()){
+        this.addVisionMeasurement(visionMeasurement);
       }
     }
 
