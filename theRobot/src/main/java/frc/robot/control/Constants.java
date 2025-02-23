@@ -13,6 +13,8 @@ package frc.robot.control;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 public final class Constants {
 
@@ -21,6 +23,13 @@ public final class Constants {
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
     public static final double SWERVE_MAX_ANGULAR_SPEED = 405; // rad/s
+
+    // *****************************************************************
+    // Auto Constants
+    public static final PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
+        new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
+        new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants 
+    );
 
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.
@@ -43,6 +52,10 @@ public final class Constants {
     public static final int portCoDriverController = 1;
 
     // ******************************************************************
+    // Branch Detector constants
+    public static final double branchDetectionThresholdInches = 20.0;
+
+    // ******************************************************************
     // led constants
     public static final int ledCanID = 24;
     public static final int ledLength = 72;
@@ -50,12 +63,20 @@ public final class Constants {
     public static final int ledBlinkFrquencyInHertz = 2;
     public static final double ledBrightness = 0.5;
     public static final LEDStripType ledStripType = LEDStripType.RGB;
+    public static final int tofLeftCanID = 20;
+    public static final int tofRightCanID = 21;
 
     // ******************************************************************
     // camera constants
     public static final boolean useFusedVisionInAuto = false;
     public static final double autoUseFusedVisionDuration = 15.0;
 
+    // Distance from center of the robot to the reef tag.
+    public static final double alignDistanceFromReefMeters = 0.65;
+
+    public static final double limelightToWPIBlueXOffest = 8.75;
+    public static final double limelightToWPIBlueYOffset = 4.0;
+  
     // ********************************************************************
     // Controller Constants
     public static final double rumbleTimeSeconds = 0.15;
@@ -65,6 +86,10 @@ public final class Constants {
     public static final int currentPowerDistributionPanelCanId = 29;
     public static final ModuleType currentPowerDistributionPanelType = ModuleType.kRev;
     public static final double overcurrentRumbleTimeSeconds = 0.25;
+
+    // ********************************************************************
+    // Diagnostic Constants
+    public static final boolean putDiagnosticPaths = false;
 
     // ********************************************************************
     // CAN IDs

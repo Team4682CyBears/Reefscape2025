@@ -11,16 +11,15 @@
 package frc.robot.control;
 
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import frc.robot.commands.ButtonPressCommand;
-import frc.robot.commands.UseFusedVisionInAutoCommand;
+import frc.robot.commands.*;
 
 /**
  * a class for choosing different auto modes from shuffleboard
@@ -29,8 +28,7 @@ public class AutonomousChooser {
     private SubsystemCollection subsystems;
     private final SendableChooser<AutonomousPath> autonomousPathChooser = new SendableChooser<>();
 
-    private Command twoNote;
-    private Command doNothing;
+    private Command testAuto;
 
     /**
      * Constructor for AutonomousChooser
@@ -39,17 +37,17 @@ public class AutonomousChooser {
      */
     public AutonomousChooser(SubsystemCollection subsystems) {
         this.subsystems = subsystems;
+        // TODO need to make sure that mirroing works for red/blue paths
+        // specifically we want to insure that when we are on the red(mirrored) side we really do mirror
 
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Two Note", AutonomousPath.TWONOTE);
-            autonomousPathChooser.addOption("Do Nothing", AutonomousPath.DONOTHING);
+            autonomousPathChooser.setDefaultOption("Test Auto", AutonomousPath.TESTAUTO);
             SmartDashboard.putData(autonomousPathChooser);
 
-            this.twoNote = getTwoNote();
-            this.doNothing = getDoNothing();
+            this.testAuto = getTestAuto();
 
         } else {
             DataLogManager.log(">>>>> NO auto routine becuase missing subsystems");
@@ -63,10 +61,8 @@ public class AutonomousChooser {
      */
     public Command getAutoPath() {
         switch (autonomousPathChooser.getSelected()) {
-            case TWONOTE:
-                return this.twoNote;
-            case DONOTHING:
-                return this.doNothing;
+            case TESTAUTO:
+                return this.testAuto;
         }
         return new InstantCommand();
     }
@@ -77,31 +73,16 @@ public class AutonomousChooser {
      * @return command
      */
     public Command getCommand() {
-        // this needs to be called here because we might not be connected to the fms
-        // before
-        subsystems.getCameraSubsystem().setBotPoseSource();
-
-        Command fusedVisionCommand = new InstantCommand();
-        if (Constants.useFusedVisionInAuto) {
-            fusedVisionCommand = new UseFusedVisionInAutoCommand(subsystems.getDriveTrainSubsystem());
-        }
-
         return new ParallelCommandGroup(
-                fusedVisionCommand,
-                getAutoPath());
+            getAutoPath());
     }
 
-    private Command getTwoNote() {
-        return AutoBuilder.buildAuto("TwoNote");
-    }
-
-    private Command getDoNothing() {
-        return AutoBuilder.buildAuto("DoNothing");
+    private Command getTestAuto() {
+        return AutoBuilder.buildAuto("TestAuto");
     }
 
     private enum AutonomousPath {
-        TWONOTE,
-        DONOTHING
+        TESTAUTO;
     }
 
     /**
@@ -110,39 +91,34 @@ public class AutonomousChooser {
      * @param subsystems
      */
     public static void configureAutoBuilder(SubsystemCollection subsystems) {
-        // TODO add auto builder once autos are defined in path planner
-        
-        /*PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-                new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-                new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
-                
-        );
 
         AutoBuilder.configure(
                 subsystems.getDriveTrainSubsystem()::getRobotPosition, // Pose supplier
                 subsystems.getDriveTrainSubsystem()::setRobotPosition, // Position setter
                 subsystems.getDriveTrainSubsystem()::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().drive(speeds), // Method that will drive
+                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().driveRobotCentric(speeds), // Method that will drive
                                                                                              // the robot given ROBOT
                                                                                              // RELATIVE
                 // ChassisSpeeds
-                pathFollower,
+                Constants.pathFollower,
                 subsystems.getDriveTrainSubsystem().getPathPlannerConfig(),
-                () -> false,
+                () -> getShouldMirrorPath(),
                 subsystems.getDriveTrainSubsystem());
 
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
-            NamedCommands.registerCommand("IntakeNote",
-                    new ParallelCommandGroup(
-                            new ButtonPressCommand("PathPlanner", "IntakeNote"),
-                            new InstantCommand())); // TODO populate with real command
-            NamedCommands.registerCommand("FeedNote",
-                    new ParallelCommandGroup(
-                            new ButtonPressCommand("PathPlanner", "FeedNote"),
-                            new InstantCommand())); // TODO populate with real command
+            NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
         }
-        */
+        
+    }
+
+    public static boolean getShouldMirrorPath(){
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+            return alliance.get() == Alliance.Red;
+        }
+         
+        return false;
     }
 }
