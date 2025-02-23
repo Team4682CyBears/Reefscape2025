@@ -107,22 +107,6 @@ public class ManualInputInterfaces {
 							"zero gyroscope")));
 				DataLogManager.log("FINISHED registering back button to zero gyroscope ... ");
 
-				// Rotate to shooterAngle
-				this.driverController.a().onTrue(
-					new ParallelCommandGroup(
-						new InstantCommand(),
-						new ShooterSetAngleCommand(
-							Constants.shooterAngle, 
-							this.shooterAngleSubsystem)));
-
-				// Rotate to algaeRemoverAngle
-				this.driverController.b().onTrue(
-						new ParallelCommandGroup(
-							new InstantCommand(),
-							new ShooterSetAngleCommand(
-								Constants.algaeAngle, 
-								this.shooterAngleSubsystem)));
-
 				// Align to branch for scoring
 				this.driverController.a().onTrue(
 					new ParallelCommandGroup(
@@ -173,12 +157,22 @@ public class ManualInputInterfaces {
 
 		if (this.subsystemCollection.isElevatorSubsystemAvailable()
 			&& this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-				this.driverController.leftBumper().onTrue(
+
+				// Rotate to shooterAngle
+				this.driverController.rightBumper().onTrue(
 					new ParallelCommandGroup(
-						new InstantCommand(), // TODO: Fill with real command
-						new ButtonPressCommand(
-							"driverController.leftBumper()",
-							"Remove Algae")));
+						new InstantCommand(),
+						new ShooterSetAngleCommand(
+							Constants.shooterAngle, 
+							this.shooterAngleSubsystem)));
+
+				// Rotate to algaeRemoverAngle
+				this.driverController.leftBumper().onTrue(
+						new ParallelCommandGroup(
+							new InstantCommand(),
+							new ShooterSetAngleCommand(
+								Constants.algaeAngle, 
+								this.shooterAngleSubsystem)));
 
 				// Score Coral with EndEffector
 				this.driverController.y().onTrue(
