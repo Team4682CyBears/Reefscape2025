@@ -29,6 +29,8 @@ public class AutonomousChooser {
     private final SendableChooser<AutonomousPath> autonomousPathChooser = new SendableChooser<>();
 
     private Command testAuto;
+    private Command DoNothing;
+    private Command L0;
     private Command L1;
     private Command L2;
     private Command L3;
@@ -48,7 +50,9 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Test Auto", AutonomousPath.TESTAUTO);
+            autonomousPathChooser.setDefaultOption("Do Nothing", null);
+            autonomousPathChooser.addOption("Test Auto", AutonomousPath.DONOTHING);
+            autonomousPathChooser.addOption("L0", AutonomousPath.L0AUTO);
             autonomousPathChooser.addOption("L1", AutonomousPath.L1AUTO);
             autonomousPathChooser.addOption("L2", AutonomousPath.L2AUTO);
             autonomousPathChooser.addOption("L3", AutonomousPath.L3AUTO);
@@ -56,6 +60,8 @@ public class AutonomousChooser {
             SmartDashboard.putData(autonomousPathChooser);
 
             this.testAuto = getTestAuto();
+            this.DoNothing = getDoNothing();
+            this.L0 = getL0Auto();
             this.L1 = getL1Auto();
             this.L2 = getL2Auto();
             this.L3 = getL3Auto();
@@ -75,6 +81,10 @@ public class AutonomousChooser {
         switch (autonomousPathChooser.getSelected()) {
             case TESTAUTO:
                 return this.testAuto;
+            case DONOTHING:
+                return this.DoNothing;
+            case L0AUTO:
+                return this.L0;
             case L1AUTO:
                 return this.L1;
             case L2AUTO:
@@ -101,6 +111,14 @@ public class AutonomousChooser {
         return AutoBuilder.buildAuto("TestAuto");
     }
 
+    private Command getDoNothing() {
+        return new InstantCommand();
+    }
+
+    private Command getL0Auto() {
+        return AutoBuilder.buildAuto("L0");
+    }
+
     private Command getL1Auto(){
         return AutoBuilder.buildAuto("L1");
     }
@@ -119,6 +137,8 @@ public class AutonomousChooser {
 
     private enum AutonomousPath {
         TESTAUTO,
+        DONOTHING,
+        L0AUTO,
         L1AUTO,
         L2AUTO,
         L3AUTO,
