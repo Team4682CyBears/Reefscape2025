@@ -30,7 +30,7 @@ public class RobotContainer {
   private SubsystemCollection subsystems = new SubsystemCollection();
   private AutonomousChooser autonomousChooser;
 
-    public RobotContainer() {
+  public RobotContainer() {
 
     // init the data logging
     this.initializeDataLogging();
@@ -67,14 +67,13 @@ public class RobotContainer {
 
 
     // Configure the button bindings
-    if (this.subsystems.isManualInputInterfacesAvailable()) {
+    if(this.subsystems.isManualInputInterfacesAvailable()) {
         DataLogManager.log(">>>> Initializing button bindings.");
         this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
         DataLogManager.log(">>>> Finished initializing button bindings.");
-    }
-
-    // TODO For debugging. Can remove for final competition build.
-    this.initializeDebugDashboard();
+      }
+      
+      // TODO For debugging. Can remove for final competition build. 
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -122,15 +121,15 @@ public class RobotContainer {
     SmartDashboard.putData("Debug: CommandScheduler", CommandScheduler.getInstance());
   }
 
-    /**
-     * A method to init the drive train
-     */
-    private void initializeDrivetrainSubsystem() {
-        if (InstalledHardware.drivetrainInstalled) {
-            // The robot's subsystems and commands are defined here...
-            subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
-            subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
-            DataLogManager.log("SUCCESS: initializeDrivetrain");
+  /**
+   * A method to init the drive train
+   */
+  private void initializeDrivetrainSubsystem() {
+    if(InstalledHardware.drivetrainInstalled){
+      // The robot's subsystems and commands are defined here...
+      subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
+      subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
+      DataLogManager.log("SUCCESS: initializeDrivetrain");
 
       // Set up the default command for the drivetrain.
       // The controls are for field-oriented driving:
@@ -147,8 +146,8 @@ public class RobotContainer {
     }
     else {
         DataLogManager.log("FAIL: initializeDrivetrain");
-      }
     }
+  }
 
     /**
      * A method to init the ClimberSubsystem
@@ -240,29 +239,29 @@ public class RobotContainer {
    * A method to late binding of default commands
    */
   private void lateBindDefaultCommands() {
-}
+  }
 
-private static double deadband(double value, double deadband) {
-  if (Math.abs(value) > deadband) {
-    if (value > 0.0) {
-      return (value - deadband) / (1.0 - deadband);
+  private static double deadband(double value, double deadband) {
+    if (Math.abs(value) > deadband) {
+      if (value > 0.0) {
+        return (value - deadband) / (1.0 - deadband);
+      }
+      else {
+        return (value + deadband) / (1.0 - deadband);
+      }
     }
     else {
-      return (value + deadband) / (1.0 - deadband);
+      return 0.0;
     }
   }
-  else {
-    return 0.0;
+
+  private static double modifyAxisSquare(double value) {
+    // Deadband
+    value = deadband(value, 0.05);
+
+    // Joystick input exponent
+    value = Math.copySign(value * value, value);
+
+    return value;
   }
-}
-
-private static double modifyAxisSquare(double value) {
-  // Deadband
-  value = deadband(value, 0.05);
-
-  // Joystick input exponent
-  value = Math.copySign(value * value, value);
-
-  return value;
-}
 }
