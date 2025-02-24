@@ -97,6 +97,7 @@ public final class Constants {
     // Funnel
     public static final int funnelTofCanID = 16;
     public static final int funnelMotorCanID = 23;
+    public static final double funnelMotorSpeed = 0.4;
 
     // Elevator
     public static final int elevatorMotorLeftCanID = 14;
@@ -113,4 +114,5 @@ public final class Constants {
 
     // Climber
     public static final int climberMotorCanID = 22;
+    public static final double ClimberMotorMaxSpeed = 0.4;
 }

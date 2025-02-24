@@ -13,29 +13,46 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 
+/**
+ * Forms a default command to stop the climber. 
+ */
 public class DefaultClimberCommand extends Command {
-    ClimberSubsystem climberSubsystem;
+    SimpleNeoMotorSubsystem climberSubsystem;
     DoubleSupplier speedSupplier;
 
-    public DefaultClimberCommand(ClimberSubsystem climberSubsystem, DoubleSupplier speedSupplier) {
+    /**
+     * Default command to stop the climber. 
+     * @param climberSubsystem
+     * @param speedSupplier
+     */
+    public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier) {
         this.climberSubsystem = climberSubsystem;
         this.speedSupplier = speedSupplier;
 
         addRequirements(this.climberSubsystem);
     }
 
+    /**
+     * Called every tick when the command is running. 
+     */
     @Override
     public void execute() {
-        climberSubsystem.setClimberSpeed(speedSupplier.getAsDouble());
+        climberSubsystem.setSpeed(speedSupplier.getAsDouble());
     }
 
+    /**
+     * Called when the command ends
+     */
     @Override
     public void end(boolean interrupted) {
-        this.climberSubsystem.stopClimber();
+        this.climberSubsystem.stopMotor();
     }
 
+    /**
+     * Determines whether the command should end.
+     */
     @Override
     public boolean isFinished() {
         return false;

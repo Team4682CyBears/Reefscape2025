@@ -145,6 +145,9 @@ public class RobotContainer {
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
         ));
     }
+    else {
+        DataLogManager.log("FAIL: initializeDrivetrain");
+      }
     }
 
     /**
@@ -152,13 +155,14 @@ public class RobotContainer {
      */
     private void initializeClimberSubsystem() {
         if (InstalledHardware.climberInstalled) {
-            subsystems.setClimberSubsystem(new ClimberSubsystem());
+            subsystems.setClimberSubsystem(new SimpleNeoMotorSubsystem(Constants.climberMotorCanID, Constants.ClimberMotorMaxSpeed));
 
-            ClimberSubsystem climberSubsystem = subsystems.getClimberSubsystem();
+            SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
 
             climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
                     () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
-                            * ClimberSubsystem.maxClimberSpeed));
+                            * subsystems.getClimberSubsystem().getMaxSpeed()));
+            DataLogManager.log("SUCCESS: initializeClimber");
         } else {
             DataLogManager.log("FAIL: initializeClimber");
         }
@@ -169,7 +173,8 @@ public class RobotContainer {
      */
     private void initializeFunnelSubsystem() {
         if (InstalledHardware.funnelInstalled) {
-            subsystems.setFunnelSubsystem(new FunnelSubsystem());
+            subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+            DataLogManager.log("SUCCESS: initializeFunnel");
         } else {
             DataLogManager.log("FAIL: initializeFunnel");
         }

@@ -79,7 +79,7 @@ public class ManualInputInterfaces {
      * @return - a double value associated with the magnitude of the y componet
      */
     public double getCoDriverLeftY() {
-        return coDriverController.getLeftY();
+        return -coDriverController.getLeftY();
     }
 
     /**
