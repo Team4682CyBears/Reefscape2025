@@ -10,6 +10,7 @@
 
 package frc.robot.control;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -22,7 +23,7 @@ public final class Constants {
 
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
-    public static final double SWERVE_MAX_ANGULAR_SPEED = 405; // rad/s
+    public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
     // *****************************************************************
     // Auto Constants
@@ -72,7 +73,7 @@ public final class Constants {
     public static final double autoUseFusedVisionDuration = 15.0;
 
     // Distance from center of the robot to the reef tag.
-    public static final double alignDistanceFromReefMeters = 0.65;
+    public static final double alignDistanceFromReefMeters = 0.5;
 
     public static final double limelightToWPIBlueXOffest = 8.75;
     public static final double limelightToWPIBlueYOffset = 4.0;
