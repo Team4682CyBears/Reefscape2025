@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: ToFSensor.java
+// File: NoteTofSensor.java
 // Intent: Subsystem for ToF sensor to detect when note enters its range
 // ************************************************************
 
@@ -20,15 +20,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Forms a class for the TofSubsystem that detects when a note is present. 
  */
-public class ToFSensor {
+public class ToFDetector {
 
-  private static final double detectedThreshold = 8.0;
+  private double detectionThresholdInches;
   private TimeOfFlight tofSensor;
   private int canID;
   private String displayName;
 
-  public ToFSensor(int canID){
+  public ToFDetector(int canID, double detectionThresholdInches){
     tofSensor = new TimeOfFlight(canID);
+    this.detectionThresholdInches = detectionThresholdInches;
     this.canID = canID;
     this.displayName = "TOF ID " + this.canID;
     // short mode is accurate to 1.3m 
@@ -69,12 +70,12 @@ public class ToFSensor {
   }
 
   /**
-   * A method to detect the presence of an object
-   * @return true if object is detected
+   * A method to detect the presence of a note
+   * @return true if note is detected
    */
-  public boolean isObjectDetected(){
+  public boolean isDetected(){
     double currentRangeInches = this.getRangeInches();
-    if(this.isRangeValid() && (currentRangeInches < detectedThreshold)){
+    if(this.isRangeValid() && (currentRangeInches < detectionThresholdInches)){
       return true;
     }
     return false;
@@ -93,7 +94,7 @@ public class ToFSensor {
    */
   public void publishTelemetery(){
     SmartDashboard.putNumber(displayName + " Range Inches" , this.getRangeInches());
-    SmartDashboard.putBoolean(displayName + " Object Detected", this.isObjectDetected());
+    SmartDashboard.putBoolean(displayName + " Note Detected", this.isDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
     SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
   } 

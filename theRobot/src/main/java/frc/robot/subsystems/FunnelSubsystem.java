@@ -18,19 +18,19 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.common.ToFSensor;
+import frc.robot.common.ToFDetector;
 import frc.robot.control.Constants;;
 
 public class FunnelSubsystem extends SubsystemBase {
     // configurtition for the motor begins here
     private SparkMax funnelMotor = null;
-    private ToFSensor funnelToF = null;
+    private ToFDetector funnelToF = null;
 
     private double tofDetectionThresholdInches = 20; // TODO: Set to real value
 
     public FunnelSubsystem() {
         funnelMotor = new SparkMax(Constants.funnelMotorCanID, MotorType.kBrushless);
-        funnelToF = new ToFSensor(Constants.funnelTofCanID);
+        funnelToF = new ToFDetector(Constants.funnelTofCanID, tofDetectionThresholdInches);
 
         // Configure motor to break when stopped
         SparkMaxConfig config = new SparkMaxConfig();
@@ -63,7 +63,7 @@ public class FunnelSubsystem extends SubsystemBase {
      *         otherwise
      */
     public boolean isObjectDetected() {
-        return funnelToF.getRangeInches() <= tofDetectionThresholdInches;
+        return funnelToF.isDetected();
     }
 
     /**
