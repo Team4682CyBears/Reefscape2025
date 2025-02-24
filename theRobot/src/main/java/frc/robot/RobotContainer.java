@@ -10,7 +10,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,6 +19,7 @@ import frc.robot.control.ManualInputInterfaces;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import frc.robot.control.AlignWithBranchDirection;
 import frc.robot.control.AutonomousChooser;
 import frc.robot.control.Constants;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class RobotContainer {
 
-    private SubsystemCollection subsystems = new SubsystemCollection();
-    // private final AutonomousChooser autonomousChooser;
+  private SubsystemCollection subsystems = new SubsystemCollection();
+  private AutonomousChooser autonomousChooser;
 
     public RobotContainer() {
 
@@ -46,6 +46,7 @@ public class RobotContainer {
 
     // init the various subsystems
     this.initializeDrivetrainSubsystem();
+    this.initailizeBranchDetectorSubsystem();
 
     // init the climber
     this.initializeClimberSubsystem();
@@ -59,8 +60,11 @@ public class RobotContainer {
     // do late binding of default commands
     this.lateBindDefaultCommands();
 
+    subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
+
     AutonomousChooser.configureAutoBuilder(subsystems);
-    // autonomousChooser = new AutonomousChooser(subsystems);
+    autonomousChooser  = new AutonomousChooser(subsystems);
+
 
     // Configure the button bindings
     if (this.subsystems.isManualInputInterfacesAvailable()) {
@@ -72,30 +76,24 @@ public class RobotContainer {
     // TODO For debugging. Can remove for final competition build.
     this.initializeDebugDashboard();
 
-    if (subsystems.isDriveTrainSubsystemAvailable()) {
-        // Path Planner Path Commands
-        // commands to drive path planner test trajectories
-        TestTrajectories testtrajectories = new TestTrajectories();
-        
-        SmartDashboard.putData("Basic Forward",
-            FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleForward, this.subsystems.getDriveTrainSubsystem()));
-        SmartDashboard.putData("Forward Arc",
-            FollowTrajectoryCommandBuilder.build(testtrajectories.traverseForwardArc, this.subsystems.getDriveTrainSubsystem()));
-        SmartDashboard.putData("Backward Arc",
-            FollowTrajectoryCommandBuilder.build(testtrajectories.traverseBackwardArc, this.subsystems.getDriveTrainSubsystem()));
-        SmartDashboard.putData("Zig Zag",
-            FollowTrajectoryCommandBuilder.build(testtrajectories.traverseZigZag, this.subsystems.getDriveTrainSubsystem()));
-        SmartDashboard.putData("Simple Left",
-            FollowTrajectoryCommandBuilder.build(testtrajectories.traverseSimpleLeft, this.subsystems.getDriveTrainSubsystem()));
-        }
-    }
+    if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
+      // Path Planner Path Commands
+      // commands to drive path planner test trajectories
+      TestTrajectories testtrajectories = new TestTrajectories();
 
-    public Command getAutonomousCommand() {
-        // TODO restore autonomous chooser command once PathPlanner autos have been
-        // created
-        return new AllStopCommand(this.subsystems);
-        // return autonomousChooser.getCommand();
+      SmartDashboard.putData("One Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Two Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
+      SmartDashboard.putData("Three Meter",
+        FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
+
     }
+  }
+
+  public Command getAutonomousCommand() {
+    return autonomousChooser.getCommand();
+  }
 
    /**
    * A method to init all the data logging
@@ -134,26 +132,19 @@ public class RobotContainer {
             subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
             DataLogManager.log("SUCCESS: initializeDrivetrain");
 
-            // Set up the default command for the drivetrain.
-            // The controls are for field-oriented driving:
-            // Left stick Y axis -> forward and backwards movement
-            // Left stick X axis -> left and right movement
-            // Right stick X axis -> rotation
-            subsystems.getDriveTrainSubsystem().setDefaultCommand(
-                    new DefaultDriveCommand(
-                            subsystems.getDriveTrainSubsystem(),
-                            () -> -RobotContainer
-                                    .modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY())
-                                    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                            () -> -RobotContainer
-                                    .modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX())
-                                    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                            () -> -RobotContainer
-                                    .modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX())
-                                    * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
-        } else {
-            DataLogManager.log("FAIL: initializeDrivetrain");
-        }
+      // Set up the default command for the drivetrain.
+      // The controls are for field-oriented driving:
+      // Left stick Y axis -> forward and backwards movement
+      // Left stick X axis -> left and right movement
+      // Right stick X axis -> rotation
+      subsystems.getDriveTrainSubsystem().setDefaultCommand(
+        new DefaultDriveCommand(
+          subsystems.getDriveTrainSubsystem(),
+          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+          () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+        ));
+    }
     }
 
     /**
@@ -194,6 +185,19 @@ public class RobotContainer {
     }
     else {
       DataLogManager.log("FAIL: initializeCamera");
+    }
+  }
+
+  /**
+   * A method to init the BranchDetectorSubsystem
+   */
+  private void initailizeBranchDetectorSubsystem(){
+    if(InstalledHardware.branchDetectorInstalled) {
+      subsystems.setBranchDetectorSubsystem(new BranchDetectorSubsystem());
+      DataLogManager.log("SUCCESS: initailize Branch Detector Subsystem");
+    }
+    else {
+      DataLogManager.log("FAIL: initialize Branch Detector Subsystem");
     }
   }
 
