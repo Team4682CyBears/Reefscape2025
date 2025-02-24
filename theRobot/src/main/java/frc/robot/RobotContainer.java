@@ -74,6 +74,7 @@ public class RobotContainer {
       }
       
       // TODO For debugging. Can remove for final competition build. 
+      this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -145,7 +146,7 @@ public class RobotContainer {
         ));
     }
     else {
-        DataLogManager.log("FAIL: initializeDrivetrain");
+      DataLogManager.log("FAIL: initializeDrivetrain");
     }
   }
 
