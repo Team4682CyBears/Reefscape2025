@@ -19,7 +19,6 @@ public interface ICorrectableEncoder { // TODO: Merge with ICorrectableEncoder.j
      * and also return the current motor encoder position.
      * @return a double representing the motor encoder ticks
      */
-    public double getCurrentEncoderPosition();
     public Angle getCurrentEncoderPosition();
 
     /**
