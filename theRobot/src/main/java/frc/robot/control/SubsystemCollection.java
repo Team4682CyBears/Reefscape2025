@@ -32,6 +32,7 @@ public class SubsystemCollection {
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null;
     private LEDSubsystem ledSubsystem = null;
     private ElevatorSubsystem elevatorSubsystem = null;
+    private ElevatorHeightState elevatorHeightState = null;
     private EndEffectorSubsystem endEffectorSubsystem = null; // TODO: Replace with real subsystem
     private Object funnelSubsystem = null; // TODO: Replace with real subsystem
 
@@ -113,6 +114,18 @@ public class SubsystemCollection {
 
     public boolean isElevatorSubsystemAvailable() {
         return elevatorSubsystem != null;
+    }
+
+    public ElevatorHeightState getElevatorHeightState() {
+        return elevatorHeightState;
+    }
+
+    public void setElevatorHeightState(ElevatorHeightState value) {
+        elevatorHeightState = value;
+    }
+
+    public boolean isElevatorHeightStateAvailable() {
+        return elevatorHeightState != null;
     }
 
     public EndEffectorSubsystem getEndEffectorSubsystem() {

@@ -47,9 +47,9 @@ public class EndEffectorSubsystem extends SubsystemBase {
      * Initializes the ToF sensors and configures the motor with default settings.
      */
     public EndEffectorSubsystem() {
-        if (InstalledHardware.intakeTofInstalled) {
-            tofLeft = new ToFDetector(Constants.eeTofLeftCanID, Constants.tofDetectionThresholdInches);
-            tofRight = new ToFDetector(Constants.eeTofRightCanID, Constants.tofDetectionThresholdInches);
+        if (InstalledHardware.endEffectorTofsInstalled) {
+            tofLeft = new ToFDetector(Constants.eeTofLeftCanID, Constants.eeTofDetectionThresholdInches);
+            tofRight = new ToFDetector(Constants.eeTofRightCanID, Constants.eeTofDetectionThresholdInches);
         }
         configureMotor();
     }

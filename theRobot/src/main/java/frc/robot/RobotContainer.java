@@ -23,6 +23,7 @@ import frc.robot.commands.*;
 import frc.robot.control.AlignWithBranchDirection;
 import frc.robot.control.AutonomousChooser;
 import frc.robot.control.Constants;
+import frc.robot.control.ElevatorHeightState;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,49 +33,48 @@ public class RobotContainer {
   private SubsystemCollection subsystems = new SubsystemCollection();
   private AutonomousChooser autonomousChooser;
 
-    public RobotContainer() {
+  public RobotContainer() {
 
-        // init the data logging
-        this.initializeDataLogging();
+    // init the data logging
+    this.initializeDataLogging();
 
-        // init the pdp watcher
-        this.initializePowerDistributionPanelWatcherSubsystem();
+    // init the pdp watcher
+    this.initializePowerDistributionPanelWatcherSubsystem();
 
-        // init the camera (before drivetrain)
-        this.initializeCameraSubsystem();
+    // init the camera (before drivetrain)
+    this.initializeCameraSubsystem();
 
-        // init the leds
-        this.initializeLEDSubsystem();
+    // init the leds
+    this.initializeLEDSubsystem();
 
-        // init the various subsystems
-        this.initializeDrivetrainSubsystem();
-        this.initailizeBranchDetectorSubsystem();
-        subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
+    // init the various subsystems
+    this.initializeDrivetrainSubsystem();
+    this.initailizeBranchDetectorSubsystem();
 
-        // init the climber
-        this.initializeClimberSubsystem();
+    // init the climber
+    this.initializeClimberSubsystem();
 
-        // init the elevator
-        this.initializeElevatorSubsystem();
+    // init the elevator
+    this.initializeElevatorSubsystem();
 
-        // init the end effector
-        this.initializeEndEffectorSubsystem();
+    // init the end effector
+    this.initializeEndEffectorSubsystem();
 
-        // init the input system
-        this.initializeManualInputInterfaces();
+    // init the input system
+    this.initializeManualInputInterfaces();
 
-        // do late binding of default commands
-        this.lateBindDefaultCommands();
+    // do late binding of default commands
+    this.lateBindDefaultCommands();
 
-        AutonomousChooser.configureAutoBuilder(subsystems);
-        autonomousChooser  = new AutonomousChooser(subsystems);
+    AutonomousChooser.configureAutoBuilder(subsystems);
+    autonomousChooser  = new AutonomousChooser(subsystems);
 
-        // Configure the button bindings
-        if (this.subsystems.isManualInputInterfacesAvailable()) {
-            DataLogManager.log(">>>> Initializing button bindings.");
-            this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
-            DataLogManager.log(">>>> Finished initializing button bindings.");
-        }
+    // Configure the button bindings
+    if(this.subsystems.isManualInputInterfacesAvailable()) {
+      DataLogManager.log(">>>> Initializing button bindings.");
+      this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
+      DataLogManager.log(">>>> Finished initializing button bindings.");
+    }
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -88,7 +88,7 @@ public class RobotContainer {
       SmartDashboard.putData("Three Meter",
         FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
     }
-}
+  }
 
   public Command getAutonomousCommand() {
     return autonomousChooser.getCommand();
@@ -109,8 +109,10 @@ public class RobotContainer {
     if(InstalledHardware.powerDistributionPanelInstalled) {
       subsystems.setPowerDistributionPanelWatcherSubsystem(new PowerDistributionPanelWatcherSubsystem());
       DataLogManager.log("SUCCESS: initializePowerDistributionPanelWatcherSubsystem");
+    }    else {
+      DataLogManager.log("FAIL: initializePowerDistributionPanelWatcherSubsystem");
     }
-}
+  }
 
   /**
    * A method to init the drive train
@@ -135,7 +137,10 @@ public class RobotContainer {
           () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
         ));
     }
-}
+    else {
+      DataLogManager.log("FAIL: initializeDrivetrain");
+    }
+  }
 
     /**
      * A method to init items for the debug dashboard
@@ -173,19 +178,12 @@ public class RobotContainer {
             ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
             subsystems.setElevatorSubsystem(elevatorSubsystem);
+            subsystems.setElevatorHeightState(new ElevatorHeightState());
 
-            elevatorSubsystem.setDefaultCommand(new InstantCommand(() -> {
-                XboxController controller = this.subsystems.getManualInputInterfaces().getCoDriverController();
-                double rightY = deadband(controller.getRightY(), 0.1); // TODO: Find good value
-                if (rightY > 0) {
-                    elevatorSubsystem.moveUp();
-                } else if (rightY < 0) {
-                    elevatorSubsystem.moveDown();
-                } else {
-                    elevatorSubsystem.stopElevator();
-                }
-            }));
-
+            elevatorSubsystem.setDefaultCommand(
+              new DefaultElevatorCommand(
+                elevatorSubsystem, 
+                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverController().getRightY(), 0.05)));
             DataLogManager.log("SUCCESS: initializeElevator");
         } else {
             DataLogManager.log("FAIL: initializeElevator");
@@ -234,48 +232,49 @@ public class RobotContainer {
         }
     }
 
-    /**
-     * A method to init the input interfaces
-     */
-    private void initializeManualInputInterfaces() {
-        // note: in this case it is safe to build the interfaces if only one of the
-        // controllers is present
-        // because button binding assignment code checks that each is installed later
-        // (see: initializeButtonCommandBindings)
-        if (InstalledHardware.driverXboxControllerInstalled ||
-                InstalledHardware.coDriverXboxControllerInstalled) {
-            subsystems.setManualInputInterfaces(new ManualInputInterfaces(subsystems));
-            DataLogManager.log("SUCCESS: initializeManualInputInterfaces");
-        } else {
-            DataLogManager.log("FAIL: initializeManualInputInterfaces");
-        }
+  /**
+   * A method to init the input interfaces
+   */
+  private void initializeManualInputInterfaces() {
+    // note: in this case it is safe to build the interfaces if only one of the controllers is present
+    // because button binding assignment code checks that each is installed later (see: initializeButtonCommandBindings)
+    if(InstalledHardware.driverXboxControllerInstalled ||
+      InstalledHardware.coDriverXboxControllerInstalled) {
+      subsystems.setManualInputInterfaces(new ManualInputInterfaces(subsystems));
+      DataLogManager.log("SUCCESS: initializeManualInputInterfaces");
     }
-
-    /**
-     * A method to late binding of default commands
-     */
-    private void lateBindDefaultCommands() {
+    else {
+      DataLogManager.log("FAIL: initializeManualInputInterfaces");
     }
+  }
 
-    private static double deadband(double value, double deadband) {
-        if (Math.abs(value) > deadband) {
-            if (value > 0.0) {
-                return (value - deadband) / (1.0 - deadband);
-            } else {
-                return (value + deadband) / (1.0 - deadband);
-            }
-        } else {
-            return 0.0;
-        }
+  /**
+   * A method to late binding of default commands
+   */
+  private void lateBindDefaultCommands() {
+  }
+
+  private static double deadband(double value, double deadband) {
+    if (Math.abs(value) > deadband) {
+      if (value > 0.0) {
+        return (value - deadband) / (1.0 - deadband);
+      }
+      else {
+        return (value + deadband) / (1.0 - deadband);
+      }
     }
-
-    private static double modifyAxisSquare(double value) {
-        // Deadband
-        value = deadband(value, 0.05);
-
-        // Joystick input exponent
-        value = Math.copySign(value * value, value);
-
-        return value;
+    else {
+      return 0.0;
     }
+  }
+
+  private static double modifyAxisSquare(double value) {
+    // Deadband
+    value = deadband(value, 0.05);
+
+    // Joystick input exponent
+    value = Math.copySign(value * value, value);
+
+    return value;
+  }
 }

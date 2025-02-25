@@ -16,6 +16,8 @@ import frc.robot.common.ElevatorPositions;
 import frc.robot.control.Constants;
 import frc.robot.subsystems.ElevatorSubsystem;
 
+import java.util.function.Supplier;
+
 // import wpilib classes
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -23,14 +25,15 @@ public class MoveToPositionCommand extends Command {
 
     // create one assignment to classes instances // not initialized yet
     private final ElevatorSubsystem elevatorSubsystem;
-    private final ElevatorPositions targetPosition;
+    private final Supplier<ElevatorPositions> targetPositionSupplier;
+    private ElevatorPositions targetPosition;
 
     // constructor
-    public MoveToPositionCommand(ElevatorSubsystem sub, ElevatorPositions target) {
+    public MoveToPositionCommand(ElevatorSubsystem sub, Supplier<ElevatorPositions> targetSupplier) {
 
         // initlialize class instances created above
         this.elevatorSubsystem = sub;
-        this.targetPosition = target;
+        this.targetPositionSupplier = targetSupplier;
 
         // Use addRequirements() here to declare subsystem dependencies.
         //
@@ -44,6 +47,7 @@ public class MoveToPositionCommand extends Command {
 
     // command run when initially called
     public void initialize() {
+        this.targetPosition = targetPositionSupplier.get();
         System.out.println("Moving elevator to position " + targetPosition);
     }
 

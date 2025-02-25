@@ -113,7 +113,7 @@ public final class Constants {
     // ********************************************************************
     // End Effector Constants
 
-    public static final double tofDetectionThresholdInches = 6.0;
+    public static final double eeTofDetectionThresholdInches = 6.0;
     // Diagnostic Constants
     public static final boolean putDiagnosticPaths = false;
 
@@ -135,7 +135,6 @@ public final class Constants {
     public static final int eeMotorCanID = 19;
     public static final int eeTofLeftCanID = 20;
     public static final int eeTofRightCanID = 21;
-    public static final int eeMotorCanId = 5;
 
     // Climber
     public static final int climberMotorCanID = 22;

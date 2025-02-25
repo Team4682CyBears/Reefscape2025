@@ -39,11 +39,10 @@ public class InstalledHardware {
     // Important! You must disable any TOF sensor that is not installed!!
     // If you try to configure a TOF sensor that is not installed
     // the other TOF sensors that are installed will not work.
-    public static final boolean intakeTofInstalled = false;
-    public static final boolean feederToShooterTofInstalled = false;
-    // the other TOF sensors that are installed will not work. 
     public static final boolean BranchTofLeft = true;
     public static final boolean BranchTofRight = true;
+    // this one controls the install of both ee TOFs. 
+    public static final boolean endEffectorTofsInstalled = false;
 
     // LED Hardware
     public static final boolean LEDSInstalled = true;
@@ -53,7 +52,6 @@ public class InstalledHardware {
 
     // EndEffector
     public static final boolean endEffectorInstalled = false;
-    public static final boolean endEffectorTofsInstalled = false;
 
     // Elevator
     public static final boolean elevatorInstalled = false;

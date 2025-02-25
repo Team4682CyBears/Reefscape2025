@@ -21,7 +21,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 
-public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoderNaher {
+public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoder {
 
     private TalonFX talonFXMotorEncoder = null;
     private DigitalInput dioStateDevice = null;
