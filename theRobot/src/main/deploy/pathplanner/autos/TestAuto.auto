@@ -5,40 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShootFromSpeaker"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "StraightBackToNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNote"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ShootFromNote"
-                }
-              }
-            ]
+            "pathName": "TestPath"
           }
         }
       ]
