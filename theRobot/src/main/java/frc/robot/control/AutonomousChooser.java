@@ -50,8 +50,8 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
-            autonomousPathChooser.setDefaultOption("Do Nothing", null);
-            autonomousPathChooser.addOption("Test Auto", AutonomousPath.DONOTHING);
+            autonomousPathChooser.setDefaultOption("Do Nothing", AutonomousPath.DONOTHING);
+            autonomousPathChooser.addOption("Test Auto", AutonomousPath.TESTAUTO);
             autonomousPathChooser.addOption("L0", AutonomousPath.L0AUTO);
             autonomousPathChooser.addOption("L1", AutonomousPath.L1AUTO);
             autonomousPathChooser.addOption("L2", AutonomousPath.L2AUTO);
