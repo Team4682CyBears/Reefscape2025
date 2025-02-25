@@ -12,7 +12,7 @@ package frc.robot.common;
 
 import edu.wpi.first.units.measure.Angle;
 
-public interface ICorrectableEncoder { // TODO: Merge with ICorrectableEncoder.java
+public interface ICorrectableEncoder { 
     
     /**
      * An interface method that will be used to both correct (when necessary) the motors encoder

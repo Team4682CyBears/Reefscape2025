@@ -49,7 +49,7 @@ public class ToFDetector {
   /**
    * A method to flash the sensor
    */
-  public void blinkSensor() {
+  public void blinkSensor(){
     tofSensor.identifySensor();
   }
 
@@ -58,7 +58,7 @@ public class ToFDetector {
    * 
    * @return - the display name
    */
-  public String getDisplayName() {
+  public String getDisplayName(){
     return displayName;
   }
 
@@ -67,7 +67,7 @@ public class ToFDetector {
    * 
    * @return - the current range in inches
    */
-  public double getRangeInches() {
+  public double getRangeInches(){
     return Units.metersToInches(tofSensor.getRange() / 1000);
   }
 
@@ -76,7 +76,7 @@ public class ToFDetector {
    * 
    * @return standard deviation in millimeters
    */
-  public final double getRangeSigma() {
+  public final double getRangeSigma(){
     return tofSensor.getRangeSigma();
   }
 
@@ -85,7 +85,7 @@ public class ToFDetector {
    * 
    * @return true if an object is detected
    */
-  public boolean isDetected() {
+  public boolean isDetected(){
     double currentRangeInches = this.getRangeInches();
     if (this.isRangeValid() && (currentRangeInches < detectionThresholdInches)) {
       return true;
@@ -98,7 +98,7 @@ public class ToFDetector {
    * 
    * @return true if the sensor correctly measured the distance
    */
-  public boolean isRangeValid() {
+  public boolean isRangeValid(){
     return tofSensor.isRangeValid();
   }
 
@@ -106,8 +106,9 @@ public class ToFDetector {
    * A method that will publish the telemetry associated with this TOF sensor to
    * Shuffleboard
    */
-  public void publishTelemetery() {
+  public void publishTelemetery(){
     SmartDashboard.putNumber(displayName + " Range Inches", this.getRangeInches());
+    SmartDashboard.putBoolean(displayName + " Detected", this.isDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
     SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
   }
