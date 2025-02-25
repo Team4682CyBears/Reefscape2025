@@ -181,7 +181,7 @@ public class ManualInputInterfaces {
                                 // Score Coral with EndEffector
                                 this.driverController.y().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new ScoreCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.y()",
                                                                                 "Score Coral")));
