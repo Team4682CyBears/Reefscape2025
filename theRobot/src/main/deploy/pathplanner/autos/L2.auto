@@ -1,0 +1,130 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Start To Reef 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Elevator Position"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef 1 To Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Piece"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Intake To Reef 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Elevator Position"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef 5 To Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Piece"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Intake To Reef 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Piece"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Elevator Position"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
