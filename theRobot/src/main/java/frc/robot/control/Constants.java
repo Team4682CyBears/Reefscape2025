@@ -23,6 +23,7 @@ public final class Constants {
 
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
+    //We got 657 from path planner
     public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
     // *****************************************************************
