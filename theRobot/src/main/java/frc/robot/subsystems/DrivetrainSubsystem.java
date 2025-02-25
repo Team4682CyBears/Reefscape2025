@@ -98,14 +98,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
 
-  // TODO when the second TunerConstants is generated, change this to 
-  // InstalledHardware.tedDrivetrainInstalled ? 
-  // new TedTunerConstants.TunerSwerveDrivetrain(...) :
-  // new FooTunerConstants.TunerSwerveDrivetrain(...)
-  private SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = new TedTunerConstants.TunerSwerveDrivetrain(TedTunerConstants.DrivetrainConstants, 0,
-      odometryStdDev, visionStdDev,
-      TedTunerConstants.FrontLeft, TedTunerConstants.FrontRight, TedTunerConstants.BackLeft, TedTunerConstants.BackRight);
 
+  private SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = InstalledHardware.tardiDrivetrainInstalled ?
+          new TardiTunerConstants.TunerSwerveDrivetrain(TardiTunerConstants.DrivetrainConstants, 0,
+            odometryStdDev, visionStdDev,
+            TardiTunerConstants.FrontLeft, TardiTunerConstants.FrontRight, TardiTunerConstants.BackLeft, TardiTunerConstants.BackRight)
+          :
+          new TedTunerConstants.TunerSwerveDrivetrain(TedTunerConstants.DrivetrainConstants, 0,
+            odometryStdDev, visionStdDev,
+            TedTunerConstants.FrontLeft, TedTunerConstants.FrontRight, TedTunerConstants.BackLeft, TedTunerConstants.BackRight);
+  
   private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric()
       .withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
   private SwerveRequest.RobotCentric robotCentricDriveController = new SwerveRequest.RobotCentric()
