@@ -171,7 +171,7 @@ public class ManualInputInterfaces {
 
                         if (this.subsystemCollection.isElevatorSubsystemAvailable()
                                         && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-                                this.driverController.leftBumper().onTrue(
+                                this.driverController.leftBumper().whileTrue(
                                                 new ParallelCommandGroup(
                                                         new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
                                                                 new ButtonPressCommand(
@@ -179,7 +179,7 @@ public class ManualInputInterfaces {
                                                                                 "Remove Algae")));
 
                                 // Score Coral with EndEffector
-                                this.driverController.y().onTrue(
+                                this.driverController.y().whileTrue(
                                                 new ParallelCommandGroup(
                                                                 new ScoreCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
                                                                 new ButtonPressCommand(
