@@ -254,7 +254,7 @@ public class ManualInputInterfaces {
                 Trigger doubleButtonTrigger = new Trigger(
                         () -> this.coDriverController.leftBumper().getAsBoolean()
                                 && this.coDriverController.b().getAsBoolean());
-                doubleButtonTrigger.onTrue(
+                doubleButtonTrigger.whileTrue(
                         new ParallelCommandGroup(
                                 new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
                                 new ButtonPressCommand(

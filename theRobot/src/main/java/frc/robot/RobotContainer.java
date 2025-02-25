@@ -62,8 +62,13 @@ public class RobotContainer {
 
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
-    AutonomousChooser.configureAutoBuilder(subsystems);
-    autonomousChooser  = new AutonomousChooser(subsystems);
+    if (subsystems.isDriveTrainSubsystemAvailable()){
+      AutonomousChooser.configureAutoBuilder(subsystems);
+      autonomousChooser  = new AutonomousChooser(subsystems);
+      DataLogManager.log("SUCCESS: initializeAutoChooser");
+  } else {
+      DataLogManager.log("FAIL: initializeAutoChooser");
+  }
 
 
     // Configure the button bindings
