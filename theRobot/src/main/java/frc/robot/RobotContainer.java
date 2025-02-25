@@ -59,6 +59,9 @@ public class RobotContainer {
 
     // init the end effector
     this.initializeEndEffectorSubsystem();
+    
+    // init the funnel
+    this.initializeFunnelSubsystem();
 
     // init the input system
     this.initializeManualInputInterfaces();
@@ -66,15 +69,25 @@ public class RobotContainer {
     // do late binding of default commands
     this.lateBindDefaultCommands();
 
-    AutonomousChooser.configureAutoBuilder(subsystems);
-    autonomousChooser  = new AutonomousChooser(subsystems);
+    subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
+
+    if (subsystems.isDriveTrainSubsystemAvailable()){
+      AutonomousChooser.configureAutoBuilder(subsystems);
+      autonomousChooser  = new AutonomousChooser(subsystems);
+      DataLogManager.log("SUCCESS: initializeAutoChooser");
+  } else {
+      DataLogManager.log("FAIL: initializeAutoChooser");
+  }
 
     // Configure the button bindings
     if(this.subsystems.isManualInputInterfacesAvailable()) {
-      DataLogManager.log(">>>> Initializing button bindings.");
-      this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
-      DataLogManager.log(">>>> Finished initializing button bindings.");
-    }
+        DataLogManager.log(">>>> Initializing button bindings.");
+        this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
+        DataLogManager.log(">>>> Finished initializing button bindings.");
+      }
+      
+      // TODO For debugging. Can remove for final competition build. 
+      this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -149,6 +162,36 @@ public class RobotContainer {
         SmartDashboard.putData("Debug: CommandScheduler", CommandScheduler.getInstance());
     }
 
+    /**
+     * A method to init the ClimberSubsystem
+     */
+    private void initializeClimberSubsystem() {
+        if (InstalledHardware.climberInstalled) {
+            subsystems.setClimberSubsystem(new SimpleNeoMotorSubsystem(Constants.climberMotorCanID, Constants.ClimberMotorMaxSpeed));
+
+            SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
+
+            climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
+                    () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
+                            * subsystems.getClimberSubsystem().getMaxSpeed()));
+            DataLogManager.log("SUCCESS: initializeClimber");
+        } else {
+            DataLogManager.log("FAIL: initializeClimber");
+        }
+    }
+
+    /**
+     * A method to init the FunnelSubsystem
+     */
+    private void initializeFunnelSubsystem() {
+        if (InstalledHardware.funnelInstalled) {
+            subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+            DataLogManager.log("SUCCESS: initializeFunnel");
+        } else {
+            DataLogManager.log("FAIL: initializeFunnel");
+        }
+    }
+
   /**
    * A method to init the BranchDetectorSubsystem
    */
@@ -161,13 +204,6 @@ public class RobotContainer {
       DataLogManager.log("FAIL: initialize Branch Detector Subsystem");
     }
   }
-
-    /**
-     * A method to init the ClimberSubsystem
-     */
-    private void initializeClimberSubsystem() {
-        // TODO: Set default command to control climber with joystick
-    }
 
     /**
      * A method to init the ElevatorSubsystem
@@ -247,6 +283,7 @@ public class RobotContainer {
       DataLogManager.log("FAIL: initializeManualInputInterfaces");
     }
   }
+
 
   /**
    * A method to late binding of default commands

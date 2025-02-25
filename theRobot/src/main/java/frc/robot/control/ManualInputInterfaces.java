@@ -21,74 +21,84 @@ import frc.robot.common.ElevatorPositions;
 
 public class ManualInputInterfaces {
 
-        // sets joystick variables to joysticks
-        private CommandXboxController driverController = new CommandXboxController(Constants.portDriverController);
-        private XboxController driverControllerForRumbleOnly = new XboxController(Constants.portDriverController);
-        private CommandXboxController coDriverController = new CommandXboxController(Constants.portCoDriverController);
-        private XboxController coDriverControllerForRumbleOnly = new XboxController(Constants.portCoDriverController);
+    // sets joystick variables to joysticks
+    private CommandXboxController driverController = new CommandXboxController(Constants.portDriverController);
+    private XboxController driverControllerForRumbleOnly = new XboxController(Constants.portDriverController);
+    private CommandXboxController coDriverController = new CommandXboxController(Constants.portCoDriverController);
+    private XboxController coDriverControllerForRumbleOnly = new XboxController(Constants.portCoDriverController);
 
-        // subsystems needed for inputs
-        private SubsystemCollection subsystemCollection = null;
+    // subsystems needed for inputs
+    private SubsystemCollection subsystemCollection = null;
 
-        /**
-         * The constructor to build this 'manual input' conduit
-         */
-        public ManualInputInterfaces(SubsystemCollection currentCollection) {
-                subsystemCollection = currentCollection;
+    /**
+     * The constructor to build this 'manual input' conduit
+     */
+    public ManualInputInterfaces(SubsystemCollection currentCollection) {
+        subsystemCollection = currentCollection;
+    }
+
+    /**
+     * A method to return the co driver controller for rumble needs
+     * 
+     * @return
+     */
+    public final XboxController getCoDriverController() {
+        return coDriverControllerForRumbleOnly;
+    }
+
+    /**
+     * A method to get the arcade drive X componet being input from humans
+     * 
+     * @return - a double value associated with the magnitude of the x componet
+     */
+    public double getInputArcadeDriveX() {
+        return -driverController.getLeftX();
+    }
+
+    /**
+     * A method to get the arcade drive Y componet being input from humans
+     * 
+     * @return - a double value associated with the magnitude of the y componet
+     */
+    public double getInputArcadeDriveY() {
+        return -driverController.getLeftY();
+    }
+
+    /**
+     * A method to get the spin drive X componet being input from humans
+     * 
+     * @return - a double value associated with the magnitude of the x componet
+     */
+    public double getInputSpinDriveX() {
+        return driverController.getRightX();
+    }
+
+    /**
+     * A method to return the Y value of the left joystick on the co-driver's
+     * controller
+     * 
+     * @return - a double value associated with the magnitude of the y componet
+     */
+    public double getCoDriverLeftY() {
+        return -coDriverController.getLeftY();
+    }
+
+    /**
+     * A method to initialize various commands to the numerous buttons.
+     * Need delayed bindings as some subsystems during testing won't always be
+     * there.
+     */
+    public void initializeButtonCommandBindings() {
+        // Configure the driver xbox controller bindings
+        if (InstalledHardware.driverXboxControllerInstalled) {
+            this.bindCommandsToDriverXboxButtons();
         }
 
-        /**
-         * A method to return the co driver controller for rumble needs
-         * 
-         * @return
-         */
-        public final XboxController getCoDriverController() {
-                return coDriverControllerForRumbleOnly;
+        // Configure the co-driver xbox controller bindings
+        if (InstalledHardware.coDriverXboxControllerInstalled) {
+            this.bindCommandsToCoDriverXboxButtons();
         }
-
-        /**
-         * A method to get the arcade drive X componet being input from humans
-         * 
-         * @return - a double value associated with the magnitude of the x componet
-         */
-        public double getInputArcadeDriveX() {
-                return -driverController.getLeftX();
-        }
-
-        /**
-         * A method to get the arcade drive X componet being input from humans
-         * 
-         * @return - a double value associated with the magnitude of the x componet
-         */
-        public double getInputArcadeDriveY() {
-                return -driverController.getLeftY();
-        }
-
-        /**
-         * A method to get the spin drive X componet being input from humans
-         * 
-         * @return - a double value associated with the magnitude of the x componet
-         */
-        public double getInputSpinDriveX() {
-                return driverController.getRightX();
-        }
-
-        /**
-         * A method to initialize various commands to the numerous buttons.
-         * Need delayed bindings as some subsystems during testing won't always be
-         * there.
-         */
-        public void initializeButtonCommandBindings() {
-                // Configure the driver xbox controller bindings
-                if (InstalledHardware.driverXboxControllerInstalled) {
-                        this.bindCommandsToDriverXboxButtons();
-                }
-
-                // Configure the co-driver xbox controller bindings
-                if (InstalledHardware.coDriverXboxControllerInstalled) {
-                        this.bindCommandsToCoDriverXboxButtons();
-                }
-        }
+    }
 
         /**
          * Will attach commands to the Driver XBox buttons
@@ -250,7 +260,7 @@ public class ManualInputInterfaces {
                                                                 && this.coDriverController.b().getAsBoolean());
                                 doubleButtonTrigger.onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
                                                                 new ButtonPressCommand(
                                                                                 "coDriverController leftBumper && b",
                                                                                 "Collapse Funnel")));
@@ -273,5 +283,5 @@ public class ManualInputInterfaces {
                                                                         "coDriverController.rightBumper()",
                                                                         "Align Right")));
                 }
-        }
+    }
 }
