@@ -151,14 +151,14 @@ public class WristSubsystem extends SubsystemBase {
    * @param degrees
    */
   public void setAngleDegrees(double degrees){
-    // DataLogManager.log("Setting Shooter Angle to " + degrees + " degrees.");
+    DataLogManager.log("Setting Wrist Angle to " + degrees + " degrees.");
 
     // check if set angle is in between max and min angle range
     double clampedDegrees = MotorUtils.clamp(degrees, Constants.wristMinDegrees, Constants.wristMaxDegrees);
     
     // if out of range, return warning that we outta range
     if (clampedDegrees != degrees){
-      DataLogManager.log("Warning: Shooter Angle requested degrees of " + degrees + 
+      DataLogManager.log("Warning: Wrist Angle requested degrees of " + degrees + 
       "exceeded bounds of [" + (degrees + 3) + " .. " + (degrees - 3) +
       "]. Clamped to " + clampedDegrees + ".");
     }
