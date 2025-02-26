@@ -10,7 +10,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
@@ -19,12 +18,10 @@ import frc.robot.subsystems.EndEffectorSubsystem;
 public class IntakeCoralCommand extends Command {
     // The subsystem that controls the end effector mechanism
     private final EndEffectorSubsystem endEffector;
-    
+
     private boolean seenPiece = false;
 
-    private Timer timeoutTimer = new Timer();
-
-    private final double timeoutSeconds = 5.0;
+    private boolean done = false;
 
     /**
      * Creates a new IntakeCoralCommand.
@@ -42,8 +39,8 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void initialize() {
-        timeoutTimer.reset();
-        timeoutTimer.start();
+        done = false;
+        seenPiece = false;
     }
 
     /**
@@ -52,20 +49,19 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void execute() {
-        if (!seenPiece && timeoutTimer.hasElapsed(timeoutSeconds)) {
-            // If we don't see a piece after 5 seconds stop the motor
-            this.end(false);
-        }
-
         // Check for branch detection and stop if detected
-        if (seenPiece && !endEffector.isCoralDetected()) {
+        if (!endEffector.isCoralDetected()) {
+            if (seenPiece) {
+                done = true;
+            }
             endEffector.stop();
             return;
+        } else {
+            seenPiece = true;
+            // Continue running end effector for coral handoff
+            endEffector.setDirection(EndEffectorDirection.CORAL);
+            endEffector.setSpeed(EndEffectorSpeed.HANDOFF);
         }
-
-        // Continue running end effector for coral handoff
-        endEffector.setDirection(EndEffectorDirection.CORAL);
-        endEffector.setSpeed(EndEffectorSpeed.HANDOFF);
     }
 
     /**
@@ -85,6 +81,6 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public boolean isFinished() {
-        return seenPiece && !endEffector.isCoralDetected();
+        return done;
     }
 }
