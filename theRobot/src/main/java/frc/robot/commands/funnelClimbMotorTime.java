@@ -27,6 +27,7 @@ public class funnelClimbMotorTime extends Command{
     public void execute(){
         if(motorTimer.getTimestamp() >= time){
             motorIsRunning = false;
+            motorTimer.stop();
             //TODO: Motor should stop here
         }
         //TODO: Motor should run here
