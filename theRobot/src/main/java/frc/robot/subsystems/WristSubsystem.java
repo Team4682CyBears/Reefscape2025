@@ -123,9 +123,6 @@ public class WristSubsystem extends SubsystemBase {
         // keep moving until it reaches target angle
         shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
     }
-    SmartDashboard.putNumber("Shooter Absolute Angle Degrees", rotationsToDegrees(angleEncoder.getPosition().getValue()));
-    SmartDashboard.putNumber("Shooter Motor Encoder Degrees", getAngleDegrees());
-    //SmartDashboard.putNumber("Shooter Angle Motor Rotations ", angleMotor.getPosition().getValue());
   }
 
   /**
