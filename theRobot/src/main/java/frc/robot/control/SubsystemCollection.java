@@ -28,7 +28,8 @@ public class SubsystemCollection {
     private LEDSubsystem ledSubsystem = null;
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
-    private Object funnelSubsystem = null; // TODO: Replace with real subsystem
+    private static Object funnelSubsystem = null; // TODO: Replace with real subsystem
+    private static Object climberSubsystem = null; // TODO: Replace with real subsystem
 
     /**
      * Default constructor
@@ -132,7 +133,7 @@ public class SubsystemCollection {
         return endEffectorSubsystem != null;
     }
 
-    public Object getFunnelSubsystem() {
+    public static Object getFunnelSubsystem() {
         return funnelSubsystem;
     }
 
@@ -142,5 +143,17 @@ public class SubsystemCollection {
 
     public boolean isFunnelSubsystemAvailable() {
         return funnelSubsystem != null;
+    }
+
+    public static Object getClimberSubsystem() {
+        return climberSubsystem;
+    }
+
+    public void setClimberSubsystem(Object value) {
+        climberSubsystem = value;
+    }
+
+    public boolean isClimberSubsystemAvailable() {
+        return climberSubsystem != null;
     }
 }
