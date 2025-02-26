@@ -159,7 +159,7 @@ public class WristSubsystem extends SubsystemBase {
     // if out of range, return warning that we outta range
     if (clampedDegrees != degrees){
       DataLogManager.log("Warning: Wrist Angle requested degrees of " + degrees + 
-      "exceeded bounds of [" + (degrees + 3) + " .. " + (degrees - 3) +
+      "exceeded bounds of [" + Constants.wristMinDegrees + " .. " + Constants.wristMaxDegrees +
       "]. Clamped to " + clampedDegrees + ".");
     }
 
