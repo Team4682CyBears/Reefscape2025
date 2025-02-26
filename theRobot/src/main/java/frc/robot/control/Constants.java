@@ -10,8 +10,10 @@
 
 package frc.robot.control;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.pathplanner.lib.config.PIDConstants;
@@ -47,6 +49,13 @@ public final class Constants {
     public static final double RevNeoEncoderTicksPerRevolution = 42;
     // CTRE motor constants
     public static final double talonMaximumRevolutionsPerMinute = 6380;
+
+    // Motor Constants for End Effector and Elevator
+    public static final double motorStatorCurrentMaximumAmps = 100.0;
+    public static final double motorSupplyCurrentMaximumAmps = 50.0;
+    
+    public static final double motorSupplyVoltageTimeConstant = 0.02;
+    public static final double falconMaxVoltage = 12.0;
 
     // *****************************************************************
     // input device constants
@@ -90,6 +99,23 @@ public final class Constants {
     public static final double overcurrentRumbleTimeSeconds = 0.25;
 
     // ********************************************************************
+    // Elevator Constants
+
+    public static final Distance L1Height = Inches.of(0.0); // TODO: Change to real value
+    public static final Distance L2Height = Inches.of(32.0);
+    public static final Distance L3Height = Inches.of(48.0);
+    public static final Distance L4Height = Inches.of(72.0);
+    public static final Distance stowHeight = Inches.of(0.0); // TODO: Change to real value
+
+    public static final int elevatorMageneticSensorID = 0;
+
+    // Elevator Motor Config constant variables
+    public static final double elevatorMinimumMotorSpeedRpm = 0.25 * 60;
+
+    // ********************************************************************
+    // End Effector Constants
+
+    public static final double eeTofDetectionThresholdInches = 6.0;
     // Diagnostic Constants
     public static final boolean putDiagnosticPaths = false;
 
@@ -102,8 +128,8 @@ public final class Constants {
     public static final double funnelMotorSpeed = 0.4;
 
     // Elevator
-    public static final int elevatorMotorLeftCanID = 14;
-    public static final int elevatorMotorRightCanID = 15;
+    public static final int elevatorMotorLeaderCanID = 14;
+    public static final int elevatorMotorFollowerCanID = 15;
 
     // Wrist
     public static final int wristMotorCanID = 17;
