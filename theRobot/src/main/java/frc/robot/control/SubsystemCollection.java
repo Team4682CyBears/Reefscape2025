@@ -12,10 +12,12 @@ package frc.robot.control;
 
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FunnelSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class SubsystemCollection {
@@ -32,8 +34,9 @@ public class SubsystemCollection {
     private AlignWithBranchDirection alignWithBranchDirection = null;
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
-    private Object funnelSubsystem = null; // TODO: Replace with real subsystem
     private WristSubsystem wristSubsystem = null;
+    private SimpleNeoMotorSubsystem funnelSubsystem = null;
+    private SimpleNeoMotorSubsystem climberSubsystem = null;
 
     /**
      * Default constructor
@@ -131,15 +134,27 @@ public class SubsystemCollection {
         return endEffectorSubsystem != null;
     }
 
-    public Object getFunnelSubsystem() {
+    public SimpleNeoMotorSubsystem getFunnelSubsystem() {
         return funnelSubsystem;
     }
 
-    public void setFunnelSubsystem(Object value) {
+    public void setFunnelSubsystem(SimpleNeoMotorSubsystem value) {
         funnelSubsystem = value;
     }
 
     public boolean isFunnelSubsystemAvailable() {
         return funnelSubsystem != null;
+    }
+
+    public SimpleNeoMotorSubsystem getClimberSubsystem() {
+        return climberSubsystem;
+    }
+
+    public void setClimberSubsystem(SimpleNeoMotorSubsystem value) {
+        climberSubsystem = value;
+    }
+
+    public boolean isClimberSubsystemAvailable() {
+        return climberSubsystem != null;
     }
 }

@@ -29,7 +29,7 @@ public class AllStopCommand extends Command {
     public AllStopCommand(SubsystemCollection collection) {
         subsystems = collection;
         // TODO add all subsystems this command relies on
-        if(!this.subsystems.isDriveTrainSubsystemAvailable()) {
+        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
             addRequirements(this.subsystems.getDriveTrainSubsystem());
         }
         if(this.subsystems.isWristSubsystemAvailable()) {

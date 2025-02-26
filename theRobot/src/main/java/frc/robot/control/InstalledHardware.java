@@ -67,4 +67,7 @@ public class InstalledHardware
     // for testing shooter angle via the shuffleboard
     // ensure this is DISABLED for competitions, as it can sometimes crash shuffleboard
     public static final boolean setWristFromShuffleboard = false;
+
+    // Climber
+    public static final boolean climberInstalled = false;
 }

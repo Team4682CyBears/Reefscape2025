@@ -10,6 +10,7 @@
 
 package frc.robot.control;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -27,7 +28,8 @@ public final class Constants {
 
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
-    public static final double SWERVE_MAX_ANGULAR_SPEED = 405; // rad/s
+    //We got 657 from path planner
+    public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
     // *****************************************************************
     // Auto Constants
@@ -77,7 +79,7 @@ public final class Constants {
     public static final double autoUseFusedVisionDuration = 15.0;
 
     // Distance from center of the robot to the reef tag.
-    public static final double alignDistanceFromReefMeters = 0.65;
+    public static final double alignDistanceFromReefMeters = 0.5;
 
     public static final double limelightToWPIBlueXOffest = 8.75;
     public static final double limelightToWPIBlueYOffset = 4.0;
@@ -101,6 +103,8 @@ public final class Constants {
 
     // Funnel
     public static final int funnelTofCanID = 16;
+    public static final int funnelMotorCanID = 23;
+    public static final double funnelMotorSpeed = 0.4;
 
     // Elevator
     public static final int elevatorMotorLeftCanID = 14;
@@ -118,6 +122,7 @@ public final class Constants {
     // Climber
     public static final int climberMotorCanID = 22;
     public static final int funnelMotorCanID = 23;
+    public static final double ClimberMotorMaxSpeed = 0.4;
 
     // Wrist
     public static final int shooterMotorCanId = 5;
@@ -149,4 +154,5 @@ public final class Constants {
     public static SensorDirectionValue wristSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     public static final double shooterAbsoluteAngleOffsetDegrees = -166.11;
     public static final double wristToleranceDegrees = 0.5;
+
 }
