@@ -51,7 +51,7 @@ public class AllStopCommand extends Command {
         
         // TODO add stop commands for all other subsystems here. 
         if(this.subsystems.isWristSubsystemAvailable()) {
-            addRequirements(this.subsystems.getWristSubsystem());
+            this.subsystems.getWristSubsystem().setAngleDegrees(this.subsystems.getWristSubsystem().getAngleDegrees());
         }
     }
 
