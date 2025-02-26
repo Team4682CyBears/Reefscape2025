@@ -10,6 +10,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
@@ -20,6 +21,10 @@ public class IntakeCoralCommand extends Command {
     private final EndEffectorSubsystem endEffector;
 
     private boolean seenPiece = false;
+
+    private Timer timeoutTimer = new Timer();
+
+    private final double timeoutSeconds = 0.5;
 
     private boolean done = false;
 
@@ -39,6 +44,8 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public void initialize() {
+        timeoutTimer.reset();
+        timeoutTimer.start();
         done = false;
         seenPiece = false;
     }
@@ -81,6 +88,6 @@ public class IntakeCoralCommand extends Command {
      */
     @Override
     public boolean isFinished() {
-        return done;
+        return done || timeoutTimer.hasElapsed(timeoutSeconds);
     }
 }
