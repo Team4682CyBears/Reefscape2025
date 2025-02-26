@@ -33,7 +33,7 @@ public class SubsystemCollection {
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
     private Object funnelSubsystem = null; // TODO: Replace with real subsystem
-    private WristSubsystem shooterAngleSubsystem = null;
+    private WristSubsystem wristSubsystem = null;
 
     /**
      * Default constructor
@@ -67,9 +67,9 @@ public class SubsystemCollection {
     public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
     public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
 
-    public WristSubsystem getShooterAngleSubsystem() { return shooterAngleSubsystem; }
-    public void setShooterAngleSubsystem(WristSubsystem value) { shooterAngleSubsystem = value; }
-    public boolean isShooterAngleSubsystemAvailable() { return shooterAngleSubsystem != null; }
+    public WristSubsystem getWristSubsystem() { return wristSubsystem; }
+    public void setWristSubsystem(WristSubsystem value) { wristSubsystem = value; }
+    public boolean isWristSubsystemAvailable() { return wristSubsystem != null; }
 
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() {
         return driveTrainPowerSubsystem;

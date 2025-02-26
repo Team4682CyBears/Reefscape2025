@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Crescendo - 2024
-// File: ShooterAngleSubsystem.java
+// File: WristSubsystem.java
 // Intent: Forms the prelminary code for shooter.
 // ************************************************************
 
@@ -53,7 +53,7 @@ public class WristSubsystem extends SubsystemBase {
 
   // Tolerance
   // rotations per second (max 512)
-  private static final double shooterAngleLowVelocityTol = 10;   
+  private static final double wristLowVelocityTol = 10;   
 
   // CanIds to "talk" to hardware
   private TalonFX angleMotor = new TalonFX(Constants.shooterMotorCanId);
@@ -105,9 +105,9 @@ public class WristSubsystem extends SubsystemBase {
    */
   public boolean isAngleWithinTolerance(double targetAngleDegrees){
     // check both the position and velocity. To allow PID to not stop before settling. 
-    boolean positionTargetReached = Math.abs(getAngleDegrees() - targetAngleDegrees) < Constants.shooterAngleToleranceDegrees;
+    boolean positionTargetReached = Math.abs(getAngleDegrees() - targetAngleDegrees) < Constants.wristToleranceDegrees;
 
-    boolean velocityIsSmall = Math.abs(angleMotor.getVelocity().getValue().in(Units.DegreesPerSecond)) < shooterAngleLowVelocityTol;
+    boolean velocityIsSmall = Math.abs(angleMotor.getVelocity().getValue().in(Units.DegreesPerSecond)) < wristLowVelocityTol;
 
     return positionTargetReached && velocityIsSmall;
   }
@@ -157,7 +157,7 @@ public class WristSubsystem extends SubsystemBase {
     // DataLogManager.log("Setting Shooter Angle to " + degrees + " degrees.");
 
     // check if set angle is in between max and min angle range
-    double clampedDegrees = MotorUtils.clamp(degrees, Constants.shooterAngleMinDegrees, Constants.shooterAngleMaxDegrees);
+    double clampedDegrees = MotorUtils.clamp(degrees, Constants.wristMinDegrees, Constants.wristMaxDegrees);
     
     // if out of range, return warning that we outta range
     if (clampedDegrees != degrees){
@@ -191,7 +191,7 @@ public class WristSubsystem extends SubsystemBase {
     encoderConfigs.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
     //MagnetSensor.AbsoluteSensorDiscontinuityPoint.Unsigned_0To1;
     encoderConfigs.MagnetSensor.MagnetOffset = degreesToRotations(Constants.shooterAbsoluteAngleOffsetDegrees);
-    encoderConfigs.MagnetSensor.SensorDirection = Constants.shooterAngleSensorDirection;
+    encoderConfigs.MagnetSensor.SensorDirection = Constants.wristSensorDirection;
     // apply configs
     StatusCode response = angleEncoder.getConfigurator().apply(encoderConfigs);
     if (!response.isOK()) {
@@ -208,14 +208,14 @@ public class WristSubsystem extends SubsystemBase {
     TalonFXConfiguration angleConfigs = new TalonFXConfiguration();
     angleConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     angleConfigs.MotorOutput.Inverted = Constants.angleTalonShooterMotorDefaultDirection;
-    angleConfigs.CurrentLimits.StatorCurrentLimit = HardwareConstants.shooterAngleStatorCurrentMaximumAmps;
+    angleConfigs.CurrentLimits.StatorCurrentLimit = HardwareConstants.wristStatorCurrentMaximumAmps;
     angleConfigs.CurrentLimits.StatorCurrentLimitEnable = true; 
-    angleConfigs.CurrentLimits.SupplyCurrentLimit = HardwareConstants.shooterAngleSupplyCurrentMaximumAmps;
+    angleConfigs.CurrentLimits.SupplyCurrentLimit = HardwareConstants.wristSupplyCurrentMaximumAmps;
     angleConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
-    angleConfigs.Voltage.SupplyVoltageTimeConstant = HardwareConstants.shooterAngleSupplyVoltageTimeConstant;
+    angleConfigs.Voltage.SupplyVoltageTimeConstant = HardwareConstants.wristSupplyVoltageTimeConstant;
 
     // FeedbackConfigs and offsets
-    if (InstalledHardware.shooterAngleCanCoderInstalled) {
+    if (InstalledHardware.wristCanCoderInstalled) {
       DataLogManager.log("Configuring Shooter Angle Motor with CanCoder Feedback.");
       angleConfigs.Slot0 = angleMotorGainsForAbsoluteEncoder;
       angleConfigs.Feedback.SensorToMechanismRatio = angleEncoderGearRatio;

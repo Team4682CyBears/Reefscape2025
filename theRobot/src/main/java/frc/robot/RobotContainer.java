@@ -243,11 +243,11 @@ public class RobotContainer {
    * A method to init the shooter angle
    */
   private void initializeWristSubsystem() {
-    if(InstalledHardware.shooterAngleInstalled) {
-      DataLogManager.log("SUCCESS: ShooterAngleSubsystem");
+    if(InstalledHardware.wristInstalled) {
+      DataLogManager.log("SUCCESS: WristSubsystem");
     }
     else {
-      DataLogManager.log("FAIL: ShooterAngleSubsystem");
+      DataLogManager.log("FAIL: WristSubsystem");
     }
   }
 }

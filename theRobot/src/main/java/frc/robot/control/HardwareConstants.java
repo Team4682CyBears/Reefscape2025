@@ -39,8 +39,8 @@ public class HardwareConstants {
       
     // *******************************************************************
     // shooter angle motor constants
-    public static final double shooterAngleStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
-    public static final double shooterAngleSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
-    public static final double shooterAngleSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
+    public static final double wristStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
+    public static final double wristSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
+    public static final double wristSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
 
 }

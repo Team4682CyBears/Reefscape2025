@@ -129,7 +129,6 @@ public final class Constants {
         public static final int kDriverControllerPort = 0;
     }
 
-    // public static final double shooterAngleShootFromSpeaker = 54.5;
     public static final double shooterAngle = 0;
     public static final double algaeAngle = 90;
 
@@ -139,15 +138,15 @@ public final class Constants {
     public static final double jerk = 800; 
 
     //Motor angle min/max
-    public static final double shooterAngleMaxDegrees = 110;
-    public static final double shooterAngleMinDegrees = -20;  
+    public static final double wristMaxDegrees = 110;
+    public static final double wristMinDegrees = -20;  
 
     public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
     public static final double shooterStartingAngleOffsetDegrees = 20.0;
 
     // *******************************************************************
     // shooter angle constants 
-    public static SensorDirectionValue shooterAngleSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    public static SensorDirectionValue wristSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     public static final double shooterAbsoluteAngleOffsetDegrees = -166.11;
-    public static final double shooterAngleToleranceDegrees = 0.5;
+    public static final double wristToleranceDegrees = 0.5;
 }

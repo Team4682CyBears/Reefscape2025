@@ -160,24 +160,22 @@ public class ManualInputInterfaces {
 
                         if (this.subsystemCollection.isElevatorSubsystemAvailable()
                                         && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-                                                if(this.subsystemCollection.isShooterAngleSubsystemAvailable()) {
+                                                if(this.subsystemCollection.isWristSubsystemAvailable()) {
                                                         // Rotate to shooterAngle
                                                         this.driverController.rightBumper().onTrue(
                                                             new ParallelCommandGroup(
                                                                 new InstantCommand(),
-                                                                new ShooterSetAngleCommand(
+                                                                new WristSetAngleCommand(
                                                                     Constants.shooterAngle, 
-                                                                    this.subsystemCollection.getShooterAngleSubsystem())));
-                                                                    //this.shooterAngleSubsystem)));
+                                                                    this.subsystemCollection.getWristSubsystem())));
                                     
                                                         // Rotate to algaeRemoverAngle
                                                         this.driverController.leftBumper().onTrue(
                                                                 new ParallelCommandGroup(
                                                                     new InstantCommand(),
-                                                                    new ShooterSetAngleCommand(
+                                                                    new WristSetAngleCommand(
                                                                         Constants.algaeAngle, 
-                                                                        this.subsystemCollection.getShooterAngleSubsystem())));
-                                                                        //this.shooterAngleSubsystem)));
+                                                                        this.subsystemCollection.getWristSubsystem())));
                                                     }
 
                                 // Score Coral with EndEffector
