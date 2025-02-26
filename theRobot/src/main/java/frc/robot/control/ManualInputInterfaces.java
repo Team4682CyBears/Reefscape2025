@@ -170,12 +170,23 @@ public class ManualInputInterfaces {
 
             if (this.subsystemCollection.isElevatorSubsystemAvailable()
                     && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-                this.driverController.leftBumper().onTrue(
-                        new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
-                                new ButtonPressCommand(
-                                        "driverController.leftBumper()",
-                                        "Remove Algae")));
+                            if(this.subsystemCollection.isWristSubsystemAvailable()) {
+                                    // Rotate to shooterAngle
+                                    this.driverController.rightBumper().onTrue(
+                                        new ParallelCommandGroup(
+                                            new InstantCommand(),
+                                            new WristSetAngleCommand(
+                                                Constants.shooterAngle, 
+                                                this.subsystemCollection.getWristSubsystem())));
+
+                                    // Rotate to algaeRemoverAngle
+                                    this.driverController.leftBumper().onTrue(
+                                            new ParallelCommandGroup(
+                                                new InstantCommand(),
+                                                new WristSetAngleCommand(
+                                                    Constants.algaeAngle, 
+                                                    this.subsystemCollection.getWristSubsystem())));
+                                }
 
                 // Score Coral with EndEffector
                 this.driverController.y().onTrue(

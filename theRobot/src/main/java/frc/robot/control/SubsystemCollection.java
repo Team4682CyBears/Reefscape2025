@@ -15,6 +15,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FunnelSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -33,6 +34,7 @@ public class SubsystemCollection {
     private AlignWithBranchDirection alignWithBranchDirection = null;
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
+    private WristSubsystem wristSubsystem = null;
     private SimpleNeoMotorSubsystem funnelSubsystem = null;
     private SimpleNeoMotorSubsystem climberSubsystem = null;
 
@@ -67,6 +69,10 @@ public class SubsystemCollection {
     public AlignWithBranchDirection getAlignWithBranchDirection() { return alignWithBranchDirection; }
     public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
     public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
+
+    public WristSubsystem getWristSubsystem() { return wristSubsystem; }
+    public void setWristSubsystem(WristSubsystem value) { wristSubsystem = value; }
+    public boolean isWristSubsystemAvailable() { return wristSubsystem != null; }
 
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() {
         return driveTrainPowerSubsystem;

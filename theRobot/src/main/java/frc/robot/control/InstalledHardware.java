@@ -55,6 +55,19 @@ public class InstalledHardware
     // Funnel
     public static final boolean funnelInstalled = false;
 
+    // Wrist
+    // Shooter Related Hardware
+    public static final boolean shooterOutfeedInstalled = true;
+    public static final boolean wristInstalled = true;
+    // for testing, to decrease the power of the shooter angle mechanism, 
+    // reduce the left motor gear box to 10x (instaed of 100x)
+    // and disconnect the right motor from the chain. 
+    public static final boolean shooterMotorInstalled = true;
+    public static final boolean wristCanCoderInstalled = true; 
+    // for testing shooter angle via the shuffleboard
+    // ensure this is DISABLED for competitions, as it can sometimes crash shuffleboard
+    public static final boolean setWristFromShuffleboard = false;
+
     // Climber
     public static final boolean climberInstalled = false;
 }
