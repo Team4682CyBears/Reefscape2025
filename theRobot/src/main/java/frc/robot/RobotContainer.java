@@ -244,9 +244,6 @@ public class RobotContainer {
    */
   private void initializeWristSubsystem() {
     if(InstalledHardware.shooterAngleInstalled) {
-      // The robot's subsystems and commands are defined here...
-      subsystems.setShooterAngleSubsystem(new WristSubsystem());
-      SmartDashboard.putData("Debug: ShooterAngleSubsystem", subsystems.getShooterAngleSubsystem());
       DataLogManager.log("SUCCESS: ShooterAngleSubsystem");
     }
     else {
