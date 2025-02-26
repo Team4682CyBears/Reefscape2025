@@ -14,7 +14,7 @@ import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
-import frc.robot.subsystems.ShooterAngleSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 
@@ -33,7 +33,7 @@ public class SubsystemCollection {
     private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
     private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
     private Object funnelSubsystem = null; // TODO: Replace with real subsystem
-    private ShooterAngleSubsystem shooterAngleSubsystem = null;
+    private WristSubsystem shooterAngleSubsystem = null;
 
     /**
      * Default constructor
@@ -67,8 +67,8 @@ public class SubsystemCollection {
     public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
     public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
 
-    public ShooterAngleSubsystem getShooterAngleSubsystem() { return shooterAngleSubsystem; }
-    public void setShooterAngleSubsystem(ShooterAngleSubsystem value) { shooterAngleSubsystem = value; }
+    public WristSubsystem getShooterAngleSubsystem() { return shooterAngleSubsystem; }
+    public void setShooterAngleSubsystem(WristSubsystem value) { shooterAngleSubsystem = value; }
     public boolean isShooterAngleSubsystemAvailable() { return shooterAngleSubsystem != null; }
 
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() {

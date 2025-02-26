@@ -11,7 +11,7 @@
 package frc.robot.commands;
 
 import frc.robot.control.Constants;
-import frc.robot.subsystems.ShooterAngleSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class ShooterSetAngleCommand extends Command {
 
-  private ShooterAngleSubsystem shooterAngleSubsystem;
+  private WristSubsystem shooterAngleSubsystem;
   protected double desiredAngleDegrees; 
   @SuppressWarnings("unused")
 private boolean done = false;
@@ -30,7 +30,7 @@ private boolean done = false;
    * @param desiredAngleDegrees
    * @param shooterAngle
    */
-  public ShooterSetAngleCommand(double desiredAngleDegrees, ShooterAngleSubsystem shooterAngleSubsystem) {
+  public ShooterSetAngleCommand(double desiredAngleDegrees, WristSubsystem shooterAngleSubsystem) {
     this.desiredAngleDegrees = desiredAngleDegrees;
     this.shooterAngleSubsystem = shooterAngleSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.

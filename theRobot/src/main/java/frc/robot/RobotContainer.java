@@ -58,7 +58,7 @@ public class RobotContainer {
     this.lateBindDefaultCommands();
 
     // shooter subsystem init
-    this.initializeShooterAngleSubsystem();
+    this.initializeWristSubsystem();
 
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
@@ -242,10 +242,10 @@ public class RobotContainer {
   /**
    * A method to init the shooter angle
    */
-  private void initializeShooterAngleSubsystem() {
+  private void initializeWristSubsystem() {
     if(InstalledHardware.shooterAngleInstalled) {
       // The robot's subsystems and commands are defined here...
-      subsystems.setShooterAngleSubsystem(new ShooterAngleSubsystem());
+      subsystems.setShooterAngleSubsystem(new WristSubsystem());
       SmartDashboard.putData("Debug: ShooterAngleSubsystem", subsystems.getShooterAngleSubsystem());
       DataLogManager.log("SUCCESS: ShooterAngleSubsystem");
     }

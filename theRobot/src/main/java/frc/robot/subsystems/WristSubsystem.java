@@ -43,7 +43,7 @@ import frc.robot.common.ShooterPosition;
  * Consists of two outfeed motors, 
  * 1 angle motor, and 1 angle encoder
  */
-public class ShooterAngleSubsystem extends SubsystemBase {
+public class WristSubsystem extends SubsystemBase {
 
   // Initiate fields and class instances
 
@@ -78,7 +78,7 @@ public class ShooterAngleSubsystem extends SubsystemBase {
   /**
    * Constructor for shooter subsystem
    */
-  public ShooterAngleSubsystem() {
+  public WristSubsystem() {
 
     // set direction, offset, and range of encoder
     configureAngleEncoder();
