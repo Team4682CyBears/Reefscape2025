@@ -2,32 +2,36 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: HandoffCoralCommand.java
-// Intent: Command to handoff coral
+// File: IntakeCoralCommand.java
+// Intent: Command to intake coral
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
 import frc.robot.subsystems.EndEffectorSubsystem;
 
-public class HandoffCoralCommand extends Command {
+public class IntakeCoralCommand extends Command {
     // The subsystem that controls the end effector mechanism
     private final EndEffectorSubsystem endEffector;
     
-    // Tracks whether the command has completed its operation
-    private boolean done = false;
+    private boolean seenPiece = false;
+
+    private Timer timeoutTimer = new Timer();
+
+    private final double timeoutSeconds = 5.0;
 
     /**
-     * Creates a new HandoffCoralCommand.
+     * Creates a new IntakeCoralCommand.
      * 
      * @param subsystem The EndEffectorSubsystem that this command will use
      */
-    public HandoffCoralCommand(EndEffectorSubsystem subsystem) {
+    public IntakeCoralCommand(EndEffectorSubsystem subsystem) {
         endEffector = subsystem;
         addRequirements(endEffector);
     }
@@ -38,12 +42,8 @@ public class HandoffCoralCommand extends Command {
      */
     @Override
     public void initialize() {
-        // If branch is already detected, mark as done immediately
-        if (endEffector.isCoralDetected()) {
-            done = true;
-        } else {
-            done = false;
-        }
+        timeoutTimer.reset();
+        timeoutTimer.start();
     }
 
     /**
@@ -52,15 +52,13 @@ public class HandoffCoralCommand extends Command {
      */
     @Override
     public void execute() {
-        // Skip execution if already done
-        if (done) {
-            return;
+        if (!seenPiece && timeoutTimer.hasElapsed(timeoutSeconds)) {
+            // If we don't see a piece after 5 seconds stop the motor
+            this.end(false);
         }
 
         // Check for branch detection and stop if detected
-        if (endEffector.isCoralDetected()) {
-            System.out.println("STOPPING MOTOR");
-            done = true;
+        if (seenPiece && !endEffector.isCoralDetected()) {
             endEffector.stop();
             return;
         }
@@ -87,6 +85,6 @@ public class HandoffCoralCommand extends Command {
      */
     @Override
     public boolean isFinished() {
-        return done;
+        return seenPiece && !endEffector.isCoralDetected();
     }
 }

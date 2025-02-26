@@ -169,8 +169,7 @@ public class ManualInputInterfaces {
                                                                         "driverController.x()",
                                                                         "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-                        if (this.subsystemCollection.isElevatorSubsystemAvailable()
-                                        && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
+                        if (this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
                                 this.driverController.leftBumper().whileTrue(
                                                 new ParallelCommandGroup(
                                                         new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
@@ -185,6 +184,14 @@ public class ManualInputInterfaces {
                                                                 new ButtonPressCommand(
                                                                                 "driverController.y()",
                                                                                 "Score Coral")));
+
+                                // Score Coral with EndEffector
+                                this.driverController.rightBumper().onTrue(
+                                                new ParallelCommandGroup(
+                                                                new IntakeCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
+                                                                new ButtonPressCommand(
+                                                                                "driverController.rightBumper()",
+                                                                                "Intake Coral")));
                         }
                 }
         }
