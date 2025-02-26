@@ -239,6 +239,7 @@ public class WristSubsystem extends SubsystemBase {
    * This method sets offset of the motor
    */
   private double getOffset(){
+    //  the offset is 0 when we are using the fused motor/can coder.
     return 0;
   }
 
