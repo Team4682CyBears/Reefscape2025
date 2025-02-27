@@ -91,7 +91,7 @@ public final class Constants {
 
     // ********************************************************************
     // Diagnostic Constants
-    public static final boolean putDiagnosticPaths = false;
+    public static final boolean putDiagnosticPaths = true;
 
     // ********************************************************************
     // CAN IDs
