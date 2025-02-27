@@ -23,6 +23,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
 import frc.robot.generated.LimelightHelpers;
+import frc.robot.generated.TardiTunerConstants;
 import frc.robot.generated.Telemetry;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.TedTunerConstants;
