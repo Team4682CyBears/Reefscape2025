@@ -51,7 +51,10 @@ public class RobotContainer {
     // init the climber
     this.initializeClimberSubsystem();
 
-    // init the input system 
+    // init the funnel
+    this.initializeFunnelSubsystem();
+
+    // init the input system
     this.initializeManualInputInterfaces();
 
     // do late binding of default commands
@@ -59,19 +62,24 @@ public class RobotContainer {
 
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
-    AutonomousChooser.configureAutoBuilder(subsystems);
-    autonomousChooser  = new AutonomousChooser(subsystems);
+    if (subsystems.isDriveTrainSubsystemAvailable()){
+      AutonomousChooser.configureAutoBuilder(subsystems);
+      autonomousChooser  = new AutonomousChooser(subsystems);
+      DataLogManager.log("SUCCESS: initializeAutoChooser");
+  } else {
+      DataLogManager.log("FAIL: initializeAutoChooser");
+  }
 
 
     // Configure the button bindings
     if(this.subsystems.isManualInputInterfacesAvailable()) {
-      DataLogManager.log(">>>> Initializing button bindings.");
-      this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
-      DataLogManager.log(">>>> Finished initializing button bindings.");
-    }
-    
-    // TODO For debugging. Can remove for final competition build. 
-    this.initializeDebugDashboard();
+        DataLogManager.log(">>>> Initializing button bindings.");
+        this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
+        DataLogManager.log(">>>> Finished initializing button bindings.");
+      }
+      
+      // TODO For debugging. Can remove for final competition build. 
+      this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -147,9 +155,35 @@ public class RobotContainer {
     }
   }
 
-  private void initializeClimberSubsystem() {
-    // TODO: Set default command to control climber with joystick
-  }
+    /**
+     * A method to init the ClimberSubsystem
+     */
+    private void initializeClimberSubsystem() {
+        if (InstalledHardware.climberInstalled) {
+            subsystems.setClimberSubsystem(new SimpleNeoMotorSubsystem(Constants.climberMotorCanID, Constants.ClimberMotorMaxSpeed));
+
+            SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
+
+            climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
+                    () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
+                            * subsystems.getClimberSubsystem().getMaxSpeed()));
+            DataLogManager.log("SUCCESS: initializeClimber");
+        } else {
+            DataLogManager.log("FAIL: initializeClimber");
+        }
+    }
+
+    /**
+     * A method to init the FunnelSubsystem
+     */
+    private void initializeFunnelSubsystem() {
+        if (InstalledHardware.funnelInstalled) {
+            subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+            DataLogManager.log("SUCCESS: initializeFunnel");
+        } else {
+            DataLogManager.log("FAIL: initializeFunnel");
+        }
+    }
 
   /**
    * A method to init the CameraSubsystem
@@ -205,6 +239,7 @@ public class RobotContainer {
       DataLogManager.log("FAIL: initializeManualInputInterfaces");
     }
   }
+
 
   /**
    * A method to late binding of default commands
