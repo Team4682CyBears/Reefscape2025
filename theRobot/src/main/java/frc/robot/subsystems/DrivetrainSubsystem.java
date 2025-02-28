@@ -57,7 +57,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private boolean lessThanAMeter = false;
 
-  private boolean displayOdometryDiagnostics = true;
+  private boolean displayOdometryDiagnostics = false;
 
   StructArrayPublisher<SwerveModuleState> publisher;
 
