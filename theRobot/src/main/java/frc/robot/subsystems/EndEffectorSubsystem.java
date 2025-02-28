@@ -123,7 +123,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
      */
     public boolean isCoralDetected() {
         return (InstalledHardware.endEffectorTofsInstalled
-                && (this.tofLeft.isDetected() && this.tofRight.isDetected()));
+                && (this.tofLeft.isDetected() || this.tofRight.isDetected()));
     }
 
     /**
