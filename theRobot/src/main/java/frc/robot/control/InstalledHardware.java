@@ -54,7 +54,7 @@ public class InstalledHardware {
     public static final boolean endEffectorInstalled = false;
 
     // Elevator
-    public static final boolean elevatorInstalled = false;
+    public static final boolean elevatorInstalled = true;
 
     // Funnel
     public static final boolean funnelInstalled = false;
