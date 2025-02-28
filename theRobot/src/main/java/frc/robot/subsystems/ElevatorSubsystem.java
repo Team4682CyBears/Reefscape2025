@@ -130,6 +130,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             targetPosition.in(Inches),
             minHeight.in(Inches),
             maxHeight.in(Inches)));
+    // TODO check this logic. Why are we doing it this way?
     if (getCurrentHeight().gt(targetPosition)) {
       targetPosition = targetPosition.minus(Inches.of(0.5));
     } else if (getCurrentHeight().lt(targetPosition)) {
@@ -169,8 +170,13 @@ public class ElevatorSubsystem extends SubsystemBase {
       elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
       elevatorMotor.setControl(elevatorPositionalController);
     } else {
+      if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
+        // if we have just changed into STOPPED state, set the hold position 
+        targetHeight = getCurrentHeight();
+      }
       elevatorMovementMode = ElevatorMovementMode.STOPPED;
-      elevatorMotor.stopMotor();
+      elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
+      elevatorMotor.setControl(elevatorPositionalController);
     }
     SmartDashboard.putNumber("elevator position", getCurrentHeight().in(Inches));
   }
@@ -228,7 +234,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // change invert for angleRightMotor 
-    // TODO check if this is correct
     motorTalonMotorConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     // apply configs
     response = secondElevatorMotor.getConfigurator().apply(motorTalonMotorConfiguration);
