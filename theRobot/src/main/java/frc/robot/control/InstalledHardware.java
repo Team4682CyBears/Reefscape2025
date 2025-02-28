@@ -42,7 +42,7 @@ public class InstalledHardware {
     public static final boolean BranchTofLeft = true;
     public static final boolean BranchTofRight = true;
     // this one controls the install of both ee TOFs. 
-    public static final boolean endEffectorTofsInstalled = false;
+    public static final boolean handoffTofsInstalled = true;
 
     // LED Hardware
     public static final boolean LEDSInstalled = true;
@@ -51,7 +51,7 @@ public class InstalledHardware {
     public static final boolean branchDetectorInstalled = true;
 
     // EndEffector
-    public static final boolean endEffectorInstalled = false;
+    public static final boolean endEffectorInstalled = true;
 
     // Elevator
     public static final boolean elevatorInstalled = true;

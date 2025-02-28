@@ -154,6 +154,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorCorrectableEncoder.updateEncoderPosition();
     Distance currentHeight = getCurrentHeight();
     SmartDashboard.putNumber("ElevatorHeight", getCurrentHeight().in(Inches));
+    SmartDashboard.putNumber("ElevatorTargetPosition", targetHeight.in(Inches));
       if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
         elevatorDirection == ElevatorDirection.UP &&
         currentHeight.lt(maxHeight)) {

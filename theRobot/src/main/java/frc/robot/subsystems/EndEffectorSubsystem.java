@@ -47,7 +47,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
      * Initializes the ToF sensors and configures the motor with default settings.
      */
     public EndEffectorSubsystem() {
-        if (InstalledHardware.endEffectorTofsInstalled) {
+        if (InstalledHardware.handoffTofsInstalled) {
             tofLeft = new ToFDetector(Constants.handoffBackTofCanID, Constants.eeTofDetectionThresholdInches);
             tofRight = new ToFDetector(Constants.handoffFrontTofCanID, Constants.eeTofDetectionThresholdInches);
         }
@@ -122,7 +122,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
      *         distance
      */
     public boolean isCoralDetected() {
-        return (InstalledHardware.endEffectorTofsInstalled
+        return (InstalledHardware.handoffTofsInstalled
                 && (this.tofLeft.isDetected() || this.tofRight.isDetected()));
     }
 
