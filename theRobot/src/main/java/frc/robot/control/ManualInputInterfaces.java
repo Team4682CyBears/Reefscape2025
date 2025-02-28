@@ -69,7 +69,7 @@ public class ManualInputInterfaces {
      * @return - a double value associated with the magnitude of the x componet
      */
     public double getInputSpinDriveX() {
-        return driverController.getRightX();
+        return -driverController.getRightX();
     }
 
     /**
@@ -119,7 +119,7 @@ public class ManualInputInterfaces {
                 // Align to branch for scoring
                 this.driverController.a().onTrue(
                         new ParallelCommandGroup(
-                                new InstantCommand(), // TODO: Fill with real command
+                                new AlignWithReefCommand(subsystemCollection, false), // TODO: Fill with real command
                                 new ButtonPressCommand(
                                         "driverController.a()",
                                         "Align to branch")));

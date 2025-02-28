@@ -31,26 +31,26 @@ public class InstalledHardware
 
     // DriveTrain Related Hardware
     public static final boolean drivetrainInstalled = true;
-    public static final boolean tedDrivetrainInstalled = true; // true is ted, false is new robot TODO flip this!!
+    public static final boolean tardiDrivetrainInstalled = true;
 
     // TOF Sensor Hardware
     // Important! You must disable any TOF sensor that is not installed!! 
     // If you try to configure a TOF sensor that is not installed
     // the other TOF sensors that are installed will not work. 
-    public static final boolean BranchTofLeft = true;
-    public static final boolean BranchTofRight = true;
+    public static final boolean BranchTofLeft = false;
+    public static final boolean BranchTofRight = false;
 
     //LED Hardware
     public static final boolean LEDSInstalled = true;
 
     // Branch Detector
-    public static final boolean branchDetectorInstalled = true;
+    public static final boolean branchDetectorInstalled = false;
 
     // EndEffector
     public static final boolean endEffectorInstalled = false;
     
     // Elevator
-    public static final boolean elevatorInstalled = false;
+    public static final boolean elevatorInstalled = true;
 
     // Funnel
     public static final boolean funnelInstalled = false;
