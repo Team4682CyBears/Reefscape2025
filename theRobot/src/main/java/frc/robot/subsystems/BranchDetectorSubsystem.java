@@ -18,8 +18,8 @@ import frc.robot.control.InstalledHardware;
  */
 public class BranchDetectorSubsystem extends SubsystemBase{
     
-    ToFDetector tofLeft = new ToFDetector(Constants.tofLeftCanID, Constants.branchDetectionThresholdInches);
-    ToFDetector tofRight = new ToFDetector(Constants.tofRightCanID, Constants.branchDetectionThresholdInches);
+    ToFDetector tofLeft = new ToFDetector(Constants.branchDetectorTofLeftCanID, Constants.branchDetectionThresholdInches);
+    ToFDetector tofRight = new ToFDetector(Constants.branchDetectorTofRightCanID, Constants.branchDetectionThresholdInches);
 
     /**
      * Constructs a BranchDetectorSubsystem object

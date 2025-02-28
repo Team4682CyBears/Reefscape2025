@@ -65,6 +65,8 @@ public final class Constants {
     // ******************************************************************
     // Branch Detector constants
     public static final double branchDetectionThresholdInches = 20.0;
+    public static final int branchDetectorTofLeftCanID = 20;
+    public static final int branchDetectorTofRightCanID = 21;
 
     // ******************************************************************
     // led constants
@@ -74,8 +76,6 @@ public final class Constants {
     public static final int ledBlinkFrquencyInHertz = 2;
     public static final double ledBrightness = 0.5;
     public static final LEDStripType ledStripType = LEDStripType.RGB;
-    public static final int tofLeftCanID = 20;
-    public static final int tofRightCanID = 21;
 
     // ******************************************************************
     // camera constants
@@ -124,7 +124,8 @@ public final class Constants {
     // CAN IDs
 
     // Funnel
-    public static final int funnelTofCanID = 16;
+    public static final int handoffFrontTofCanID = 16;
+    public static final int handoffBackTofCanID = 25;
     public static final int funnelMotorCanID = 23;
     public static final double funnelMotorSpeed = 0.4;
 
@@ -138,8 +139,6 @@ public final class Constants {
 
     // End Effector
     public static final int eeMotorCanID = 19;
-    public static final int eeTofLeftCanID = 20;
-    public static final int eeTofRightCanID = 21;
 
     // Climber
     public static final int climberMotorCanID = 22;

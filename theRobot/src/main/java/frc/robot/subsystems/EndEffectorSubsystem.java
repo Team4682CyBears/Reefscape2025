@@ -48,8 +48,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
      */
     public EndEffectorSubsystem() {
         if (InstalledHardware.endEffectorTofsInstalled) {
-            tofLeft = new ToFDetector(Constants.eeTofLeftCanID, Constants.eeTofDetectionThresholdInches);
-            tofRight = new ToFDetector(Constants.eeTofRightCanID, Constants.eeTofDetectionThresholdInches);
+            tofLeft = new ToFDetector(Constants.handoffBackTofCanID, Constants.eeTofDetectionThresholdInches);
+            tofRight = new ToFDetector(Constants.handoffFrontTofCanID, Constants.eeTofDetectionThresholdInches);
         }
         configureMotor();
     }
