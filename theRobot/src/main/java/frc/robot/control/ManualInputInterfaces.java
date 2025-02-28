@@ -69,7 +69,7 @@ public class ManualInputInterfaces {
      * @return - a double value associated with the magnitude of the x componet
      */
     public double getInputSpinDriveX() {
-        return -driverController.getRightX();
+        return driverController.getRightX();
     }
 
     /**
