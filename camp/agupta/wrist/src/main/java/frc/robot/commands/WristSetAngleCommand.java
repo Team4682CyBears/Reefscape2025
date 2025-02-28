@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Crescendo - 2024
-// File: ShooterSetAngleCommand.java
+// File: WristSetAngleCommand.java
 // Intent: Forms a command to set the shooter angle
 // ************************************************************
 
@@ -10,16 +10,16 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants;
-import frc.robot.subsystems.ShooterAngleSubsystem;
+import frc.robot.control.Constants;
+import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * Forms a command to shoot the shooter
  */
-public class ShooterSetAngleCommand extends Command {
+public class WristSetAngleCommand extends Command {
 
-  private ShooterAngleSubsystem shooterAngleSubsystem;
+  private WristSubsystem wristSubsystem;
   protected double desiredAngleDegrees; 
   @SuppressWarnings("unused")
 private boolean done = false;
@@ -28,20 +28,20 @@ private boolean done = false;
    * Constructor for ShooterShootCommand
    * Will set shooter to desired angle before shooting
    * @param desiredAngleDegrees
-   * @param shooterAngle
+   * @param wristSubsystem
    */
-  public ShooterSetAngleCommand(double desiredAngleDegrees, ShooterAngleSubsystem shooterAngleSubsystem) {
+  public WristSetAngleCommand(double desiredAngleDegrees, WristSubsystem wristSubsystem) {
     this.desiredAngleDegrees = desiredAngleDegrees;
-    this.shooterAngleSubsystem = shooterAngleSubsystem;
+    this.wristSubsystem = wristSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.addRequirements(shooterAngleSubsystem);
+    this.addRequirements(wristSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     this.done = false;
-    shooterAngleSubsystem.setAngleDegrees(desiredAngleDegrees);
+    wristSubsystem.setAngleDegrees(desiredAngleDegrees);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,7 +60,7 @@ private boolean done = false;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooterAngleSubsystem.isAngleWithinTolerance(desiredAngleDegrees);
+    return wristSubsystem.isAngleWithinTolerance(desiredAngleDegrees);
   }
 
 }

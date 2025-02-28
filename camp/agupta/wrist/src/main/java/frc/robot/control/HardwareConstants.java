@@ -8,7 +8,7 @@
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
 
-package frc.robot;
+package frc.robot.control;
 
 public class HardwareConstants {
 
@@ -20,9 +20,9 @@ public class HardwareConstants {
    
     // *******************************************************************
     // shooter outfeed motor constants
-    public static final double shooterOutfeedStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
-    public static final double shooterOutfeedSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
-    public static final double shooterOutfeedSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
+    public static final double wristStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
+    public static final double wristSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
+    public static final double wristSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
       
     // *******************************************************************
     // shooter angle motor constants

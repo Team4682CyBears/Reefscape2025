@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.control;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -38,16 +38,16 @@ public final class Constants {
   public static final double jerk = 800; 
 
   //Motor angle min/max
-  public static final double shooterAngleMaxDegrees = 110;
-  public static final double shooterAngleMinDegrees = -20;  
+  public static final double wristMaxDegrees = 110;
+  public static final double wristMinDegrees = -20;  
 
   public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
   public static final double shooterStartingAngleOffsetDegrees = 20.0;
 
   // *******************************************************************
   // shooter angle constants 
-  public static SensorDirectionValue shooterAngleSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+  public static SensorDirectionValue wristSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
   public static final double shooterAbsoluteAngleOffsetDegrees = -166.11;
-  public static final double shooterAngleToleranceDegrees = 0.5;
+  public static final double wristToleranceDegrees = 0.5;
 
 }
