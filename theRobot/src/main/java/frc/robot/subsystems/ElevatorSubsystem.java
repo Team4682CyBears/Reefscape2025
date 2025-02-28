@@ -195,6 +195,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       }
 
       elevatorMovementMode = ElevatorMovementMode.STOPPED;
+
+      // Updates the motor controller to go to targetHeight
       elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
       elevatorMotor.setControl(elevatorPositionalController);
     }
