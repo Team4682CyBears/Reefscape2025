@@ -60,7 +60,7 @@ public class RobotContainer {
     // init the end effector
     this.initializeEndEffectorSubsystem();
     
-    // init the funnel
+    // init the funneldefault
     this.initializeFunnelSubsystem();
 
     // init the input system
@@ -219,7 +219,7 @@ public class RobotContainer {
             elevatorSubsystem.setDefaultCommand(
               new DefaultElevatorCommand(
                 elevatorSubsystem, 
-                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverController().getRightY(), 0.05)));
+                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.05)));
             DataLogManager.log("SUCCESS: initializeElevator");
         } else {
             DataLogManager.log("FAIL: initializeElevator");

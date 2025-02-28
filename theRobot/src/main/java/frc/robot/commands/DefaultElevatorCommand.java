@@ -32,6 +32,7 @@ public class DefaultElevatorCommand extends Command {
         this.elevatorSubsystem = elevatorSubsystem;
         this.joystickAxisSupplier = joystickAxisSupplier;
         addRequirements(elevatorSubsystem);
+        System.out.println("--------------Elevator default command initialized");
     }
 
     /**
@@ -39,11 +40,16 @@ public class DefaultElevatorCommand extends Command {
      */
     @Override
     public void execute() {
-        if (joystickAxisSupplier.getAsDouble() > 0) {
+        double joystickValue = joystickAxisSupplier.getAsDouble();
+        System.out.println("----------------Elevator joystick value: " + joystickValue );
+        if(joystickValue > 0) {
             elevatorSubsystem.moveUp();
         } 
-        else if (joystickAxisSupplier.getAsDouble() < 0) {
+        else if (joystickValue < 0) {
             elevatorSubsystem.moveDown();    
+        } 
+        else {
+            elevatorSubsystem.stopElevator();
         }
     }
 
@@ -53,6 +59,7 @@ public class DefaultElevatorCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         elevatorSubsystem.stopElevator();
+        System.out.println("-----------------Default command ended. Stopping Elevator");
     }
 
     /**

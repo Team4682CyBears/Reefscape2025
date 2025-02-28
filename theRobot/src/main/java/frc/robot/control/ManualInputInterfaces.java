@@ -84,6 +84,16 @@ public class ManualInputInterfaces {
     }
 
     /**
+     * A method to return the Y value of the right joystick on the co-driver's
+     * controller
+     * 
+     * @return - a double value associated with the magnitude of the y componet
+     */
+    public double getCoDriverRightY() {
+        return -coDriverController.getRightY();
+    }
+
+    /**
      * A method to initialize various commands to the numerous buttons.
      * Need delayed bindings as some subsystems during testing won't always be
      * there.

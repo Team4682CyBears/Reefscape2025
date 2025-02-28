@@ -23,6 +23,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -151,7 +152,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void periodic() {
     elevatorCorrectableEncoder.updateEncoderPosition();
     Distance currentHeight = getCurrentHeight();
-    if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
+    SmartDashboard.putNumber("ElevatorHeight", getCurrentHeight().in(Inches));
+      if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
         elevatorDirection == ElevatorDirection.UP &&
         currentHeight.lt(maxHeight)) {
       elevatorJoystickController.withOutput(elevatorExtendSpeed);
@@ -242,7 +244,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   private void configurePositionalController() {
     elevatorPositionalController.UpdateFreqHz = 0;
-    elevatorPositionalController.OverrideBrakeDurNeutral = true;
+    //elevatorPositionalController.OverrideBrakeDurNeutral = true;
     elevatorPositionalController.UseTimesync = false;
     elevatorPositionalController.LimitForwardMotion = false;
     elevatorPositionalController.LimitReverseMotion = false;
