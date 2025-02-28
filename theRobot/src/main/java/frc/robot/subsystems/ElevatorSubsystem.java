@@ -151,30 +151,49 @@ public class ElevatorSubsystem extends SubsystemBase {
    * periodic for the elevator
    */
   public void periodic() {
+
+    // Correct encoder position
     elevatorCorrectableEncoder.updateEncoderPosition();
+
+    // get current height
     Distance currentHeight = getCurrentHeight();
+
+    // 
     SmartDashboard.putNumber("ElevatorHeight", getCurrentHeight().in(Inches));
     SmartDashboard.putNumber("ElevatorTargetPosition", targetHeight.in(Inches));
-      if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
-        elevatorDirection == ElevatorDirection.UP &&
-        currentHeight.lt(maxHeight)) {
-      elevatorJoystickController.withOutput(elevatorExtendSpeed);
-      elevatorMotor.setControl(elevatorJoystickController);
 
+    //  check velcity and up mode (and below max height)
+    if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
+      elevatorDirection == ElevatorDirection.UP &&
+      currentHeight.lt(maxHeight)) {
+
+        // run motor
+        elevatorJoystickController.withOutput(elevatorExtendSpeed);
+        elevatorMotor.setControl(elevatorJoystickController);
+
+    // check if velocity and down mode (and above min height)
     } else if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
         elevatorDirection == ElevatorDirection.DOWN &&
         currentHeight.gt(minHeight)) {
+
       // if the mag sensor has not ever been tripped, go down slowly!
       elevatorJoystickController.withOutput(getElevatorRetractSpeed());
       elevatorMotor.setControl(elevatorJoystickController);
+
+    // check if elevator is in position mode, and is not at target height
     } else if (elevatorMovementMode == ElevatorMovementMode.POSITION && !isAtTargetHeight()) {
+
+      // run motor
       elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
       elevatorMotor.setControl(elevatorPositionalController);
+
+    // if the elevator is in position mode and is at target position or if the movement mode is stopped
     } else {
       if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
         // if we have just changed into STOPPED state, set the hold position 
         targetHeight = getCurrentHeight();
       }
+
       elevatorMovementMode = ElevatorMovementMode.STOPPED;
       elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
       elevatorMotor.setControl(elevatorPositionalController);
@@ -195,6 +214,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public void stopElevator() {
     elevatorMovementMode = ElevatorMovementMode.STOPPED;
+    targetHeight = getCurrentHeight();
   }
 
   /*
