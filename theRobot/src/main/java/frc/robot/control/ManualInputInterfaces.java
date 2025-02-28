@@ -119,7 +119,7 @@ public class ManualInputInterfaces {
                 // Align to branch for scoring
                 this.driverController.a().onTrue(
                         new ParallelCommandGroup(
-                                new AlignWithReefCommand(subsystemCollection, false), // TODO: Fill with real command
+                                new InstantCommand(), // TODO: Fill with real command
                                 new ButtonPressCommand(
                                         "driverController.a()",
                                         "Align to branch")));
