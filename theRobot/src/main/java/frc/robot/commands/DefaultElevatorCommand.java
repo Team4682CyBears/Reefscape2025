@@ -41,7 +41,7 @@ public class DefaultElevatorCommand extends Command {
     @Override
     public void execute() {
         double joystickValue = joystickAxisSupplier.getAsDouble();
-        System.out.println("----------------Elevator joystick value: " + joystickValue );
+        // System.out.println("----------------Elevator joystick value: " + joystickValue );
         if(joystickValue > 0) {
             elevatorSubsystem.moveUp();
         } 
