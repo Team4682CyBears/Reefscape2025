@@ -138,7 +138,7 @@ public class AlignWithReefCommand extends Command {
                 break;
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
-                
+        
                 //We are launching a string of commands from this command because we want to use path planners follow path command and then do stuff after
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
