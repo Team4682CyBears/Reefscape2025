@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
+import frc.robot.common.AlignToBranchSide;
 import frc.robot.common.ElevatorPositions;
 
 public class ManualInputInterfaces {
@@ -130,7 +131,7 @@ public class ManualInputInterfaces {
                                 // Align to branch for scoring
                                 this.driverController.a().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(), subsystemCollection.getBranchDetectorSubsystem(), () -> subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.a()",
                                                                                 "Align to branch")));
@@ -138,7 +139,7 @@ public class ManualInputInterfaces {
                                 // Align to reef for scoring
                                 this.driverController.b().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new AlignWithReefCommand(subsystemCollection, false),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.b()",
                                                                                 "Align to reef")));
@@ -283,11 +284,10 @@ public class ManualInputInterfaces {
                                                                                 "Collapse Funnel")));
                         }
 
-                        // TODO need to check whether the subsystem that holds the left/right state is installed.
                         // Change alignment mode to left (changes the align with branch settings)
                         this.coDriverController.leftTrigger().onTrue(
                                         new ParallelCommandGroup(
-                                                        new InstantCommand(), // TODO: Fill with real command
+                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.LEFT)),
                                                         new ButtonPressCommand(
                                                                         "coDriverController.leftTrigger()",
                                                                         "Align Left")));
@@ -295,7 +295,7 @@ public class ManualInputInterfaces {
                         // Change alignment mode to right (changes the align with branch settings)
                         this.coDriverController.rightTrigger().onTrue(
                                         new ParallelCommandGroup(
-                                                        new InstantCommand(), // TODO: Fill with real command
+                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.RIGHT)),
                                                         new ButtonPressCommand(
                                                                         "coDriverController.rightBumper()",
                                                                         "Align Right")));
