@@ -17,10 +17,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L4"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Right"
           }
         },
         {
@@ -60,10 +66,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L4"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Left"
           }
         },
         {
@@ -103,10 +115,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L4"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Right"
           }
         },
         {
