@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Align Branch Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Score Piece"
           }
         },

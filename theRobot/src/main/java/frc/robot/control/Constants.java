@@ -118,7 +118,7 @@ public final class Constants {
 
     public static final double eeTofDetectionThresholdInches = 6.0;
     // Diagnostic Constants
-    public static final boolean putDiagnosticPaths = false;
+    public static final boolean putDiagnosticPaths = true;
 
     // ********************************************************************
     // CAN IDs
