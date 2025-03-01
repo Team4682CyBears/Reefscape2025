@@ -66,6 +66,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private DigitalInput elevatorMageneticSensor = new DigitalInput(Constants.elevatorMageneticSensorID);
   private ElevatorMovementMode elevatorMovementMode = ElevatorMovementMode.STOPPED;
+  private ElevatorMovementMode previousElevatorMovementMode = ElevatorMovementMode.STOPPED;
 
   // when moving to a set potision, use motionMagic to control speeds
   // when moving via a joystick, need to specify speeds.
@@ -189,7 +190,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // if the elevator is in position mode and is at target position or if the movement mode is stopped
     } else {
-      if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
+      //if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
+      if (previousElevatorMovementMode != ElevatorMovementMode.STOPPED) {
         // if we have just changed into STOPPED state, set the hold position 
         targetHeight = getCurrentHeight();
       }
@@ -201,6 +203,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       elevatorMotor.setControl(elevatorPositionalController);
     }
     SmartDashboard.putNumber("elevator position", getCurrentHeight().in(Inches));
+    previousElevatorMovementMode = elevatorMovementMode;
   }
 
   /*
@@ -216,7 +219,6 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public void stopElevator() {
     elevatorMovementMode = ElevatorMovementMode.STOPPED;
-    targetHeight = getCurrentHeight();
   }
 
   /*
