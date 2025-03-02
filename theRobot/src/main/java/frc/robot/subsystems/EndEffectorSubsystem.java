@@ -37,7 +37,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     // Speeds between [-1, 1]
     private final double algaeSpeedFractional = 0.2;
-    private final double handoffSpeedFractional = 0.1;
+    private final double handoffSpeedFractional = 0.13;
     private final double scoringSpeedFractional = 0.2;
 
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;

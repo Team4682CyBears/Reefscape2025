@@ -238,6 +238,8 @@ public class RobotContainer {
 
             subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
 
+            endEffectorSubsystem.setDefaultCommand(new DefaultEndEffectorCommand(subsystems));
+
             DataLogManager.log("SUCCESS: initializeEndEffector");
         } else {
             DataLogManager.log("FAIL: initializeEndEffector");
