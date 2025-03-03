@@ -10,8 +10,11 @@
 
 package frc.robot.common;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -62,7 +65,7 @@ public class CorrectableEncoderRevNeoPlusDigitalIoPort implements ICorrectableEn
      * correct the motors encoder (when necessary) and also return the current motor encoder position.
      * @return a double representing the motor encoder ticks
      */
-    public double getCurrentEncoderPosition() {
+    public Angle getCurrentEncoderPosition() {
 
         boolean currentState = this.dioStateDevice.get();
 
@@ -73,7 +76,7 @@ public class CorrectableEncoderRevNeoPlusDigitalIoPort implements ICorrectableEn
             DataLogManager.log(">>>>>>> Climber Sensor triggered. Resetting motor encoder position");
         }
 
-        return this.revNeoMotorEncoder.getPosition();
+        return Rotations.of(this.revNeoMotorEncoder.getPosition());
     }
 
     /**
@@ -82,6 +85,9 @@ public class CorrectableEncoderRevNeoPlusDigitalIoPort implements ICorrectableEn
      */
     public boolean getMotorEncoderEverReset() {
         return motorEncoderPositionReset;
+    }
+
+    public void updateEncoderPosition(){
     }
 
 }

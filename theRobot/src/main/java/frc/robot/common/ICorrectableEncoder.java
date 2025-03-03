@@ -10,14 +10,22 @@
 
 package frc.robot.common;
 
-public interface ICorrectableEncoder {
+import edu.wpi.first.units.measure.Angle;
+
+public interface ICorrectableEncoder { 
     
     /**
      * An interface method that will be used to both correct (when necessary) the motors encoder
      * and also return the current motor encoder position.
      * @return a double representing the motor encoder ticks
      */
-    public double getCurrentEncoderPosition();
+    public Angle getCurrentEncoderPosition();
+
+    /**
+     * An interface method that needs to be call in periodic to correct the sensor position (when necessary)
+     * @return nothing
+     */
+    public void updateEncoderPosition();
 
     /**
      * An interface method that will be used to determine if the motor encoder position has ever been reset.

@@ -10,8 +10,10 @@
 
 package frc.robot.control;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.pathplanner.lib.config.PIDConstants;
@@ -48,6 +50,13 @@ public final class Constants {
     // CTRE motor constants
     public static final double talonMaximumRevolutionsPerMinute = 6380;
 
+    // Motor Constants for End Effector and Elevator
+    public static final double motorStatorCurrentMaximumAmps = 100.0;
+    public static final double motorSupplyCurrentMaximumAmps = 50.0;
+    
+    public static final double motorSupplyVoltageTimeConstant = 0.02;
+    public static final double falconMaxVoltage = 12.0;
+
     // *****************************************************************
     // input device constants
     public static final int portDriverController = 0;
@@ -56,6 +65,8 @@ public final class Constants {
     // ******************************************************************
     // Branch Detector constants
     public static final double branchDetectionThresholdInches = 20.0;
+    public static final int branchDetectorTofLeftCanID = 20;
+    public static final int branchDetectorTofRightCanID = 21;
 
     // ******************************************************************
     // led constants
@@ -65,8 +76,6 @@ public final class Constants {
     public static final int ledBlinkFrquencyInHertz = 2;
     public static final double ledBrightness = 0.5;
     public static final LEDStripType ledStripType = LEDStripType.RGB;
-    public static final int tofLeftCanID = 20;
-    public static final int tofRightCanID = 21;
 
     // ******************************************************************
     // camera constants
@@ -90,6 +99,24 @@ public final class Constants {
     public static final double overcurrentRumbleTimeSeconds = 0.25;
 
     // ********************************************************************
+    // Elevator Constants
+
+    public static final Distance elevatorZeroFromFloor = Inches.of(3.5);
+    public static final Distance L1Height = Inches.of(17.5).minus(elevatorZeroFromFloor); 
+    public static final Distance L2Height = Inches.of(32.0).minus(elevatorZeroFromFloor);
+    public static final Distance L3Height = Inches.of(48.0).minus(elevatorZeroFromFloor);
+    public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);
+    public static final Distance stowHeight = Inches.of(10.0).minus(elevatorZeroFromFloor);
+
+    public static final int elevatorMageneticSensorID = 0;
+
+    // Elevator Motor Config constant variables
+    public static final double elevatorMinimumMotorSpeedRpm = 0.25 * 60;
+
+    // ********************************************************************
+    // End Effector Constants
+
+    public static final double eeTofDetectionThresholdInches = 6.0;
     // Diagnostic Constants
     public static final boolean putDiagnosticPaths = false;
 
@@ -97,13 +124,14 @@ public final class Constants {
     // CAN IDs
 
     // Funnel
-    public static final int funnelTofCanID = 16;
+    public static final int handoffFrontTofCanID = 16;
+    public static final int handoffBackTofCanID = 25;
     public static final int funnelMotorCanID = 23;
     public static final double funnelMotorSpeed = 0.4;
 
     // Elevator
-    public static final int elevatorMotorLeftCanID = 14;
-    public static final int elevatorMotorRightCanID = 15;
+    public static final int elevatorMotorLeaderCanID = 14;
+    public static final int elevatorMotorFollowerCanID = 15;
 
     // Wrist
     public static final int wristMotorCanID = 17;
@@ -111,8 +139,6 @@ public final class Constants {
 
     // End Effector
     public static final int eeMotorCanID = 19;
-    public static final int eeTofLeftCanID = 20;
-    public static final int eeTofRightCanID = 21;
 
     // Climber
     public static final int climberMotorCanID = 22;
