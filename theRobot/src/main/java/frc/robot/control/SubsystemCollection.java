@@ -12,7 +12,8 @@ package frc.robot.control;
 
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.FunnelSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.EndEffectorSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.CameraSubsystem;
@@ -27,12 +28,13 @@ public class SubsystemCollection {
     private CameraSubsystem cameraSubsystem = null;
     private DrivetrainSubsystem driveTrainSubsystem = null;
     private BranchDetectorSubsystem branchDetectorSubsystem = null;
+    private AlignWithBranchDirection alignWithBranchDirection = null;
     private DrivetrainPowerSubsystem driveTrainPowerSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null;
     private LEDSubsystem ledSubsystem = null;
-    private AlignWithBranchDirection alignWithBranchDirection = null;
-    private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
-    private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
+    private ElevatorSubsystem elevatorSubsystem = null;
+    private ElevatorHeightState elevatorHeightState = null;
+    private EndEffectorSubsystem endEffectorSubsystem = null; // TODO: Replace with real subsystem
     private SimpleNeoMotorSubsystem funnelSubsystem = null;
     private SimpleNeoMotorSubsystem climberSubsystem = null;
 
@@ -104,11 +106,11 @@ public class SubsystemCollection {
         return manualInput != null;
     }
 
-    public Object getElevatorSubsystem() {
+    public ElevatorSubsystem getElevatorSubsystem() {
         return elevatorSubsystem;
     }
 
-    public void setElevatorSubsystem(Object value) {
+    public void setElevatorSubsystem(ElevatorSubsystem value) {
         elevatorSubsystem = value;
     }
 
@@ -116,11 +118,23 @@ public class SubsystemCollection {
         return elevatorSubsystem != null;
     }
 
-    public Object getEndEffectorSubsystem() {
+    public ElevatorHeightState getElevatorHeightState() {
+        return elevatorHeightState;
+    }
+
+    public void setElevatorHeightState(ElevatorHeightState value) {
+        elevatorHeightState = value;
+    }
+
+    public boolean isElevatorHeightStateAvailable() {
+        return elevatorHeightState != null;
+    }
+
+    public EndEffectorSubsystem getEndEffectorSubsystem() {
         return endEffectorSubsystem;
     }
 
-    public void setEndEffectorSubsystem(Object value) {
+    public void setEndEffectorSubsystem(EndEffectorSubsystem value) {
         endEffectorSubsystem = value;
     }
 
