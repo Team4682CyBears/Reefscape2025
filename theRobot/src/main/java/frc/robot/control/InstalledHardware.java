@@ -33,7 +33,7 @@ public class InstalledHardware {
 
     // DriveTrain Related Hardware
     public static final boolean drivetrainInstalled = true;
-    public static final boolean tedDrivetrainInstalled = true; // true is ted, false is new robot TODO flip this!!
+    public static final boolean tardiDrivetrainInstalled = true;
 
     // TOF Sensor Hardware
     // Important! You must disable any TOF sensor that is not installed!!
