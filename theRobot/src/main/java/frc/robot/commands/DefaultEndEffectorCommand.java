@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Reefscape - 2025
 // File: IntakeCoralCommand.java
-// Intent: Defualt command for the end effector
+// Intent: Defualt command for the end effector 
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -20,6 +20,9 @@ import frc.robot.control.SubsystemCollection;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 
+/**
+ * Forms a class that will run the end effector when we are in stow and there is a piece
+ */
 public class DefaultEndEffectorCommand extends Command {
     private final SubsystemCollection subsystems;
 
