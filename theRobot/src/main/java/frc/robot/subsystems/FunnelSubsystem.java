@@ -36,6 +36,10 @@ public class FunnelSubsystem extends SubsystemBase {
         SparkMaxConfig config = new SparkMaxConfig();
         config.idleMode(IdleMode.kBrake);
 
+        // start motor off
+        funnelMotor.set(clamp(0, -1.0, 1.0));
+        funnelMotor.stopMotor();
+
         // Apply config
         funnelMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     }
@@ -53,6 +57,9 @@ public class FunnelSubsystem extends SubsystemBase {
      * A method to stop the funnel subsystem
      */
     public void stopFunnel() {
+
+        // redundent motor stop
+        funnelMotor.set(clamp(0, -1.0, 1.0));
         funnelMotor.stopMotor();
     }
 
