@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class RobotContainer {
-
   private SubsystemCollection subsystems = new SubsystemCollection();
   private AutonomousChooser autonomousChooser;
 
@@ -186,6 +185,14 @@ public class RobotContainer {
     private void initializeFunnelSubsystem() {
         if (InstalledHardware.funnelInstalled) {
             subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+
+            subsystems.getFunnelSubsystem().setDefaultCommand(
+              new InstantCommand(
+                subsystems.getFunnelSubsystem()::stopMotor,
+                subsystems.getFunnelSubsystem()
+              )
+              
+            );  
             DataLogManager.log("SUCCESS: initializeFunnel");
         } else {
             DataLogManager.log("FAIL: initializeFunnel");
