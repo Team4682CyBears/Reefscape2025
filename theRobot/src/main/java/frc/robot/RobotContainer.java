@@ -13,6 +13,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.common.TestTrajectories;
 import frc.robot.control.InstalledHardware;
 import frc.robot.control.ManualInputInterfaces;
@@ -26,7 +27,6 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class RobotContainer {
-
   private SubsystemCollection subsystems = new SubsystemCollection();
   private AutonomousChooser autonomousChooser;
 
@@ -179,6 +179,14 @@ public class RobotContainer {
     private void initializeFunnelSubsystem() {
         if (InstalledHardware.funnelInstalled) {
             subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+
+            subsystems.getFunnelSubsystem().setDefaultCommand(
+              new InstantCommand(
+                subsystems.getFunnelSubsystem()::stopMotor,
+                subsystems.getFunnelSubsystem()
+              )
+              
+            );  
             DataLogManager.log("SUCCESS: initializeFunnel");
         } else {
             DataLogManager.log("FAIL: initializeFunnel");
