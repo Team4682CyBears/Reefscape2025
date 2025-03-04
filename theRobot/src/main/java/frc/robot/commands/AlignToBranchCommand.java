@@ -66,7 +66,7 @@ public class AlignToBranchCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
-        if(branchDetector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)) {
+        if(branchDetector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
             done = true;
         }
         else {
