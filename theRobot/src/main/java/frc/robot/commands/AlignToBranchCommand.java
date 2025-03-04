@@ -28,10 +28,8 @@ public class AlignToBranchCommand extends Command{
     private Supplier<AlignToBranchSide> alignSideSupplier;
     private boolean done = false;
     private Timer timer = new Timer();
-    private Timer delayTimer = new Timer();
     private double durationSeconds = 2;
-    private double delaySeconds = .2;
-    private double yVelocity = .7;
+    private double yVelocity = .4;
     private ChassisSpeeds chassisSpeeds;
     
     /**
@@ -68,14 +66,8 @@ public class AlignToBranchCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
-        if(timer.hasElapsed(this.durationSeconds) || delayTimer.hasElapsed(this.delaySeconds)) {
+        if(timer.hasElapsed(this.durationSeconds) || branchDetector.isBranchDetected()) {
             done = true;
-            delayTimer.stop();
-            delayTimer.reset();
-        }
-        if(branchDetector.isBranchDetected()){
-            delayTimer.reset();
-            delayTimer.start();
         }
         else {
             drivetrain.driveRobotCentric(chassisSpeeds);
