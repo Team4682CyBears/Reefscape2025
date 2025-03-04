@@ -127,7 +127,7 @@ public class TardiTunerConstants {
 
     // Front Left
     private static final int kFrontLeftDriveMotorId = 1;
-    private static final int kFrontLeftSteerMotorId = 31;
+    private static final int kFrontLeftSteerMotorId = 2;
     private static final int kFrontLeftEncoderId = 3;
     private static final Angle kFrontLeftEncoderOffset = Rotations.of(0.086181640625);
     private static final boolean kFrontLeftSteerMotorInverted = false;
