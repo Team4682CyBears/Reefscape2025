@@ -89,7 +89,7 @@ public class RobotContainer {
       // TODO For debugging. Can remove for final competition build. 
       this.initializeDebugDashboard();
 
-    if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
+    if (Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
       // commands to drive path planner test trajectories
       TestTrajectories testtrajectories = new TestTrajectories();
@@ -237,6 +237,8 @@ public class RobotContainer {
             endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
 
             subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
+
+            endEffectorSubsystem.setDefaultCommand(new DefaultEndEffectorCommand(subsystems));
 
             DataLogManager.log("SUCCESS: initializeEndEffector");
         } else {

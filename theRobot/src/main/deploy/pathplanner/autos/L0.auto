@@ -11,16 +11,22 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Start To Reef 2"
+                  "pathName": "Start To Reef 1"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L3"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Left"
           }
         },
         {

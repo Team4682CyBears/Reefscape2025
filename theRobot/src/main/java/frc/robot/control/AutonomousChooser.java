@@ -20,6 +20,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import frc.robot.commands.*;
+import frc.robot.common.AlignToBranchSide;
+import frc.robot.common.ElevatorPositions;
 
 /**
  * a class for choosing different auto modes from shuffleboard
@@ -30,6 +32,7 @@ public class AutonomousChooser {
 
     private Command testAuto;
     private Command DoNothing;
+    private Command Mobility;
     private Command L0;
     private Command L1;
     private Command L2;
@@ -52,6 +55,7 @@ public class AutonomousChooser {
 
             autonomousPathChooser.setDefaultOption("Do Nothing", AutonomousPath.DONOTHING);
             autonomousPathChooser.addOption("Test Auto", AutonomousPath.TESTAUTO);
+            autonomousPathChooser.addOption("Mobility", AutonomousPath.MOBILITY);
             autonomousPathChooser.addOption("L0", AutonomousPath.L0AUTO);
             autonomousPathChooser.addOption("L1", AutonomousPath.L1AUTO);
             autonomousPathChooser.addOption("L2", AutonomousPath.L2AUTO);
@@ -61,6 +65,7 @@ public class AutonomousChooser {
 
             this.testAuto = getTestAuto();
             this.DoNothing = getDoNothing();
+            this.Mobility = getMobilityAuto();
             this.L0 = getL0Auto();
             this.L1 = getL1Auto();
             this.L2 = getL2Auto();
@@ -83,6 +88,8 @@ public class AutonomousChooser {
                 return this.testAuto;
             case DONOTHING:
                 return this.DoNothing;
+            case MOBILITY:
+                return this.Mobility;
             case L0AUTO:
                 return this.L0;
             case L1AUTO:
@@ -115,6 +122,10 @@ public class AutonomousChooser {
         return new InstantCommand();
     }
 
+    private Command getMobilityAuto() {
+        return AutoBuilder.buildAuto("Mobility");
+    }
+
     private Command getL0Auto() {
         return AutoBuilder.buildAuto("L0");
     }
@@ -138,6 +149,7 @@ public class AutonomousChooser {
     private enum AutonomousPath {
         TESTAUTO,
         DONOTHING,
+        MOBILITY,
         L0AUTO,
         L1AUTO,
         L2AUTO,
@@ -169,6 +181,33 @@ public class AutonomousChooser {
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
             NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
+        }
+        if(subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("Reset Elevator Position", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.STOW));
+        }
+        if(subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("L1", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L1));
+        }
+        if(subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("L2", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L2));
+        }
+        if(subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("L3", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L3));
+        }
+        if(subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("L4", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L4));
+        }
+        if(subsystems.isEndEffectorSubsystemAvailable()) {
+            NamedCommands.registerCommand("Score Piece", new ScoreCoralCommand(subsystems.getEndEffectorSubsystem()));
+        }
+        if(subsystems.isEndEffectorSubsystemAvailable()) {
+            NamedCommands.registerCommand("Intake Piece", new IntakeCoralCommand(subsystems.getEndEffectorSubsystem()));
+        }
+        if(subsystems.isDriveTrainSubsystemAvailable()) {
+            NamedCommands.registerCommand("Align Branch Right", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.RIGHT));
+        }
+        if(subsystems.isDriveTrainSubsystemAvailable()) {
+            NamedCommands.registerCommand("Align Branch Left", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.LEFT));
         }
         
     }
