@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.common.LEDState;
 import frc.robot.common.TestTrajectories;
 import frc.robot.control.InstalledHardware;
 import frc.robot.control.ManualInputInterfaces;
@@ -198,6 +199,12 @@ public class RobotContainer {
   private void initailizeBranchDetectorSubsystem(){
     if(InstalledHardware.branchDetectorInstalled) {
       subsystems.setBranchDetectorSubsystem(new BranchDetectorSubsystem());
+
+      if(subsystems.isLEDSubsystemAvailable()) {
+        subsystems.getLedSubsystem().registerStateAction(
+          LEDState.Yellow,
+          this.subsystems.getBranchDetectorSubsystem()::isBranchDetected);
+      }
       DataLogManager.log("SUCCESS: initailize Branch Detector Subsystem");
     }
     else {
@@ -237,6 +244,11 @@ public class RobotContainer {
             endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
 
             subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
+            if(subsystems.isLEDSubsystemAvailable()) {
+              subsystems.getLedSubsystem().registerStateAction(
+                LEDState.Green,
+                this.subsystems.getEndEffectorSubsystem()::isCoralDetected);
+            }
 
             DataLogManager.log("SUCCESS: initializeEndEffector");
         } else {
