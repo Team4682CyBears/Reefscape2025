@@ -65,6 +65,7 @@ public final class Constants {
     // ******************************************************************
     // Branch Detector constants
     public static final double branchDetectionThresholdInches = 30.0;
+    public static final double minimumBranchDetectionThresholdInches = 5.0;
     public static final int branchDetectorTofLeftCanID = 20;
     public static final int branchDetectorTofRightCanID = 21;
 
@@ -103,8 +104,8 @@ public final class Constants {
 
     public static final Distance elevatorZeroFromFloor = Inches.of(9);
     public static final Distance L1Height = Inches.of(14.7); 
-    public static final Distance L2Height = Inches.of(32.0).minus(elevatorZeroFromFloor);
-    public static final Distance L3Height = Inches.of(48.0).minus(elevatorZeroFromFloor);
+    public static final Distance L2Height = Inches.of(31.5).minus(elevatorZeroFromFloor);
+    public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);
     public static final Distance stowHeight = Inches.of(13.86).minus(elevatorZeroFromFloor);
 

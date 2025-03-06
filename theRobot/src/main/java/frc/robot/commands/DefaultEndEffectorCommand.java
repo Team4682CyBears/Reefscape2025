@@ -11,10 +11,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.common.ElevatorPositions;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
-import frc.robot.control.SubsystemCollection;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 

@@ -17,16 +17,34 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L3"
+                  "name": "Reset Elevator Position"
                 }
               }
             ]
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Align Branch Right"
+            "name": "Align Branch Left"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
           }
         },
         {
@@ -66,10 +84,22 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L3"
+                  "name": "L2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Piece"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
           }
         },
         {
@@ -79,52 +109,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Score Piece"
+            "waitTime": 0.15
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Reset Elevator Position"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Reef 6 To Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Piece"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Intake To Reef 6"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Align Branch Right"
+            "name": "L4"
           }
         },
         {

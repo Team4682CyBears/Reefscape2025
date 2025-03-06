@@ -18,13 +18,19 @@ import frc.robot.control.InstalledHardware;
  */
 public class BranchDetectorSubsystem extends SubsystemBase{
     
-    ToFDetector tofLeft = new ToFDetector(Constants.branchDetectorTofLeftCanID, Constants.branchDetectionThresholdInches);
-    ToFDetector tofRight = new ToFDetector(Constants.branchDetectorTofRightCanID, Constants.branchDetectionThresholdInches);
+    ToFDetector tofLeft = new ToFDetector(Constants.branchDetectorTofLeftCanID, Constants.branchDetectionThresholdInches, Constants.minimumBranchDetectionThresholdInches);
+    ToFDetector tofRight = new ToFDetector(Constants.branchDetectorTofRightCanID, Constants.branchDetectionThresholdInches, Constants.minimumBranchDetectionThresholdInches);
 
     /**
      * Constructs a BranchDetectorSubsystem object
      */
     public BranchDetectorSubsystem(){
+    }
+
+    @Override
+    public void periodic(){
+        tofLeft.publishTelemetery();
+        tofRight.publishTelemetery();
     }
     
     /**

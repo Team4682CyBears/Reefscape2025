@@ -22,7 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ToFDetector {
 
-  private double detectionThresholdInches;
+  private double maximumDetectionThresholdInches;
+  private double minimumDetectionThresholdInches;
   private TimeOfFlight tofSensor;
   private int canId;
   private String displayName;
@@ -35,9 +36,10 @@ public class ToFDetector {
    * @param canId The CAN ID of the Time of Flight sensor
    * @param detectionThresholdInches The threshold distance (in inches) for object detection
    */
-  public ToFDetector(int canId, double detectionThresholdInches) {
+  public ToFDetector(int canId, double maximumDetectionThresholdInches, double minimumDetectionThresholdInches) {
     tofSensor = new TimeOfFlight(canId);
-    this.detectionThresholdInches = detectionThresholdInches;
+    this.maximumDetectionThresholdInches = maximumDetectionThresholdInches;
+    this.minimumDetectionThresholdInches = minimumDetectionThresholdInches;
     this.canId = canId;
     this.displayName = "TOF ID " + this.canId;
     // short mode is accurate to 1.3m
@@ -87,7 +89,7 @@ public class ToFDetector {
    */
   public boolean isDetected(){
     double currentRangeInches = this.getRangeInches();
-    if (this.isRangeValid() && (currentRangeInches < detectionThresholdInches)) {
+    if (this.isRangeValid() && (currentRangeInches < maximumDetectionThresholdInches) && (currentRangeInches > minimumDetectionThresholdInches)) {
       return true;
     }
     return false;
