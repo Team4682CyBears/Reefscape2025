@@ -16,21 +16,25 @@ import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
 import frc.robot.control.SubsystemCollection;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.EndEffectorSubsystem;
 
 /**
  * Forms a class that will run the end effector when we are in stow and there is a piece
  */
 public class DefaultEndEffectorCommand extends Command {
-    private final SubsystemCollection subsystems;
+    private final EndEffectorSubsystem endEffectorSubsystem;
+    private final ElevatorSubsystem elevatorSubsystem;
+
 
     /**
      * Creates a new IntakeCoralCommand.
      * 
      * @param subsystem The subsystem collection
      */
-    public DefaultEndEffectorCommand(SubsystemCollection subsystems) {
-        this.subsystems = subsystems;
-        addRequirements(subsystems.getEndEffectorSubsystem());
+    public DefaultEndEffectorCommand(EndEffectorSubsystem endEffectorSubsystem, ElevatorSubsystem elevatorSubsystem) {
+        this.endEffectorSubsystem = endEffectorSubsystem;
+        this.elevatorSubsystem = elevatorSubsystem;
+        addRequirements(endEffectorSubsystem);
     }
 
     @Override
@@ -39,17 +43,17 @@ public class DefaultEndEffectorCommand extends Command {
 
     @Override
     public void execute() {
-        if(subsystems.getEndEffectorSubsystem().isCoralDetected() && subsystems.getElevatorSubsystem().isAtStow()){
-            subsystems.getEndEffectorSubsystem().setDirection(EndEffectorDirection.CORAL);
-            subsystems.getEndEffectorSubsystem().setSpeed(EndEffectorSpeed.HANDOFF);
+        if(endEffectorSubsystem.isCoralDetected() && elevatorSubsystem.isAtStow()){
+            endEffectorSubsystem.setDirection(EndEffectorDirection.CORAL);
+            endEffectorSubsystem.setSpeed(EndEffectorSpeed.HANDOFF);
         }
         else {
-            subsystems.getEndEffectorSubsystem().stop();
+            endEffectorSubsystem.stop();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        subsystems.getEndEffectorSubsystem().stop();
+        endEffectorSubsystem.stop();
     }
 }
