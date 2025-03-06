@@ -15,6 +15,7 @@ import frc.robot.common.ElevatorPositions;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
 import frc.robot.control.SubsystemCollection;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
  * Forms a class that will run the end effector when we are in stow and there is a piece
@@ -38,7 +39,7 @@ public class DefaultEndEffectorCommand extends Command {
 
     @Override
     public void execute() {
-        if(subsystems.getEndEffectorSubsystem().isCoralDetected() && subsystems.getElevatorHeightState().gElevatorPosition() == ElevatorPositions.STOW){
+        if(subsystems.getEndEffectorSubsystem().isCoralDetected() && subsystems.getElevatorSubsystem().isAtStow()){
             subsystems.getEndEffectorSubsystem().setDirection(EndEffectorDirection.CORAL);
             subsystems.getEndEffectorSubsystem().setSpeed(EndEffectorSpeed.HANDOFF);
         }

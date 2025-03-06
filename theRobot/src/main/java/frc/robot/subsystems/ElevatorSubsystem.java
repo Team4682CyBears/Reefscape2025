@@ -113,6 +113,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     return currentHeight.isNear(targetHeight, heightTolerance);
   }
 
+  public boolean isAtStow() {
+    return getCurrentHeight().isNear(Constants.stowHeight, heightTolerance);
+  }
+
   /*
    * A method to set elevator in a moveDown mode
    * if the mag sensor has not yet been tripped, elevator will not move down.
