@@ -48,7 +48,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
+import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.hal.can.CANJNI;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   private CameraSubsystem cameraSubsystem;
@@ -550,6 +552,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("VisionWithinAMeter", lessThanAMeter);
         SmartDashboard.putBoolean("UseVision", useVision);
       }
+    }
+    if (displayCANDiagnostics) {
+      // TODO not sure this is the right way to call this. 
+      CANStatus canStatus = new CANStatus();
+      CANJNI.getCANStatus(canStatus);
+      SmartDashboard.putString("CANstatus ", canStatus.toString());
     }
   }
 }

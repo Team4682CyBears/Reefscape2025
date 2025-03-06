@@ -110,6 +110,7 @@ public class ToFDetector {
     SmartDashboard.putNumber(displayName + " Range Inches", this.getRangeInches());
     SmartDashboard.putBoolean(displayName + " Detected", this.isDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
+    SmartDashboard.putBoolean(displayName + " TOF Status OK ", this.tofSensor.getStatus() == TimeOfFlight.Status.Valid);
     SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
   }
 
