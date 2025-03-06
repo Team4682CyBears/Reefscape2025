@@ -131,11 +131,11 @@ public class AutonomousChooser {
     }
 
     private Command getL1Auto(){
-        return AutoBuilder.buildAuto("L1");
+        return AutoBuilder.buildAuto("TopL1");
     }
 
     private Command getL2Auto(){
-        return AutoBuilder.buildAuto("L2");
+        return AutoBuilder.buildAuto("BottomL1");
     }
 
     private Command getL3Auto(){
