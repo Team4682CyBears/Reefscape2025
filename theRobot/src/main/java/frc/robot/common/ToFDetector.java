@@ -87,10 +87,13 @@ public class ToFDetector {
    * 
    * @return true if an object is detected
    */
-  public boolean isDetected(){
-    double currentRangeInches = this.getRangeInches();
-    if (this.isRangeValid() && (currentRangeInches < maximumDetectionThresholdInches) && (currentRangeInches > minimumDetectionThresholdInches)) {
-      return true;
+  public boolean isDetected() {
+    if (this.isRangeValid()) {
+      double currentRangeInches = this.getRangeInches();
+      if ((currentRangeInches < maximumDetectionThresholdInches)
+          && (currentRangeInches > minimumDetectionThresholdInches)) {
+        return true;
+      }
     }
     return false;
   }
