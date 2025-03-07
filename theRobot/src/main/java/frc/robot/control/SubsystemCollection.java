@@ -64,7 +64,7 @@ public class SubsystemCollection {
 
     public LEDSubsystem getLedSubsystem() { return ledSubsystem; }
     public void setLEDSubsystem(LEDSubsystem value) { ledSubsystem = value; }
-    public boolean isLEDSubsystemAvailable() { return cameraSubsystem != null; }
+    public boolean isLEDSubsystemAvailable() { return ledSubsystem != null; }
 
     public AlignWithBranchDirection getAlignWithBranchDirection() { return alignWithBranchDirection; }
     public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
