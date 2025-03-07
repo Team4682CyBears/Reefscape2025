@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: NoteTofSensor.java
+// File: ToFDetector.java
 // Intent: Subsystem for ToF sensor to detect when note enters its range
 // ************************************************************
 
@@ -96,7 +96,7 @@ public class ToFDetector {
     SmartDashboard.putNumber(displayName + " Range Inches" , this.getRangeInches());
     SmartDashboard.putBoolean(displayName + " Note Detected", this.isDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
-    SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());
+    SmartDashboard.putString(displayName + " TOF Status", this.tofSensor.getStatus().toString());    
   } 
 
   /**

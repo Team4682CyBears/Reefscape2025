@@ -18,6 +18,11 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import java.util.function.Supplier;
 
+import edu.wpi.first.networktables.DoubleTopic;
+import edu.wpi.first.networktables.NetworkTable;
+// Network Tables
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.Topic;
 
 /**
  * Class to form a command to align with branch using ToFs
@@ -61,11 +66,34 @@ public class AlignToBranchCommand extends Command{
         else{
             chassisSpeeds = new ChassisSpeeds(0.0, yVelocity, 0.0);
         }
+
+        // Network Tables 
+        //NetworkTableInstance toFPlotting = NetworkTableInstance.getDefault();
+        //NetworkTable table = toFPlotting.getTable("datatable");
+        
+        // get a topic from a NetworkTableInstance
+        // the topic name in this case is the full name
+        //DoubleTopic dblTopic = toFPlotting.getDoubleTopic("/datatable/X");
+
+        // get a topic from a NetworkTable
+        // the topic name in this case is the name within the table;
+        // this line and the one above reference the same topic
+        //DoubleTopic dblTopic = table.getDoubleTopic("X");
+
+        // get a type-specific topic from a generic Topic
+        //Topic genericTopic = toFPlotting.getTopic("/datatable/X");
+        //DoubleTopic dblTopic = new DoubleTopic(genericTopic);
+
+
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
+        
+
+
         if(branchDetector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
             done = true;
         }
