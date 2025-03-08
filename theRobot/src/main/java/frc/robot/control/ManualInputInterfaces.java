@@ -227,7 +227,7 @@ public class ManualInputInterfaces {
                                                 new ParallelCommandGroup(
                                                         new MoveToPositionCommand(
                                                                 this.subsystemCollection.getElevatorSubsystem(),
-                                                                this.subsystemCollection.getElevatorHeightState()::gElevatorPosition),
+                                                                this.subsystemCollection.getElevatorHeightState()::getElevatorPosition),
                                                                 new ButtonPressCommand(
                                                                                 "coDriverController.y()",
                                                                                 "Move elevator to previously selected position")));
@@ -244,28 +244,28 @@ public class ManualInputInterfaces {
                                 // Change target elevator position to L1 (Does not actually move the elevator)
                                 this.coDriverController.povLeft().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L1)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L1)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povLeft()",
                                                                                 "Set target elevator position to L1")));
                                 // Change target elevator position to L2 (Does not actually move the elevator)
                                 this.coDriverController.povDown().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L2)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L2)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povDown()",
                                                                                 "Set target elevator position to L2")));
                                 // Change target elevator position to L3 (Does not actually move the elevator)
                                 this.coDriverController.povRight().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L3)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L3)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povRight()",
                                                                                 "Set target elevator position to L3")));
                                 // Change target elevator position to L4 (Does not actually move the elevator)
                                 this.coDriverController.povUp().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L4)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L4)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povUp()",
                                                                                 "Set target elevator position to L4")));

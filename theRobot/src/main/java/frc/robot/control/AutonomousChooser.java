@@ -177,39 +177,23 @@ public class AutonomousChooser {
                 () -> getShouldMirrorPath(),
                 subsystems.getDriveTrainSubsystem());
 
-        // TODO add checks for all subsystems the autos rely on besides the drivetrain
-        // here
+        // Register named commands
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
             NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
+            NamedCommands.registerCommand("Align Branch Right", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.RIGHT));
+            NamedCommands.registerCommand("Align Branch Left", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.LEFT));
         }
         if(subsystems.isElevatorSubsystemAvailable()) {
             NamedCommands.registerCommand("Reset Elevator Position", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.STOW));
-        }
-        if(subsystems.isElevatorSubsystemAvailable()) {
             NamedCommands.registerCommand("L1", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L1));
-        }
-        if(subsystems.isElevatorSubsystemAvailable()) {
             NamedCommands.registerCommand("L2", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L2));
-        }
-        if(subsystems.isElevatorSubsystemAvailable()) {
             NamedCommands.registerCommand("L3", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L3));
-        }
-        if(subsystems.isElevatorSubsystemAvailable()) {
             NamedCommands.registerCommand("L4", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L4));
         }
         if(subsystems.isEndEffectorSubsystemAvailable()) {
             NamedCommands.registerCommand("Score Piece", new ScoreCoralCommand(subsystems.getEndEffectorSubsystem()).withTimeout(.3));
-        }
-        if(subsystems.isEndEffectorSubsystemAvailable()) {
             NamedCommands.registerCommand("Intake Piece", new IntakeCoralCommand(subsystems.getEndEffectorSubsystem()));
         }
-        if(subsystems.isDriveTrainSubsystemAvailable()) {
-            NamedCommands.registerCommand("Align Branch Right", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.RIGHT));
-        }
-        if(subsystems.isDriveTrainSubsystemAvailable()) {
-            NamedCommands.registerCommand("Align Branch Left", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.LEFT));
-        }
-        
     }
 
     public static boolean getShouldMirrorPath(){

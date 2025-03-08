@@ -2,7 +2,7 @@
 // Bishop Blanchet Robotics
 // Home of the Cybears
 // FRC - Reefscape - 2025
-// File: IntakeCoralCommand.java
+// File: DefaultEndEffectorCommand.java
 // Intent: Defualt command for the end effector 
 // ************************************************************
 
@@ -25,7 +25,7 @@ public class DefaultEndEffectorCommand extends Command {
 
 
     /**
-     * Creates a new IntakeCoralCommand.
+     * Creates a new DefaultEndEffectorCommand.
      * 
      * @param subsystem The subsystem collection
      */

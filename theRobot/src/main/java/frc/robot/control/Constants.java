@@ -24,7 +24,7 @@ public final class Constants {
     public final static double DriveVoltageScalar = 1.0;
 
     //////// SWERVE MODULE CONFIGS ///////////
-    public static final double SWERVE_MAX_SPEED = 5; // m/s
+    public static final double SWERVE_MAX_SPEED = 5.0; // m/s
     //We got 657 from path planner
     public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
@@ -103,7 +103,7 @@ public final class Constants {
     // Elevator Constants
 
     public static final Distance elevatorZeroFromFloor = Inches.of(9);
-    public static final Distance L1Height = Inches.of(14.7); 
+    public static final Distance L1Height = Inches.of(23.7).minus(elevatorZeroFromFloor); 
     public static final Distance L2Height = Inches.of(31.5).minus(elevatorZeroFromFloor);
     public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);

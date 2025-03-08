@@ -89,7 +89,7 @@ public class RobotContainer {
       // TODO For debugging. Can remove for final competition build. 
       this.initializeDebugDashboard();
 
-    if (Constants.putDiagnosticPaths) {
+    if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
       // commands to drive path planner test trajectories
       TestTrajectories testtrajectories = new TestTrajectories();
