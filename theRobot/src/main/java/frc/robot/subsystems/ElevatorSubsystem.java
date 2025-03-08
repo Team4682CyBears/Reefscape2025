@@ -104,6 +104,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     return angleToDistance(elevatorCorrectableEncoder.getCurrentEncoderPosition());
   }
 
+    /**
+   * returns true when the elevator is within a certain tolerance of the stow position
+   * @return
+   */
+  public boolean isAtStow() {
+    return getCurrentHeight().isNear(Constants.stowHeight, heightTolerance);
+  }
+  
   /*
    * returns true when the elevator is within a certain tolerance of the target
    * height

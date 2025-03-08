@@ -37,8 +37,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     // Speeds between [-1, 1]
     private final double algaeSpeedFractional = 0.2;
-    private final double handoffSpeedFractional = 0.1;
-    private final double scoringSpeedFractional = 0.2;
+    private final double handoffSpeedFractional = 0.13;
+    private final double scoringSpeedFractional = 0.25;
 
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
 
@@ -48,8 +48,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
      */
     public EndEffectorSubsystem() {
         if (InstalledHardware.handoffTofsInstalled) {
-            tofLeft = new ToFDetector(Constants.handoffBackTofCanID, Constants.eeTofDetectionThresholdInches);
-            tofRight = new ToFDetector(Constants.handoffFrontTofCanID, Constants.eeTofDetectionThresholdInches);
+            tofLeft = new ToFDetector(Constants.handoffBackTofCanID, Constants.eeTofDetectionThresholdInches, 0);
+            tofRight = new ToFDetector(Constants.handoffFrontTofCanID, Constants.eeTofDetectionThresholdInches, 0);
         }
         configureMotor();
     }

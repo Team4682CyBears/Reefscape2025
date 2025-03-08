@@ -29,7 +29,7 @@ public class ElevatorHeightState {
      * Sets the desired elevator position.
      * @return
      */
-    public ElevatorPositions gElevatorPosition() {
+    public ElevatorPositions getElevatorPosition() {
         return elevatorPosition;
     }
 
@@ -37,7 +37,7 @@ public class ElevatorHeightState {
      * Gets the desired elevator position.
      * @param elevatorPosition
      */
-    public void sElevatorPosition(ElevatorPositions elevatorPosition) {
+    public void setElevatorPosition(ElevatorPositions elevatorPosition) {
         this.elevatorPosition = elevatorPosition;
     }
 }

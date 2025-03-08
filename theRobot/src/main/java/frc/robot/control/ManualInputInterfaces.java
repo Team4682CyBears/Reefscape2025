@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
+import frc.robot.common.AlignToBranchSide;
 import frc.robot.common.ElevatorPositions;
 
 public class ManualInputInterfaces {
@@ -130,7 +131,7 @@ public class ManualInputInterfaces {
                                 // Align to branch for scoring
                                 this.driverController.a().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(), subsystemCollection.getBranchDetectorSubsystem(), () -> subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.a()",
                                                                                 "Align to branch")));
@@ -138,7 +139,7 @@ public class ManualInputInterfaces {
                                 // Align to reef for scoring
                                 this.driverController.b().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new InstantCommand(), // TODO: Fill with real command
+                                                                new AlignWithReefCommand(subsystemCollection, false),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.b()",
                                                                                 "Align to reef")));
@@ -226,7 +227,7 @@ public class ManualInputInterfaces {
                                                 new ParallelCommandGroup(
                                                         new MoveToPositionCommand(
                                                                 this.subsystemCollection.getElevatorSubsystem(),
-                                                                this.subsystemCollection.getElevatorHeightState()::gElevatorPosition),
+                                                                this.subsystemCollection.getElevatorHeightState()::getElevatorPosition),
                                                                 new ButtonPressCommand(
                                                                                 "coDriverController.y()",
                                                                                 "Move elevator to previously selected position")));
@@ -243,28 +244,28 @@ public class ManualInputInterfaces {
                                 // Change target elevator position to L1 (Does not actually move the elevator)
                                 this.coDriverController.povLeft().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L1)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L1)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povLeft()",
                                                                                 "Set target elevator position to L1")));
                                 // Change target elevator position to L2 (Does not actually move the elevator)
                                 this.coDriverController.povDown().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L2)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L2)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povDown()",
                                                                                 "Set target elevator position to L2")));
                                 // Change target elevator position to L3 (Does not actually move the elevator)
                                 this.coDriverController.povRight().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L3)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L3)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povRight()",
                                                                                 "Set target elevator position to L3")));
                                 // Change target elevator position to L4 (Does not actually move the elevator)
                                 this.coDriverController.povUp().onTrue(
                                                 new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().sElevatorPosition(ElevatorPositions.L4)),
+                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L4)),
                                                         new ButtonPressCommand(
                                                                                 "coDriverController.povUp()",
                                                                                 "Set target elevator position to L4")));
@@ -275,7 +276,7 @@ public class ManualInputInterfaces {
                                 Trigger doubleButtonTrigger = new Trigger(
                                                 () -> this.coDriverController.leftBumper().getAsBoolean()
                                                                 && this.coDriverController.b().getAsBoolean());
-                                doubleButtonTrigger.onTrue(
+                                doubleButtonTrigger.whileTrue(
                                                 new ParallelCommandGroup(
                                                                 new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
                                                                 new ButtonPressCommand(
@@ -283,11 +284,10 @@ public class ManualInputInterfaces {
                                                                                 "Collapse Funnel")));
                         }
 
-                        // TODO need to check whether the subsystem that holds the left/right state is installed.
                         // Change alignment mode to left (changes the align with branch settings)
                         this.coDriverController.leftTrigger().onTrue(
                                         new ParallelCommandGroup(
-                                                        new InstantCommand(), // TODO: Fill with real command
+                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.LEFT)),
                                                         new ButtonPressCommand(
                                                                         "coDriverController.leftTrigger()",
                                                                         "Align Left")));
@@ -295,7 +295,7 @@ public class ManualInputInterfaces {
                         // Change alignment mode to right (changes the align with branch settings)
                         this.coDriverController.rightTrigger().onTrue(
                                         new ParallelCommandGroup(
-                                                        new InstantCommand(), // TODO: Fill with real command
+                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.RIGHT)),
                                                         new ButtonPressCommand(
                                                                         "coDriverController.rightBumper()",
                                                                         "Align Right")));

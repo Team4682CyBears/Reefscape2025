@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Start To Reef 1"
+                  "pathName": "Start to 5"
                 }
               },
               {
@@ -21,6 +21,24 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Left"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         },
         {
@@ -44,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Reef 1 To Intake"
+            "pathName": "5 to Bottom Source"
           }
         },
         {
@@ -60,7 +78,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Intake To Reef 6"
+                  "pathName": "Bottom Source to 4"
                 }
               },
               {
@@ -76,6 +94,24 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Right"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         },
         {

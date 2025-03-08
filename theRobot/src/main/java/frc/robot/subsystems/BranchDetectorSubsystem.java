@@ -18,13 +18,19 @@ import frc.robot.control.InstalledHardware;
  */
 public class BranchDetectorSubsystem extends SubsystemBase{
     
-    ToFDetector tofLeft = new ToFDetector(Constants.branchDetectorTofLeftCanID, Constants.branchDetectionThresholdInches);
-    ToFDetector tofRight = new ToFDetector(Constants.branchDetectorTofRightCanID, Constants.branchDetectionThresholdInches);
+    ToFDetector tofLeft = new ToFDetector(Constants.branchDetectorTofLeftCanID, Constants.branchDetectionThresholdInches, Constants.minimumBranchDetectionThresholdInches);
+    ToFDetector tofRight = new ToFDetector(Constants.branchDetectorTofRightCanID, Constants.branchDetectionThresholdInches, Constants.minimumBranchDetectionThresholdInches);
 
     /**
      * Constructs a BranchDetectorSubsystem object
      */
     public BranchDetectorSubsystem(){
+    }
+
+    @Override
+    public void periodic(){
+        tofLeft.publishTelemetery();
+        tofRight.publishTelemetery();
     }
     
     /**
@@ -32,9 +38,11 @@ public class BranchDetectorSubsystem extends SubsystemBase{
      * @return - if somehthing detected by either ToF is in range
      */
     public boolean isBranchDetected(){
+        // TOF already checks is range is valid before returning isDetected, no need to check it here. 
         boolean leftDetected = InstalledHardware.BranchTofLeft && tofLeft.isDetected();
         boolean rightDetected = InstalledHardware.BranchTofRight && tofRight.isDetected();
 
-        return leftDetected || rightDetected;
+        // Based on test field data, switching to AND, rather than OR. 
+        return leftDetected && rightDetected;
     }
 }
