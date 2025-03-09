@@ -71,6 +71,9 @@ public class MoveToPositionCommand extends Command {
             case L4:
                 elevatorSubsystem.moveToPosition(Constants.L4Height);
                 break;
+            case SENSE:
+                elevatorSubsystem.moveToPosition(Constants.senseHeight);
+                break;
         }
     }
 

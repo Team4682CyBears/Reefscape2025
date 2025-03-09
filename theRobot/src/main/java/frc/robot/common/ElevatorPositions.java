@@ -17,5 +17,6 @@ public enum ElevatorPositions {
     L1,
     L2,
     L3,
-    L4
+    L4,
+    SENSE
 }

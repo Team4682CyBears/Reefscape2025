@@ -189,6 +189,7 @@ public class AutonomousChooser {
             NamedCommands.registerCommand("L2", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L2));
             NamedCommands.registerCommand("L3", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L3));
             NamedCommands.registerCommand("L4", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L4));
+            NamedCommands.registerCommand("Sense", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.SENSE));
         }
         if(subsystems.isEndEffectorSubsystemAvailable()) {
             NamedCommands.registerCommand("Score Piece", new ScoreCoralCommand(subsystems.getEndEffectorSubsystem()).withTimeout(.3));
