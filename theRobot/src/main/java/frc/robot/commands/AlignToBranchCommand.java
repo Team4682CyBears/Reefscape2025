@@ -27,8 +27,10 @@ public class AlignToBranchCommand extends Command{
     private BranchDetectorSubsystem branchDetector;
     private Supplier<AlignToBranchSide> alignSideSupplier;
     private boolean done = false;
-    private Timer timer = new Timer();
-    private double durationSeconds = 2;
+    private Timer startingTimer = new Timer();
+    private Timer endingTimer = new Timer();
+    private double startDurationSeconds = 2;
+    private double endDurationSeconds = .1;
     private double yVelocity = .4;
     private ChassisSpeeds chassisSpeeds;
     
@@ -51,8 +53,10 @@ public class AlignToBranchCommand extends Command{
     // Called when the command is initially scheduled.
     @Override
     public void initialize(){
-        timer.reset();
-        timer.start();
+        startingTimer.reset();
+        startingTimer.start();
+        endingTimer.reset();
+        endingTimer.stop();
         done = false;
 
         if(alignSideSupplier.get() == AlignToBranchSide.RIGHT){
@@ -66,7 +70,11 @@ public class AlignToBranchCommand extends Command{
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute(){
-        if(branchDetector.isBranchDetected() || timer.hasElapsed(this.durationSeconds)){
+        if(branchDetector.isBranchDetected()){
+            endingTimer.start();
+        }
+        if(startingTimer.hasElapsed(this.startDurationSeconds) || endingTimer.hasElapsed(endDurationSeconds)){
+            endingTimer.stop();
             done = true;
         }
         else {
@@ -80,7 +88,8 @@ public class AlignToBranchCommand extends Command{
         drivetrain.driveFieldCentric(new ChassisSpeeds(0.0, 0.0, 0.0));
         if(interrupted)
         {
-        done = true;      
+        done = true;
+        endingTimer.stop();      
         }
     }
 

@@ -24,7 +24,7 @@ public class IntakeCoralCommand extends Command {
 
     private Timer timeoutTimer = new Timer();
 
-    private final double timeoutSeconds = 0.5;
+    private final double timeoutSeconds = 1.5;
 
     private boolean done = false;
 

@@ -250,6 +250,8 @@ public class RobotContainer {
                 this.subsystems.getEndEffectorSubsystem()::isCoralDetected);
             }
 
+            endEffectorSubsystem.setDefaultCommand(new DefaultEndEffectorCommand(subsystems.getEndEffectorSubsystem(), subsystems.getElevatorSubsystem()));
+
             DataLogManager.log("SUCCESS: initializeEndEffector");
         } else {
             DataLogManager.log("FAIL: initializeEndEffector");

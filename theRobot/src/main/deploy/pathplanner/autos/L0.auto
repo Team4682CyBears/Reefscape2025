@@ -17,10 +17,28 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L1"
+                  "name": "L3"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Left"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
           }
         },
         {

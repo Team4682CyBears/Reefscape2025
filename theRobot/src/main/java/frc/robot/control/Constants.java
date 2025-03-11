@@ -24,7 +24,7 @@ public final class Constants {
     public final static double DriveVoltageScalar = 1.0;
 
     //////// SWERVE MODULE CONFIGS ///////////
-    public static final double SWERVE_MAX_SPEED = 4.3251; // m/s
+    public static final double SWERVE_MAX_SPEED = 5.0; // m/s
     //We got 657 from path planner
     public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
@@ -64,7 +64,8 @@ public final class Constants {
 
     // ******************************************************************
     // Branch Detector constants
-    public static final double branchDetectionThresholdInches = 20.0;
+    public static final double branchDetectionThresholdInches = 30.0;
+    public static final double minimumBranchDetectionThresholdInches = 5.0;
     public static final int branchDetectorTofLeftCanID = 20;
     public static final int branchDetectorTofRightCanID = 21;
 
@@ -101,12 +102,12 @@ public final class Constants {
     // ********************************************************************
     // Elevator Constants
 
-    public static final Distance elevatorZeroFromFloor = Inches.of(3.5);
-    public static final Distance L1Height = Inches.of(17.5).minus(elevatorZeroFromFloor); 
-    public static final Distance L2Height = Inches.of(32.0).minus(elevatorZeroFromFloor);
-    public static final Distance L3Height = Inches.of(48.0).minus(elevatorZeroFromFloor);
+    public static final Distance elevatorZeroFromFloor = Inches.of(9);
+    public static final Distance L1Height = Inches.of(23.7).minus(elevatorZeroFromFloor); 
+    public static final Distance L2Height = Inches.of(31.5).minus(elevatorZeroFromFloor);
+    public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);
-    public static final Distance stowHeight = Inches.of(10.0).minus(elevatorZeroFromFloor);
+    public static final Distance stowHeight = Inches.of(13.86).minus(elevatorZeroFromFloor);
 
     public static final int elevatorMageneticSensorID = 0;
 
@@ -118,7 +119,7 @@ public final class Constants {
 
     public static final double eeTofDetectionThresholdInches = 6.0;
     // Diagnostic Constants
-    public static final boolean putDiagnosticPaths = false;
+    public static final boolean putDiagnosticPaths = true;
 
     // ********************************************************************
     // CAN IDs
@@ -127,7 +128,7 @@ public final class Constants {
     public static final int handoffFrontTofCanID = 16;
     public static final int handoffBackTofCanID = 25;
     public static final int funnelMotorCanID = 23;
-    public static final double funnelMotorSpeed = 0.4;
+    public static final double funnelMotorSpeed = 0.1;
 
     // Elevator
     public static final int elevatorMotorLeaderCanID = 14;

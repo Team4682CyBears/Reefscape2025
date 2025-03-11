@@ -45,7 +45,7 @@ public class InstalledHardware {
     public static final boolean handoffTofsInstalled = true;
 
     // LED Hardware
-    public static final boolean LEDSInstalled = true;
+    public static final boolean LEDSInstalled = false;
 
     // Branch Detector
     public static final boolean branchDetectorInstalled = true;
