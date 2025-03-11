@@ -111,7 +111,6 @@ public final class Constants {
     public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);
     public static final Distance stowHeight = Inches.of(13.86).minus(elevatorZeroFromFloor);
-    public static final Distance senseHeight = Inches.of(11.0).minus(elevatorZeroFromFloor);
 
     public static final int elevatorMageneticSensorID = 0;
 
