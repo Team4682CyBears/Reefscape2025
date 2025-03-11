@@ -30,7 +30,7 @@ public class AlignToBranchCommand extends Command{
     private Timer startingTimer = new Timer();
     private Timer endingTimer = new Timer();
     private double startDurationSeconds = 2;
-    private double endDurationSeconds = .1;
+    private double endDurationSeconds = .075;
     private double yVelocity = .4;
     private ChassisSpeeds chassisSpeeds;
     
