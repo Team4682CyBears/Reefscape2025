@@ -87,7 +87,7 @@ public final class Constants {
     public static final double autoUseFusedVisionDuration = 15.0;
 
     // Distance from center of the robot to the reef tag.
-    public static final double alignDistanceFromReefMeters = 0.55;
+    public static final double alignDistanceFromReefMeters = 0.5;
 
     public static final double limelightToWPIBlueXOffest = 8.75;
     public static final double limelightToWPIBlueYOffset = 4.0;
