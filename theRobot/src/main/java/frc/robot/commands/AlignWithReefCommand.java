@@ -111,7 +111,7 @@ public class AlignWithReefCommand extends Command {
 
                 path = new PathPlannerPath(
                         waypoints,
-                        getPathConstraints(),
+                        Constants.autoAlignPathConstraints,
                         null,
                         new GoalEndState(0.0, RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation()));
 
@@ -166,18 +166,6 @@ public class AlignWithReefCommand extends Command {
             done = true;
         }
         drivetrain.setUseVision(true);
-    }
-
-    /**
-   * A method to return a new path constraint with the default values
-   * @return PathConstraints
-   */
-    private PathConstraints getPathConstraints() {
-        return new PathConstraints(
-                maxVelocityMPS,
-                maxAccelerationPMSSq,
-                maxAngularVelocityRadPerSecond,
-                maxAngularAccelerationRadPerSecondSq);
     }
 
     /**
