@@ -33,11 +33,9 @@ public class AutonomousChooser {
     private Command testAuto;
     private Command DoNothing;
     private Command Mobility;
-    private Command L0;
-    private Command L1;
-    private Command L2;
-    private Command L3;
-    private Command L4;
+    private Command Middle;
+    private Command Right;
+    private Command Left;
 
     /**
      * Constructor for AutonomousChooser
@@ -56,21 +54,17 @@ public class AutonomousChooser {
             autonomousPathChooser.setDefaultOption("Do Nothing", AutonomousPath.DONOTHING);
             autonomousPathChooser.addOption("Test Auto", AutonomousPath.TESTAUTO);
             autonomousPathChooser.addOption("Mobility", AutonomousPath.MOBILITY);
-            autonomousPathChooser.addOption("L0", AutonomousPath.L0AUTO);
-            autonomousPathChooser.addOption("L1", AutonomousPath.L1AUTO);
-            autonomousPathChooser.addOption("L2", AutonomousPath.L2AUTO);
-            autonomousPathChooser.addOption("L3", AutonomousPath.L3AUTO);
-            autonomousPathChooser.addOption("L4", AutonomousPath.L4AUTO);
+            autonomousPathChooser.addOption("Middle", AutonomousPath.MIDDLEAUTO);
+            autonomousPathChooser.addOption("Right", AutonomousPath.RIGHTAUTO);
+            autonomousPathChooser.addOption("Left", AutonomousPath.LEFTAUTO);
             SmartDashboard.putData(autonomousPathChooser);
 
             this.testAuto = getTestAuto();
             this.DoNothing = getDoNothing();
             this.Mobility = getMobilityAuto();
-            this.L0 = getL0Auto();
-            this.L1 = getL1Auto();
-            this.L2 = getL2Auto();
-            this.L3 = getL3Auto();
-            this.L4 = getL4Auto();
+            this.Middle = getMiddleAuto();
+            this.Right = getRightAuto();
+            this.Left = getLeftAuto();
 
         } else {
             DataLogManager.log(">>>>> NO auto routine becuase missing subsystems");
@@ -90,16 +84,12 @@ public class AutonomousChooser {
                 return this.DoNothing;
             case MOBILITY:
                 return this.Mobility;
-            case L0AUTO:
-                return this.L0;
-            case L1AUTO:
-                return this.L1;
-            case L2AUTO:
-                return this.L2;
-            case L3AUTO:
-                return this.L3;
-            case L4AUTO:
-                return this.L4;
+            case MIDDLEAUTO:
+                return this.Middle;
+            case RIGHTAUTO:
+                return this.Right;
+            case LEFTAUTO:
+                return this.Left;
         }
         return new InstantCommand();
     }
@@ -126,35 +116,25 @@ public class AutonomousChooser {
         return AutoBuilder.buildAuto("Mobility");
     }
 
-    private Command getL0Auto() {
+    private Command getMiddleAuto() {
         return AutoBuilder.buildAuto("L0");
     }
 
-    private Command getL1Auto(){
+    private Command getRightAuto(){
         return AutoBuilder.buildAuto("TopL1");
     }
 
-    private Command getL2Auto(){
+    private Command getLeftAuto(){
         return AutoBuilder.buildAuto("BottomL1");
-    }
-
-    private Command getL3Auto(){
-        return AutoBuilder.buildAuto("L3");
-    }
-
-    private Command getL4Auto(){
-        return AutoBuilder.buildAuto("L4");
     }
 
     private enum AutonomousPath {
         TESTAUTO,
         DONOTHING,
         MOBILITY,
-        L0AUTO,
-        L1AUTO,
-        L2AUTO,
-        L3AUTO,
-        L4AUTO
+        MIDDLEAUTO,
+        RIGHTAUTO,
+        LEFTAUTO
     }
 
     /**
