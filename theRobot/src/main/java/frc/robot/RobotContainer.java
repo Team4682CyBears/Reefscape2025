@@ -276,7 +276,7 @@ public class RobotContainer {
      */
     private void initializeLEDSubsystem() {
         if (InstalledHardware.LEDSInstalled) {
-            subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledCanID));
+            subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledPWMID));
             System.out.println("SUCCESS: initializeLEDS");
         } else {
             System.out.println("FAIL: initializeLEDS");

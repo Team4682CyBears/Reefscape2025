@@ -30,7 +30,10 @@ import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 
 public class LEDSubsystem extends SubsystemBase {
   private final AddressableLED leds;
@@ -47,11 +50,10 @@ public class LEDSubsystem extends SubsystemBase {
   * LEDSubsystem
   * @param canID can id of the CANdle
   */
-  public LEDSubsystem(int canID) {
-    this.leds = new AddressableLED(canID); // initialization of the AdressableLED
+  public LEDSubsystem(int pwmID) {
+    this.leds = new AddressableLED(pwmID); // initialization of the AdressableLED
     this.ledBuffer = new AddressableLEDBuffer(Constants.ledLength);
     leds.setLength(Constants.ledLength);
-    leds.setData(ledBuffer);
     leds.start();
     /*CANdleConfiguration configAll = new CANdleConfiguration();
     configAll.stripType = type;
@@ -70,9 +72,6 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
-    // figure out if the blink should be on or off now
-    this.ledBuffer.setRGB(this.ledBuffer.getLength(), 100, 100, 100);
-    /* 
     this.updateBlinkCounterState();
     // iterate through all of the states to get most recent action for each that should be taken
     HashMap <LEDState, Boolean> currentActions = new HashMap<LEDState, Boolean>();
@@ -122,7 +121,6 @@ public class LEDSubsystem extends SubsystemBase {
       System.out.println("**** BLINKING LED STATE TO " + this.currentLEDState.toString());
       this.orangeBlink();
     }
-      */
   }
 
   //Sets leds to orange blink
@@ -157,13 +155,16 @@ public class LEDSubsystem extends SubsystemBase {
 
   //Turns off leds
   private void offState() {
-    this.setLedStringColor(0,0,0);
+    this.setLedStringColor(0, 0, 0);
   }
 
-  //Sets leds color
+  // Sets leds color
   private void setLedStringColor(int red, int green, int blue) {
-    this.ledBuffer.setRGB(this.ledBuffer.getLength(), red, green, blue);
-    //setLEDs(red, green, blue, 0, Constants.ledStartIdx, Constants.ledLength);
+    LEDPattern pattern = LEDPattern.solid(new Color(red, green, blue));
+    // Apply the LED pattern to the data buffer
+    pattern.applyTo(ledBuffer);
+    // Write the data to the LED strip
+    leds.setData(ledBuffer);
   }
 
   //Updates the blink state of leds
