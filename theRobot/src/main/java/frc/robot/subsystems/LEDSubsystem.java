@@ -81,7 +81,7 @@ public class LEDSubsystem extends SubsystemBase {
       currentActions.put(entry.getKey(), entry.getValue().getRecentState());
     }
     // find the states in precidence order
-   
+    LEDState targetLedState = LEDState.Blue;
     if(currentActions.containsKey(LEDState.Green) && currentActions.get(LEDState.Green).booleanValue()) {
       targetLedState = LEDState.Green;
     }
@@ -109,11 +109,11 @@ public class LEDSubsystem extends SubsystemBase {
       else if(this.currentLEDState == LEDState.OrangeBlink) {
         this.orangeBlink();
       }
-      else if(this.currentLEDState == LEDState.Blue){
+      /*else if(this.currentLEDState == LEDState.Blue){
         this.blueSolid();
-      }
-      else if(this.currentLEDState == LEDState.Off) {
-        this.offState();
+      }*/
+      else{
+        this.blueSolid();
       }
       System.out.println("**** UPDATING LED STATE TO " + this.currentLEDState.toString());
     }
