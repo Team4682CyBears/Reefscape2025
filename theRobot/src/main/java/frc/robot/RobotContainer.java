@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 
+
 public class RobotContainer {
 
   private SubsystemCollection subsystems = new SubsystemCollection();
@@ -275,7 +276,7 @@ public class RobotContainer {
      */
     private void initializeLEDSubsystem() {
         if (InstalledHardware.LEDSInstalled) {
-            subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledCanID, Constants.ledStripType));
+            subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledCanID));
             System.out.println("SUCCESS: initializeLEDS");
         } else {
             System.out.println("FAIL: initializeLEDS");

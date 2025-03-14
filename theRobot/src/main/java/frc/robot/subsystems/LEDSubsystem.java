@@ -21,32 +21,45 @@ import java.util.Iterator;
 
 import frc.robot.common.LEDStateAction;
 import frc.robot.control.Constants;
+import frc.robot.control.InstalledHardware;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.common.LEDState;
+
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class LEDSubsystem extends SubsystemBase {
-  private final CANdle leds;
+  private final AddressableLED leds;
+  private final AddressableLEDBuffer ledBuffer;
   private HashMap <LEDState, LEDStateAction> ledStateActions = new HashMap<LEDState, LEDStateAction>();
   private int blinkCounter = 0;
   private int ticksPerSecond = 50;
   private boolean currentBlinkState = false;
   private boolean lastBlinkState = false;
   private LEDState currentLEDState = LEDState.Off;
+  private LEDState targetLedState = LEDState.Off;
 
   /**
   * LEDSubsystem
   * @param canID can id of the CANdle
   */
-  public LEDSubsystem(int canID, LEDStripType type) {
-    this.leds = new CANdle(canID); // initialization of the AdressableLED
-    CANdleConfiguration configAll = new CANdleConfiguration();
+  public LEDSubsystem(int canID) {
+    this.leds = new AddressableLED(canID); // initialization of the AdressableLED
+    this.ledBuffer = new AddressableLEDBuffer(Constants.ledLength);
+    leds.setLength(Constants.ledLength);
+    leds.setData(ledBuffer);
+    leds.start();
+    /*CANdleConfiguration configAll = new CANdleConfiguration();
     configAll.stripType = type;
     configAll.brightnessScalar = Constants.ledBrightness;
     configAll.vBatOutputMode = VBatOutputMode.Modulated;
-    this.leds.configAllSettings(configAll, 100);
+    ErrorCode errorCode = this.leds.configAllSettings(configAll, 100);
+    System.out.println("--------------CANDLE Configured with error code " + errorCode);
+    */
   }
 
   public void registerStateAction(LEDState ledState, BooleanSupplier shouldTakeAction){
@@ -58,6 +71,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   public void periodic() {
     // figure out if the blink should be on or off now
+    this.ledBuffer.setRGB(this.ledBuffer.getLength(), 100, 100, 100);
+    /* 
     this.updateBlinkCounterState();
     // iterate through all of the states to get most recent action for each that should be taken
     HashMap <LEDState, Boolean> currentActions = new HashMap<LEDState, Boolean>();
@@ -67,7 +82,7 @@ public class LEDSubsystem extends SubsystemBase {
       currentActions.put(entry.getKey(), entry.getValue().getRecentState());
     }
     // find the states in precidence order
-    LEDState targetLedState = LEDState.Off;
+   
     if(currentActions.containsKey(LEDState.Green) && currentActions.get(LEDState.Green).booleanValue()) {
       targetLedState = LEDState.Green;
     }
@@ -95,6 +110,9 @@ public class LEDSubsystem extends SubsystemBase {
       else if(this.currentLEDState == LEDState.OrangeBlink) {
         this.orangeBlink();
       }
+      else if(this.currentLEDState == LEDState.Blue){
+        this.blueSolid();
+      }
       else if(this.currentLEDState == LEDState.Off) {
         this.offState();
       }
@@ -104,6 +122,7 @@ public class LEDSubsystem extends SubsystemBase {
       System.out.println("**** BLINKING LED STATE TO " + this.currentLEDState.toString());
       this.orangeBlink();
     }
+      */
   }
 
   //Sets leds to orange blink
@@ -114,6 +133,11 @@ public class LEDSubsystem extends SubsystemBase {
     else {
       this.setLedStringColor(0, 0, 0);
     }
+  }
+
+  //Sets leds to blue solid
+  private void blueSolid() {
+    this.setLedStringColor(0,0,225);
   }
 
   //Sets leds to orange solid
@@ -138,7 +162,8 @@ public class LEDSubsystem extends SubsystemBase {
 
   //Sets leds color
   private void setLedStringColor(int red, int green, int blue) {
-    this.leds.setLEDs(red, green, blue, 0, Constants.ledStartIdx, Constants.ledLength);
+    this.ledBuffer.setRGB(this.ledBuffer.getLength(), red, green, blue);
+    //setLEDs(red, green, blue, 0, Constants.ledStartIdx, Constants.ledLength);
   }
 
   //Updates the blink state of leds
@@ -149,5 +174,7 @@ public class LEDSubsystem extends SubsystemBase {
       this.currentBlinkState = !this.currentBlinkState;
     }
   }
+
 }
+
 
