@@ -227,7 +227,7 @@ public class RobotContainer {
             elevatorSubsystem.setDefaultCommand(
               new DefaultElevatorCommand(
                 elevatorSubsystem, 
-                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.05)));
+                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.1)));
             DataLogManager.log("SUCCESS: initializeElevator");
         } else {
             DataLogManager.log("FAIL: initializeElevator");
@@ -322,7 +322,7 @@ public class RobotContainer {
 
   private static double modifyAxisSquare(double value) {
     // Deadband
-    value = deadband(value, 0.05);
+    value = deadband(value, 0.065);
 
     // Joystick input exponent
     value = Math.copySign(value * value, value);

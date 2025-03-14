@@ -18,6 +18,7 @@ import static edu.wpi.first.units.Units.Inches;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 
 public final class Constants {
 
@@ -34,6 +35,8 @@ public final class Constants {
         new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
         new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants 
     );
+
+    public static final PathConstraints autoAlignPathConstraints = new PathConstraints(3.0, 2.0, 540, 720);
 
     // *****************************************************************
     // standard stuff constants - motors rotation, etc.
@@ -64,7 +67,7 @@ public final class Constants {
 
     // ******************************************************************
     // Branch Detector constants
-    public static final double branchDetectionThresholdInches = 30.0;
+    public static final double branchDetectionThresholdInches = 28.0;
     public static final double minimumBranchDetectionThresholdInches = 5.0;
     public static final int branchDetectorTofLeftCanID = 20;
     public static final int branchDetectorTofRightCanID = 21;
@@ -103,7 +106,7 @@ public final class Constants {
     // Elevator Constants
 
     public static final Distance elevatorZeroFromFloor = Inches.of(9);
-    public static final Distance L1Height = Inches.of(23.7).minus(elevatorZeroFromFloor); 
+    public static final Distance L1Height = Inches.of(25.2).minus(elevatorZeroFromFloor); 
     public static final Distance L2Height = Inches.of(31.5).minus(elevatorZeroFromFloor);
     public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);

@@ -24,9 +24,27 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Left"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         },
         {
@@ -36,15 +54,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Reset Elevator Position"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Reef 1 To Intake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Reset Elevator Position"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Reef 1 To Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -66,12 +91,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "L2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "Intake Piece"
                 }
               }
@@ -81,7 +100,31 @@
         {
           "type": "named",
           "data": {
+            "name": "L3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align Branch Right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         },
         {

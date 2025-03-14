@@ -131,7 +131,7 @@ public class ManualInputInterfaces {
                                 // Align to branch for scoring
                                 this.driverController.a().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(), subsystemCollection.getBranchDetectorSubsystem(), () -> subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
+                                                                new AlignWithReefCommand(subsystemCollection, true),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.a()",
                                                                                 "Align to branch")));
