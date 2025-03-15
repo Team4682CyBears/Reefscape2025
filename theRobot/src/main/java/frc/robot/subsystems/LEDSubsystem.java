@@ -21,15 +21,9 @@ import java.util.Iterator;
 
 import frc.robot.common.LEDStateAction;
 import frc.robot.control.Constants;
-import frc.robot.control.InstalledHardware;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.common.LEDState;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.led.*;
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.CANdle.VBatOutputMode;
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
