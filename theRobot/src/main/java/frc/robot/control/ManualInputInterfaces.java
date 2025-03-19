@@ -13,6 +13,7 @@ package frc.robot.control;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,6 +28,8 @@ public class ManualInputInterfaces {
     private XboxController driverControllerForRumbleOnly = new XboxController(Constants.portDriverController);
     private CommandXboxController coDriverController = new CommandXboxController(Constants.portCoDriverController);
     private XboxController coDriverControllerForRumbleOnly = new XboxController(Constants.portCoDriverController);
+
+    private DigitalInput climberLimSwitch = new DigitalInput(Constants.climberLimSwtichChannel);
 
     // subsystems needed for inputs
     private SubsystemCollection subsystemCollection = null;
@@ -95,6 +98,14 @@ public class ManualInputInterfaces {
     }
 
     /**
+     * A method to get if the climber lim switch is pressed
+     * @return - a boolean of wether the lim switch is pressed
+     */
+    public boolean isCLimberLimSwitchPressed(){
+        return climberLimSwitch.get();
+    }
+
+    /**
      * A method to initialize various commands to the numerous buttons.
      * Need delayed bindings as some subsystems during testing won't always be
      * there.
@@ -131,11 +142,10 @@ public class ManualInputInterfaces {
                                 // Align to branch for scoring
                                 this.driverController.a().onTrue(
                                                 new ParallelCommandGroup(
-                                                                new AlignWithReefCommand(subsystemCollection, true),
+                                                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(), subsystemCollection.getBranchDetectorSubsystem(), () -> subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
                                                                 new ButtonPressCommand(
                                                                                 "driverController.a()",
                                                                                 "Align to branch")));
-
                                 // Align to reef for scoring
                                 this.driverController.b().onTrue(
                                                 new ParallelCommandGroup(
@@ -282,6 +292,11 @@ public class ManualInputInterfaces {
                                                                 new ButtonPressCommand(
                                                                                 "coDriverController leftBumper && b",
                                                                                 "Collapse Funnel")));
+                                this.coDriverController.rightBumper().whileTrue(
+                                                new ParallelCommandGroup(
+                                                        new CloseFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
+                                                        new ButtonPressCommand("coDriverController right bumper",
+                                                                                "Close Funnel")));
                         }
 
                         // Change alignment mode to left (changes the align with branch settings)

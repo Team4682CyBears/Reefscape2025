@@ -64,6 +64,7 @@ public final class Constants {
     // input device constants
     public static final int portDriverController = 0;
     public static final int portCoDriverController = 1;
+    public static final int climberLimSwtichChannel = 1;
 
     // ******************************************************************
     // Branch Detector constants
@@ -146,5 +147,5 @@ public final class Constants {
 
     // Climber
     public static final int climberMotorCanID = 22;
-    public static final double ClimberMotorMaxSpeed = 0.4;
+    public static final double ClimberMotorMaxSpeed = 1;
 }
