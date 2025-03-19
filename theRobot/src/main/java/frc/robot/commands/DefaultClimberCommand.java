@@ -28,6 +28,7 @@ public class DefaultClimberCommand extends Command {
      * Default command to stop the climber. 
      * @param climberSubsystem
      * @param speedSupplier
+     * @param climberLimSwitch
      */
     public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier, BooleanSupplier climberLimSwitch) {
         this.climberSubsystem = climberSubsystem;
