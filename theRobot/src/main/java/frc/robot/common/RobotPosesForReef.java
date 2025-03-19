@@ -102,6 +102,26 @@ public class RobotPosesForReef {
     public static boolean isReefTag(double id){
         return (id <= 11 && id >= 6) || (id <= 22 && id >= 17);
     }
+
+    public static Pose2d getClosestReefTag(Pose2d robotPose){
+        double closestTagID = -1;
+        double closestDistance = Double.MAX_VALUE;
+        for(double id = 6; id <= 11; id++){
+            double distance = robotPose.getTranslation().getDistance(getPoseFromTagIDWithOffset(id).getTranslation());
+            if(distance < closestDistance){
+                closestDistance = distance;
+                closestTagID = id;
+            }
+        }
+        for(double id = 17; id <= 22; id++){
+            double distance = robotPose.getTranslation().getDistance(getPoseFromTagIDWithOffset(id).getTranslation());
+            if(distance < closestDistance){
+                closestDistance = distance;
+                closestTagID = id;
+            }
+        }
+        return getPoseFromTagIDWithOffset(closestTagID);
+    }
 }
 
 
