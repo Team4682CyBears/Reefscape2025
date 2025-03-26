@@ -40,8 +40,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -133,8 +131,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     drivetrain.registerTelemetry(logger::telemeterize);
 
     publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
-
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // TODO change this to use the explicit config below (one debugged)
     // We don't want to rely on accessing PathPlanner GUI in a match. 
@@ -296,7 +292,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
           m_hasAppliedOperatorPerspective = true;
         });
       }
-      //TODO validate this at test field
       //When disabled countinually set the botpose to what the vision says
       
       this.seedRobotPositionFromVision();

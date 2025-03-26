@@ -34,7 +34,7 @@ public class SubsystemCollection {
     private LEDSubsystem ledSubsystem = null;
     private ElevatorSubsystem elevatorSubsystem = null;
     private ElevatorHeightState elevatorHeightState = null;
-    private EndEffectorSubsystem endEffectorSubsystem = null; // TODO: Replace with real subsystem
+    private EndEffectorSubsystem endEffectorSubsystem = null; 
     private SimpleNeoMotorSubsystem funnelSubsystem = null;
     private SimpleNeoMotorSubsystem climberSubsystem = null;
 
