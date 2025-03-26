@@ -11,6 +11,7 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SimpleNeoMotorSubsystem;
@@ -21,15 +22,18 @@ import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 public class DefaultClimberCommand extends Command {
     SimpleNeoMotorSubsystem climberSubsystem;
     DoubleSupplier speedSupplier;
+    BooleanSupplier climberLimSwitch;
 
     /**
      * Default command to stop the climber. 
      * @param climberSubsystem
      * @param speedSupplier
+     * @param climberLimSwitch
      */
-    public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier) {
+    public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier, BooleanSupplier climberLimSwitch) {
         this.climberSubsystem = climberSubsystem;
         this.speedSupplier = speedSupplier;
+        this.climberLimSwitch = climberLimSwitch;
 
         addRequirements(this.climberSubsystem);
     }
@@ -39,7 +43,11 @@ public class DefaultClimberCommand extends Command {
      */
     @Override
     public void execute() {
-        climberSubsystem.setSpeed(speedSupplier.getAsDouble());
+        if(climberLimSwitch.getAsBoolean()){
+            climberSubsystem.setSpeed(speedSupplier.getAsDouble());
+        } else {
+            this.climberSubsystem.stopMotor();
+        }
     }
 
     /**

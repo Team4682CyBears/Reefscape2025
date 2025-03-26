@@ -79,7 +79,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   // per documentation, need to set kV and kA (in duty cycle)
 
-  private Slot0Configs slot0Configs = new Slot0Configs().withKS(0.00625).withKV(0.00885).withKP(0.2).withKA(0.001);
+  private Slot0Configs slot0Configs = new Slot0Configs().withKS(0.00625).withKV(0.00885).withKP(0.18).withKA(0.001);
   private MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs().withMotionMagicExpo_kA(0.1)
       .withMotionMagicExpo_kV(0.11);
   private NeutralModeValue motorNeutralModeValue = NeutralModeValue.Brake;

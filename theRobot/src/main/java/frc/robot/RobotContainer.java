@@ -175,7 +175,8 @@ public class RobotContainer {
 
             climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
                     () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
-                            * subsystems.getClimberSubsystem().getMaxSpeed()));
+                            * subsystems.getClimberSubsystem().getMaxSpeed(), 
+                    () -> subsystems.getManualInputInterfaces().isCLimberLimSwitchPressed()));
             DataLogManager.log("SUCCESS: initializeClimber");
         } else {
             DataLogManager.log("FAIL: initializeClimber");
