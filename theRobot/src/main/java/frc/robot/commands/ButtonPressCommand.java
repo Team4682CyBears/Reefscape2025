@@ -17,8 +17,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.ArrayDeque;
 
-public class ButtonPressCommand extends Command
-{
+public class ButtonPressCommand extends Command {
   private static final int maxPreviousButtonCount = 10;
   private static final double roundPrecision = 100.0;
   private static ArrayDeque<String> previousButtons = new ArrayDeque<String>(ButtonPressCommand.maxPreviousButtonCount);
@@ -32,26 +31,23 @@ public class ButtonPressCommand extends Command
   private double finalTime = 0.0;
 
   /**
-   * The constructor 
+   * The constructor
    */
   public ButtonPressCommand(
-    String inputDeviceDescription,
-    String inputActionDescription)
-  {
-      inputDevice = inputDeviceDescription;
-      inputAction = inputActionDescription;
-      if(timerStarted == false)
-      {
-        timerStarted = true;
-        timer.reset();
-        timer.start();
-      }
+      String inputDeviceDescription,
+      String inputActionDescription) {
+    inputDevice = inputDeviceDescription;
+    inputAction = inputActionDescription;
+    if (timerStarted == false) {
+      timerStarted = true;
+      timer.reset();
+      timer.start();
+    }
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize()
-  {
+  public void initialize() {
     initTime = timer.get();
     executeTime = 0.0;
     finalTime = 0.0;
@@ -59,14 +55,12 @@ public class ButtonPressCommand extends Command
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
+  public void execute() {
     executeTime = timer.get();
   }
 
   @Override
-  public void initSendable(SendableBuilder builder)
-  {
+  public void initSendable(SendableBuilder builder) {
     builder.addStringProperty("PreviousButtonPress0", ButtonPressCommand::getButtonDescription0, null);
     builder.addStringProperty("PreviousButtonPress1", ButtonPressCommand::getButtonDescription1, null);
     builder.addStringProperty("PreviousButtonPress2", ButtonPressCommand::getButtonDescription2, null);
@@ -78,11 +72,10 @@ public class ButtonPressCommand extends Command
     builder.addStringProperty("PreviousButtonPress8", ButtonPressCommand::getButtonDescription8, null);
     builder.addStringProperty("PreviousButtonPress9", ButtonPressCommand::getButtonDescription9, null);
   }
-  
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
+  public void end(boolean interrupted) {
     finalTime = timer.get();
     String buttonPressDescription = this.toString();
     DataLogManager.log(buttonPressDescription);
@@ -91,83 +84,67 @@ public class ButtonPressCommand extends Command
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished()
-  {
+  public boolean isFinished() {
     return true;
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return inputDevice + ":" +
-      inputAction + ":" +
-      Math.round(initTime*ButtonPressCommand.roundPrecision)/ButtonPressCommand.roundPrecision + ":" +
-      Math.round(executeTime*ButtonPressCommand.roundPrecision)/ButtonPressCommand.roundPrecision + ":" +
-      Math.round(finalTime*ButtonPressCommand.roundPrecision)/ButtonPressCommand.roundPrecision;
+        inputAction + ":" +
+        Math.round(initTime * ButtonPressCommand.roundPrecision) / ButtonPressCommand.roundPrecision + ":" +
+        Math.round(executeTime * ButtonPressCommand.roundPrecision) / ButtonPressCommand.roundPrecision + ":" +
+        Math.round(finalTime * ButtonPressCommand.roundPrecision) / ButtonPressCommand.roundPrecision;
   }
 
-
-  private static String getButtonDescription0()
-  {
+  private static String getButtonDescription0() {
     return ButtonPressCommand.getButtonDescription(0);
   }
 
-  private static String getButtonDescription1()
-  {
+  private static String getButtonDescription1() {
     return ButtonPressCommand.getButtonDescription(1);
   }
 
-  private static String getButtonDescription2()
-  {
+  private static String getButtonDescription2() {
     return ButtonPressCommand.getButtonDescription(2);
   }
 
-  private static String getButtonDescription3()
-  {
+  private static String getButtonDescription3() {
     return ButtonPressCommand.getButtonDescription(3);
   }
 
-  private static String getButtonDescription4()
-  {
+  private static String getButtonDescription4() {
     return ButtonPressCommand.getButtonDescription(4);
   }
 
-  private static String getButtonDescription5()
-  {
+  private static String getButtonDescription5() {
     return ButtonPressCommand.getButtonDescription(5);
   }
 
-  private static String getButtonDescription6()
-  {
+  private static String getButtonDescription6() {
     return ButtonPressCommand.getButtonDescription(6);
   }
 
-  private static String getButtonDescription7()
-  {
+  private static String getButtonDescription7() {
     return ButtonPressCommand.getButtonDescription(7);
   }
 
-  private static String getButtonDescription8()
-  {
+  private static String getButtonDescription8() {
     return ButtonPressCommand.getButtonDescription(8);
   }
 
-  private static String getButtonDescription9()
-  {
+  private static String getButtonDescription9() {
     return ButtonPressCommand.getButtonDescription(9);
   }
 
-  private static String getButtonDescription(int index)
-  {
+  private static String getButtonDescription(int index) {
     // keep the button descriptions pruned to the right size
-    for(int jnx = previousButtons.size() - ButtonPressCommand.maxPreviousButtonCount; jnx > 0; --jnx)
-    {
+    for (int jnx = previousButtons.size() - ButtonPressCommand.maxPreviousButtonCount; jnx > 0; --jnx) {
       previousButtons.removeLast();
     }
 
     String rtnVal = "";
-    if(previousButtons.size() > index)
-    {
+    if (previousButtons.size() > index) {
       String[] values = previousButtons.toArray(new String[0]);
       rtnVal = values[index];
     }

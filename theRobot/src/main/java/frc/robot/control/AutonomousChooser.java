@@ -45,7 +45,8 @@ public class AutonomousChooser {
     public AutonomousChooser(SubsystemCollection subsystems) {
         this.subsystems = subsystems;
         // TODO need to make sure that mirroing works for red/blue paths
-        // specifically we want to insure that when we are on the red(mirrored) side we really do mirror
+        // specifically we want to insure that when we are on the red(mirrored) side we
+        // really do mirror
 
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
         // here
@@ -101,7 +102,7 @@ public class AutonomousChooser {
      */
     public Command getCommand() {
         return new ParallelCommandGroup(
-            getAutoPath());
+                getAutoPath());
     }
 
     private Command getTestAuto() {
@@ -120,11 +121,11 @@ public class AutonomousChooser {
         return AutoBuilder.buildAuto("L0");
     }
 
-    private Command getRightAuto(){
+    private Command getRightAuto() {
         return AutoBuilder.buildAuto("TopL1");
     }
 
-    private Command getLeftAuto(){
+    private Command getLeftAuto() {
         return AutoBuilder.buildAuto("BottomL1");
     }
 
@@ -148,9 +149,10 @@ public class AutonomousChooser {
                 subsystems.getDriveTrainSubsystem()::getRobotPosition, // Pose supplier
                 subsystems.getDriveTrainSubsystem()::setRobotPosition, // Position setter
                 subsystems.getDriveTrainSubsystem()::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().driveRobotCentric(speeds), // Method that will drive
-                                                                                             // the robot given ROBOT
-                                                                                             // RELATIVE
+                (speeds, feedforwards) -> subsystems.getDriveTrainSubsystem().driveRobotCentric(speeds), // Method that
+                                                                                                         // will drive
+                // the robot given ROBOT
+                // RELATIVE
                 // ChassisSpeeds
                 Constants.pathFollower,
                 subsystems.getDriveTrainSubsystem().getPathPlannerConfig(),
@@ -160,28 +162,38 @@ public class AutonomousChooser {
         // Register named commands
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
             NamedCommands.registerCommand("AlignWithReef", new AlignWithReefCommand(subsystems, false));
-            NamedCommands.registerCommand("Align Branch Right", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.RIGHT));
-            NamedCommands.registerCommand("Align Branch Left", new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(), subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.LEFT));
+            NamedCommands.registerCommand("Align Branch Right",
+                    new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(),
+                            subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.RIGHT));
+            NamedCommands.registerCommand("Align Branch Left",
+                    new AlignToBranchCommand(subsystems.getDriveTrainSubsystem(),
+                            subsystems.getBranchDetectorSubsystem(), () -> AlignToBranchSide.LEFT));
         }
-        if(subsystems.isElevatorSubsystemAvailable()) {
-            NamedCommands.registerCommand("Reset Elevator Position", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.STOW));
-            NamedCommands.registerCommand("L1", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L1));
-            NamedCommands.registerCommand("L2", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L2));
-            NamedCommands.registerCommand("L3", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L3));
-            NamedCommands.registerCommand("L4", new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L4));
+        if (subsystems.isElevatorSubsystemAvailable()) {
+            NamedCommands.registerCommand("Reset Elevator Position",
+                    new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.STOW));
+            NamedCommands.registerCommand("L1",
+                    new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L1));
+            NamedCommands.registerCommand("L2",
+                    new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L2));
+            NamedCommands.registerCommand("L3",
+                    new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L3));
+            NamedCommands.registerCommand("L4",
+                    new MoveToPositionCommand(subsystems.getElevatorSubsystem(), () -> ElevatorPositions.L4));
         }
-        if(subsystems.isEndEffectorSubsystemAvailable()) {
-            NamedCommands.registerCommand("Score Piece", new ScoreCoralCommand(subsystems.getEndEffectorSubsystem()).withTimeout(.3));
+        if (subsystems.isEndEffectorSubsystemAvailable()) {
+            NamedCommands.registerCommand("Score Piece",
+                    new ScoreCoralCommand(subsystems.getEndEffectorSubsystem()).withTimeout(.3));
             NamedCommands.registerCommand("Intake Piece", new IntakeCoralCommand(subsystems.getEndEffectorSubsystem()));
         }
     }
 
-    public static boolean getShouldMirrorPath(){
+    public static boolean getShouldMirrorPath() {
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
             return alliance.get() == Alliance.Red;
         }
-         
+
         return false;
     }
 }

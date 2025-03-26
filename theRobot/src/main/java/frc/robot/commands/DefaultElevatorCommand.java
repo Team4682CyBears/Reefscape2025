@@ -16,7 +16,8 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import java.util.function.DoubleSupplier;
 
 /**
- * Forms a default command for the elevator subsystem to be controlled by a joystick
+ * Forms a default command for the elevator subsystem to be controlled by a
+ * joystick
  */
 public class DefaultElevatorCommand extends Command {
     private final ElevatorSubsystem elevatorSubsystem;
@@ -24,11 +25,12 @@ public class DefaultElevatorCommand extends Command {
 
     /**
      * Constructor for elevator subsystem.
+     * 
      * @param elevatorSubsystem
      * @param joystickAxisSupplier
      */
     public DefaultElevatorCommand(ElevatorSubsystem elevatorSubsystem,
-                               DoubleSupplier joystickAxisSupplier) {
+            DoubleSupplier joystickAxisSupplier) {
         this.elevatorSubsystem = elevatorSubsystem;
         this.joystickAxisSupplier = joystickAxisSupplier;
         addRequirements(elevatorSubsystem);
@@ -41,20 +43,19 @@ public class DefaultElevatorCommand extends Command {
     @Override
     public void execute() {
         double joystickValue = joystickAxisSupplier.getAsDouble();
-        // System.out.println("----------------Elevator joystick value: " + joystickValue );
-        if(joystickValue > 0) {
+        // System.out.println("----------------Elevator joystick value: " +
+        // joystickValue );
+        if (joystickValue > 0) {
             elevatorSubsystem.moveUp();
-        } 
-        else if (joystickValue < 0) {
-            elevatorSubsystem.moveDown();    
-        } 
-        else {
+        } else if (joystickValue < 0) {
+            elevatorSubsystem.moveDown();
+        } else {
             elevatorSubsystem.stopElevator();
         }
     }
 
     /**
-     * Is called when the command ends. 
+     * Is called when the command ends.
      */
     @Override
     public void end(boolean interrupted) {
@@ -66,7 +67,7 @@ public class DefaultElevatorCommand extends Command {
      * Returns true if the command should end.
      */
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false; // default command keeps running until interrupted
     }
 }

@@ -26,9 +26,9 @@ public class DefaultDriveCommand extends Command {
     private ChassisSpeeds commandedChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem,
-                               DoubleSupplier translationXSupplier,
-                               DoubleSupplier translationYSupplier,
-                               DoubleSupplier rotationSupplier) {
+            DoubleSupplier translationXSupplier,
+            DoubleSupplier translationYSupplier,
+            DoubleSupplier rotationSupplier) {
         this.m_drivetrainSubsystem = drivetrainSubsystem;
         this.m_translationXSupplier = translationXSupplier;
         this.m_translationYSupplier = translationYSupplier;
@@ -40,11 +40,11 @@ public class DefaultDriveCommand extends Command {
     @Override
     public void execute() {
         commandedChassisSpeeds = new ChassisSpeeds(
-            m_translationXSupplier.getAsDouble(),
-            m_translationYSupplier.getAsDouble(),
-            m_rotationSupplier.getAsDouble());
-   
-        m_drivetrainSubsystem.driveFieldCentric(commandedChassisSpeeds);        
+                m_translationXSupplier.getAsDouble(),
+                m_translationYSupplier.getAsDouble(),
+                m_rotationSupplier.getAsDouble());
+
+        m_drivetrainSubsystem.driveFieldCentric(commandedChassisSpeeds);
     }
 
     @Override

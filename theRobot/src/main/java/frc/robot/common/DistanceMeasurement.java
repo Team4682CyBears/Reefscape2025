@@ -11,19 +11,20 @@
 package frc.robot.common;
 
 /**
- * forms a class to contain a bool of tag is valid and distance in meters from tag
+ * forms a class to contain a bool of tag is valid and distance in meters from
+ * tag
  */
 public class DistanceMeasurement {
     private boolean tagIsValid;
     private double distanceMeters;
-   
+
     /**
      * constructor for a vision measurement
      *
-     * @param tagIsValid - is the correct tag seen
+     * @param tagIsValid     - is the correct tag seen
      * @param distanceMeters - the distance in meters
      */
-    public DistanceMeasurement(boolean tagIsValid, double distanceMeters){
+    public DistanceMeasurement(boolean tagIsValid, double distanceMeters) {
         this.tagIsValid = tagIsValid;
         this.distanceMeters = distanceMeters;
     }
@@ -31,30 +32,32 @@ public class DistanceMeasurement {
     /**
      * method that returns the valid.
      */
-    public boolean getIsValid(){
+    public boolean getIsValid() {
         return tagIsValid;
     }
 
     /**
      * method that returns the distance in meteres.
      */
-    public double getDistanceMeters(){
+    public double getDistanceMeters() {
         return distanceMeters;
     }
 
     /**
      * method that sets the robot position.
+     * 
      * @param tagIsValid - the robot position.
      */
-    public void setIsValid(boolean tagIsValid){
+    public void setIsValid(boolean tagIsValid) {
         this.tagIsValid = tagIsValid;
     }
 
     /**
      * method that sets the timestamp in seconds.
+     * 
      * @param distanceMeters - the timestamp in seconds
      */
-    public void setDistanceMeteres(double distanceMeters){
+    public void setDistanceMeteres(double distanceMeters) {
         this.distanceMeters = distanceMeters;
     }
 

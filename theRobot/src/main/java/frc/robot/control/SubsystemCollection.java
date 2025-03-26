@@ -47,28 +47,62 @@ public class SubsystemCollection {
     public DrivetrainSubsystem getDriveTrainSubsystem() {
         return driveTrainSubsystem;
     }
+
     public boolean isDriveTrainSubsystemAvailable() {
         return driveTrainSubsystem != null;
     }
+
     public void setDriveTrainSubsystem(DrivetrainSubsystem value) {
         driveTrainSubsystem = value;
     }
 
-    public BranchDetectorSubsystem getBranchDetectorSubsystem() { return branchDetectorSubsystem; }
-    public void setBranchDetectorSubsystem(BranchDetectorSubsystem value) { branchDetectorSubsystem = value; }
-    public boolean isBranchDetectorSubsystemAvailable() { return branchDetectorSubsystem != null; }
+    public BranchDetectorSubsystem getBranchDetectorSubsystem() {
+        return branchDetectorSubsystem;
+    }
 
-    public CameraSubsystem getCameraSubsystem() { return cameraSubsystem; }
-    public void setCameraSubsystem(CameraSubsystem value) { cameraSubsystem = value; }
-    public boolean isCameraSubsystemAvailable() { return cameraSubsystem != null; }
+    public void setBranchDetectorSubsystem(BranchDetectorSubsystem value) {
+        branchDetectorSubsystem = value;
+    }
 
-    public LEDSubsystem getLedSubsystem() { return ledSubsystem; }
-    public void setLEDSubsystem(LEDSubsystem value) { ledSubsystem = value; }
-    public boolean isLEDSubsystemAvailable() { return ledSubsystem != null; }
+    public boolean isBranchDetectorSubsystemAvailable() {
+        return branchDetectorSubsystem != null;
+    }
 
-    public AlignWithBranchDirection getAlignWithBranchDirection() { return alignWithBranchDirection; }
-    public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
-    public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
+    public CameraSubsystem getCameraSubsystem() {
+        return cameraSubsystem;
+    }
+
+    public void setCameraSubsystem(CameraSubsystem value) {
+        cameraSubsystem = value;
+    }
+
+    public boolean isCameraSubsystemAvailable() {
+        return cameraSubsystem != null;
+    }
+
+    public LEDSubsystem getLedSubsystem() {
+        return ledSubsystem;
+    }
+
+    public void setLEDSubsystem(LEDSubsystem value) {
+        ledSubsystem = value;
+    }
+
+    public boolean isLEDSubsystemAvailable() {
+        return ledSubsystem != null;
+    }
+
+    public AlignWithBranchDirection getAlignWithBranchDirection() {
+        return alignWithBranchDirection;
+    }
+
+    public void setAlignWithBranchDirection(AlignWithBranchDirection value) {
+        alignWithBranchDirection = value;
+    }
+
+    public boolean isAlignWithBranchDirection() {
+        return alignWithBranchDirection != null;
+    }
 
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() {
         return driveTrainPowerSubsystem;

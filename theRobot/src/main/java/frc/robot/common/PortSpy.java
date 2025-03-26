@@ -21,13 +21,13 @@ public class PortSpy {
 
     /**
      * The constructor to assemble port watching metadata
+     * 
      * @param port
      * @param limit
      * @param action
      * @param actionDescription
      */
-    public PortSpy(int port, double limit, Command action, String actionDescription)
-    {
+    public PortSpy(int port, double limit, Command action, String actionDescription) {
         this.portToWatch = port;
         this.currentLimit = limit;
         this.action = action;
@@ -66,7 +66,12 @@ public class PortSpy {
         return this.description;
     }
 
-    public boolean getEnabled() { return enabled; }
-    public void setEnabled(boolean value) { this.enabled = value; }
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean value) {
+        this.enabled = value;
+    }
 
 }
