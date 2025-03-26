@@ -17,12 +17,12 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
 
 /**
- * Forms a class that will run the end effector when we are in stow and there is a piece
+ * Forms a class that will run the end effector when we are in stow and there is
+ * a piece
  */
 public class DefaultEndEffectorCommand extends Command {
     private final EndEffectorSubsystem endEffectorSubsystem;
     private final ElevatorSubsystem elevatorSubsystem;
-
 
     /**
      * Creates a new DefaultEndEffectorCommand.
@@ -41,11 +41,10 @@ public class DefaultEndEffectorCommand extends Command {
 
     @Override
     public void execute() {
-        if(endEffectorSubsystem.isCoralDetected() && elevatorSubsystem.isAtStow()){
+        if (endEffectorSubsystem.isCoralDetected() && elevatorSubsystem.isAtStow()) {
             endEffectorSubsystem.setDirection(EndEffectorDirection.CORAL);
             endEffectorSubsystem.setSpeed(EndEffectorSpeed.HANDOFF);
-        }
-        else {
+        } else {
             endEffectorSubsystem.stop();
         }
     }

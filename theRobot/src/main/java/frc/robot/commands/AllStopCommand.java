@@ -24,12 +24,13 @@ public class AllStopCommand extends Command {
 
     /**
      * Constructor to cause all subsystems to halt movements
+     * 
      * @param collection - the collection of subsystems
      */
     public AllStopCommand(SubsystemCollection collection) {
         subsystems = collection;
         // TODO add all subsystems this command relies on
-        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
+        if (this.subsystems.isDriveTrainSubsystemAvailable()) {
             addRequirements(this.subsystems.getDriveTrainSubsystem());
         }
     }
@@ -40,13 +41,13 @@ public class AllStopCommand extends Command {
 
     @Override
     public void execute() {
-        if(this.subsystems.isDriveTrainSubsystemAvailable()) {
-            this.subsystems.getDriveTrainSubsystem().driveFieldCentric(new ChassisSpeeds(0.0,0.0,0.0));
+        if (this.subsystems.isDriveTrainSubsystemAvailable()) {
+            this.subsystems.getDriveTrainSubsystem().driveFieldCentric(new ChassisSpeeds(0.0, 0.0, 0.0));
         }
         CommandScheduler.getInstance().cancelAll();
         System.out.println("I CLEARED ALL COMMANDS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        
-        // TODO add stop commands for all other subsystems here. 
+
+        // TODO add stop commands for all other subsystems here.
     }
 
     @Override
@@ -54,7 +55,7 @@ public class AllStopCommand extends Command {
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return true;
     }
 }

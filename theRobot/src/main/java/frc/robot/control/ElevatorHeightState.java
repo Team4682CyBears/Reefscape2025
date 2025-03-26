@@ -14,19 +14,22 @@ package frc.robot.control;
 import frc.robot.common.ElevatorPositions;
 
 /**
- * The ElevatorHeightState class is responsible for storing the desired height of the elevator.
+ * The ElevatorHeightState class is responsible for storing the desired height
+ * of the elevator.
  */
 public class ElevatorHeightState {
     ElevatorPositions elevatorPosition = ElevatorPositions.STOW;
 
     /**
-     * Constructs an ElevatorHeightState object and sets the default elevator position to STOW.
+     * Constructs an ElevatorHeightState object and sets the default elevator
+     * position to STOW.
      */
     public ElevatorHeightState() {
     }
-    
+
     /**
      * Sets the desired elevator position.
+     * 
      * @return
      */
     public ElevatorPositions getElevatorPosition() {
@@ -35,6 +38,7 @@ public class ElevatorHeightState {
 
     /**
      * Gets the desired elevator position.
+     * 
      * @param elevatorPosition
      */
     public void setElevatorPosition(ElevatorPositions elevatorPosition) {

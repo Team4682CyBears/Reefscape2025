@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 
 /**
- * Forms a default command to stop the climber. 
+ * Forms a default command to stop the climber.
  */
 public class DefaultClimberCommand extends Command {
     SimpleNeoMotorSubsystem climberSubsystem;
@@ -25,12 +25,14 @@ public class DefaultClimberCommand extends Command {
     BooleanSupplier climberLimSwitch;
 
     /**
-     * Default command to stop the climber. 
+     * Default command to stop the climber.
+     * 
      * @param climberSubsystem
      * @param speedSupplier
      * @param climberLimSwitch
      */
-    public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier, BooleanSupplier climberLimSwitch) {
+    public DefaultClimberCommand(SimpleNeoMotorSubsystem climberSubsystem, DoubleSupplier speedSupplier,
+            BooleanSupplier climberLimSwitch) {
         this.climberSubsystem = climberSubsystem;
         this.speedSupplier = speedSupplier;
         this.climberLimSwitch = climberLimSwitch;
@@ -39,11 +41,11 @@ public class DefaultClimberCommand extends Command {
     }
 
     /**
-     * Called every tick when the command is running. 
+     * Called every tick when the command is running.
      */
     @Override
     public void execute() {
-        if(climberLimSwitch.getAsBoolean()){
+        if (climberLimSwitch.getAsBoolean()) {
             climberSubsystem.setSpeed(speedSupplier.getAsDouble());
         } else {
             this.climberSubsystem.stopMotor();

@@ -18,14 +18,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 public class VisionMeasurement {
     private Pose2d robotPosition;
     private double timestamp;
-   
+
     /**
      * constructor for a vision measurement
      *
-     * @param position - the robot position
+     * @param position         - the robot position
      * @param timestampSeconds - the timestamp in miliseconds
      */
-    public VisionMeasurement(Pose2d position, double timestampSeconds){
+    public VisionMeasurement(Pose2d position, double timestampSeconds) {
         robotPosition = position;
         timestamp = timestampSeconds;
     }
@@ -33,30 +33,32 @@ public class VisionMeasurement {
     /**
      * method that returns the robot position.
      */
-    public Pose2d getRobotPosition(){
+    public Pose2d getRobotPosition() {
         return robotPosition;
     }
 
     /**
      * method that returns the timestamp in seconds.
      */
-    public double getTimestamp(){
+    public double getTimestamp() {
         return timestamp;
     }
 
     /**
      * method that sets the robot position.
+     * 
      * @param position - the robot position.
      */
-    public void setRobotPosition(Pose2d position){
+    public void setRobotPosition(Pose2d position) {
         robotPosition = position;
     }
 
     /**
      * method that sets the timestamp in seconds.
+     * 
      * @param timestampSeconds - the timestamp in seconds
      */
-    public void setTimestamp(double timestampSeconds){
+    public void setTimestamp(double timestampSeconds) {
         timestamp = timestampSeconds;
     }
 
