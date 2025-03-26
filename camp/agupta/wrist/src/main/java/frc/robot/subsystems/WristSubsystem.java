@@ -26,7 +26,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // wpilib import for base class for subsystems
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -80,10 +79,8 @@ public class WristSubsystem extends SubsystemBase {
    */
   public WristSubsystem() {
 
-    // set direction, offset, and range of encoder
     configureAngleEncoder();
 
-    // sets motionMagic movement max's configs 
     configureAngleMotors();  
 
     /* Make control requests synchronous */
@@ -139,9 +136,6 @@ public class WristSubsystem extends SubsystemBase {
       case shooter:
         angle = Constants.shooterAngle;
         break;
-      default:
-        angle = Constants.shooterAngle;
-        break;
     }
     return angle;
   }
@@ -186,7 +180,6 @@ public class WristSubsystem extends SubsystemBase {
 
     // Create MagnetSensorConfigs and set the AbsoluteSensorRange to Unsigned 0 to 1
     encoderConfigs.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
-    //MagnetSensor.AbsoluteSensorDiscontinuityPoint.Unsigned_0To1;
     encoderConfigs.MagnetSensor.MagnetOffset = degreesToRotations(Constants.shooterAbsoluteAngleOffsetDegrees);
     encoderConfigs.MagnetSensor.SensorDirection = Constants.wristSensorDirection;
     // apply configs

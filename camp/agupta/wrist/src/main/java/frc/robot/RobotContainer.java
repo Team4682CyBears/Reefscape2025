@@ -44,28 +44,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
-    // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
-    //this.WristSubsystem.setDefaultCommand(); 
-
-    // TODO: Figure out if we are using subsystem collection, if so call the getter from that function instead of direct
-   
     // Rotate to shooterAngle
     driverController.a().onTrue(new WristSetAngleCommand(
       Constants.shooterAngle, 
       this.WristSubsystem));
-        //new WristSetAngleCommand(Constants.shooterAngleShootFromSpeaker,this.subsystemCollection.getWristSubsystem());
 
     // Rotate to algaeRemoverAngle
     driverController.b().onTrue(new WristSetAngleCommand(
       Constants.algaeAngle, 
       this.WristSubsystem));
-
-    //this.talonMotorSubsystem.setDefaultCommand(new StopCommand(this.talonMotorSubsystem)); // Sets the default command to "stop." This way, when no buttons are being pressed, the motor doesn't move.
-    
-    //driverController.b().whileTrue(new WindCommand(this.talonMotorSubsystem)); // Binds the "b" button to the backwards command.
-    //driverController.a().whileTrue(new UnwindCommand(this.talonMotorSubsystem)); // Binds the "a" button to the forward command.
   }
 
   /**

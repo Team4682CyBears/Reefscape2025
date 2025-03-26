@@ -21,8 +21,6 @@ public class WristSetAngleCommand extends Command {
 
   private WristSubsystem wristSubsystem;
   protected double desiredAngleDegrees; 
-  @SuppressWarnings("unused")
-private boolean done = false;
 
   /**
    * Constructor for ShooterShootCommand
@@ -40,7 +38,6 @@ private boolean done = false;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.done = false;
     wristSubsystem.setAngleDegrees(desiredAngleDegrees);
   }
 
@@ -52,9 +49,6 @@ private boolean done = false;
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted){
-      done = true;
-    }
   }
 
   // Returns true when the command should end.
