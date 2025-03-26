@@ -10,7 +10,7 @@
 
 package frc.robot.common;
 
-public enum ShooterPosition{
-    algae,
-    shooter
+public enum WristPosition{
+    ALGAE,
+    CORAL
 }

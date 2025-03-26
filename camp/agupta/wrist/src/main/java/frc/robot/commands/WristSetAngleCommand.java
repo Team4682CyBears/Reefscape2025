@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Crescendo - 2024
 // File: WristSetAngleCommand.java
-// Intent: Forms a command to set the shooter angle
+// Intent: Forms a command to set the coral angle
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -15,7 +15,7 @@ import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * Forms a command to shoot the shooter
+ * Forms a command to get wrist in coral position
  */
 public class WristSetAngleCommand extends Command {
 
@@ -23,8 +23,8 @@ public class WristSetAngleCommand extends Command {
   protected double desiredAngleDegrees; 
 
   /**
-   * Constructor for ShooterShootCommand
-   * Will set shooter to desired angle before shooting
+   * Constructor for WristSetAngleCommand
+   * Will set wrist to desired angle before placing coral
    * @param desiredAngleDegrees
    * @param wristSubsystem
    */

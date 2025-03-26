@@ -1,7 +1,7 @@
 # Wrist code
 
 Intent:
-- Used to remove algae and go to 1 specific shooter position
+- Used to remove algae and go to 1 specific wrist position
     - For testing, set to 0 degrees and 90 degrees
 
 Code Origins:
@@ -10,7 +10,7 @@ Code Origins:
 
 # Commands
 
-- Shooter
+- Coral Position
 - Algae Remove
 
 # Software Libraries

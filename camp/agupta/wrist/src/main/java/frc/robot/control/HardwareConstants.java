@@ -19,24 +19,8 @@ public class HardwareConstants {
     public static final double ctreSupplyVoltageTimeConstant = 0.02;
    
     // *******************************************************************
-    // shooter outfeed motor constants
+    // wrist outfeed motor constants
     public static final double wristStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
     public static final double wristSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
     public static final double wristSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
-      
-    // *******************************************************************
-    // shooter angle motor constants
-    public static final double shooterAngleStatorCurrentMaximumAmps = HardwareConstants.ctreStatorCurrentMaximumAmps;
-    public static final double shooterAngleSupplyCurrentMaximumAmps = HardwareConstants.ctreSupplyCurrentMaximumAmps;
-    public static final double shooterAngleSupplyVoltageTimeConstant = HardwareConstants.ctreSupplyVoltageTimeConstant;
-
-    // ********************************************************************
-    // CAN Optimization Constants
-    // ctre
-    public static final int ctreMotorStatusFramePeriodMilliseconds = 20; // 20ms refresh rate
-    public static final int ctreSensorStatusFramePeriodMilliseconds = 30; // 30ms refresh rate
-    public static final double ctreMotorStatusFramePeriodFrequencyHertz = 1000.0/(double)HardwareConstants.ctreMotorStatusFramePeriodMilliseconds;
-    public static final double ctreSensorStatusFramePeriodFrequencyHertz = 1000.0/(double)HardwareConstants.ctreSensorStatusFramePeriodMilliseconds;
-    // playing with fusion
-    public static final double playingWithFusionSensorPeriodMilliseconds = 24; // 24ms refresh rate as specified in their documentation (max refresh rate)
 }

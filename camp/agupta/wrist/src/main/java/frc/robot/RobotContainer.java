@@ -26,7 +26,7 @@ public class RobotContainer {
 
   // create instance of xbox controller
   private final CommandXboxController driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(OperatorConstants.driverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,9 +45,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // Rotate to shooterAngle
+    // Rotate to coralAngle
     driverController.a().onTrue(new WristSetAngleCommand(
-      Constants.shooterAngle, 
+      Constants.coralAngle, 
       this.WristSubsystem));
 
     // Rotate to algaeRemoverAngle

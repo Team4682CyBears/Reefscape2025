@@ -3,7 +3,7 @@
 // Home of the Cybears
 // FRC - Crescendo - 2024
 // File: WristSubsystem.java
-// Intent: Forms the prelminary code for shooter.
+// Intent: Forms the prelminary code for wrist.
 // ************************************************************
 
 // ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
@@ -35,10 +35,10 @@ import frc.robot.control.Constants;
 import frc.robot.control.HardwareConstants;
 import frc.robot.control.InstalledHardware;
 import frc.robot.common.MotorUtils;
-import frc.robot.common.ShooterPosition;
+import frc.robot.common.WristPosition;
 
 /**
- * Forms a class for the shooter subsystem
+ * Forms a class for the wrist subsystem
  * Consists of two outfeed motors, 
  * 1 angle motor, and 1 angle encoder
  */
@@ -46,7 +46,7 @@ public class WristSubsystem extends SubsystemBase {
 
   // Initiate fields and class instances
 
-  // Shooter gearing 
+  // Wrist gearing 
   private static final double angleEncoderGearRatio = 1.0; // angle encoder is mounted directly onto shaft
   private static final double angleMotorGearRatio = 4.0; // 4:1 (12 -> 48) 
 
@@ -55,14 +55,14 @@ public class WristSubsystem extends SubsystemBase {
   private static final double wristLowVelocityTol = 10;   
 
   // CanIds to "talk" to hardware
-  private TalonFX angleMotor = new TalonFX(Constants.shooterMotorCanId);
-  private CANcoder angleEncoder = new CANcoder(Constants.shooterEncoderCanId);
+  private TalonFX angleMotor = new TalonFX(Constants.wristMotorCanId);
+  private CANcoder angleEncoder = new CANcoder(Constants.wristEncoderCanId);
 
   // control class
   private final MotionMagicVoltage angleVoltageController = new MotionMagicVoltage(0);
 
   // don't start moving until angle is set. 
-  private boolean shooterIsAtDesiredAngle = true; 
+  private boolean wristIsAtDesiredAngle = true; 
   private double desiredAngleDegrees; 
 
   // Motor controller gains
@@ -75,7 +75,7 @@ public class WristSubsystem extends SubsystemBase {
     .withKI(0.5);
 
   /**
-   * Constructor for shooter subsystem
+   * Constructor for wrist subsystem
    */
   public WristSubsystem() {
 
@@ -88,7 +88,7 @@ public class WristSubsystem extends SubsystemBase {
   }
 
   /**
-   * A method to get the shooter angle
+   * A method to get the wrist angle
    * @return angle in degrees
    */
   public double getAngleDegrees(){
@@ -114,34 +114,34 @@ public class WristSubsystem extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    if (!shooterIsAtDesiredAngle) {
+    if (!wristIsAtDesiredAngle) {
         // use motionMagic voltage control
         angleMotor.setControl(angleVoltageController.withPosition(degreesToRotations(desiredAngleDegrees - getOffset())));
         // keep moving until it reaches target angle
-        shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
+        wristIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
     }
   }
 
   /**
-   * A method to translate shooter positions into degrees
+   * A method to translate wrist positions into degrees
    * @param position
    * @return degrees
    */
-  public double positionToDegrees(ShooterPosition position){
-    double angle = Constants.shooterAngle;
+  public double positionToDegrees(WristPosition position){
+    double angle = Constants.coralAngle;
     switch (position) {
-      case algae:
+      case ALGAE:
         angle = Constants.algaeAngle;
         break;
-      case shooter:
-        angle = Constants.shooterAngle;
+      case CORAL:
+        angle = Constants.coralAngle;
         break;
     }
     return angle;
   }
 
   /**
-   * A method to set the shooter angle
+   * A method to set the wrist angle
    * @param degrees
    */
   public void setAngleDegrees(double degrees){
@@ -161,7 +161,7 @@ public class WristSubsystem extends SubsystemBase {
     desiredAngleDegrees = clampedDegrees;
 
     // cehck if angle within tolerance
-    shooterIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
+    wristIsAtDesiredAngle = isAngleWithinTolerance(desiredAngleDegrees);
   }
 
   /**
@@ -180,7 +180,7 @@ public class WristSubsystem extends SubsystemBase {
 
     // Create MagnetSensorConfigs and set the AbsoluteSensorRange to Unsigned 0 to 1
     encoderConfigs.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
-    encoderConfigs.MagnetSensor.MagnetOffset = degreesToRotations(Constants.shooterAbsoluteAngleOffsetDegrees);
+    encoderConfigs.MagnetSensor.MagnetOffset = degreesToRotations(Constants.wristAbsoluteAngleOffsetDegrees);
     encoderConfigs.MagnetSensor.SensorDirection = Constants.wristSensorDirection;
     // apply configs
     StatusCode response = angleEncoder.getConfigurator().apply(encoderConfigs);
@@ -197,7 +197,7 @@ public class WristSubsystem extends SubsystemBase {
     // Config angle motor
     TalonFXConfiguration angleConfigs = new TalonFXConfiguration();
     angleConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    angleConfigs.MotorOutput.Inverted = Constants.angleTalonShooterMotorDefaultDirection;
+    angleConfigs.MotorOutput.Inverted = Constants.angleTalonWristMotorDefaultDirection;
     angleConfigs.CurrentLimits.StatorCurrentLimit = HardwareConstants.wristStatorCurrentMaximumAmps;
     angleConfigs.CurrentLimits.StatorCurrentLimitEnable = true; 
     angleConfigs.CurrentLimits.SupplyCurrentLimit = HardwareConstants.wristSupplyCurrentMaximumAmps;
@@ -206,12 +206,12 @@ public class WristSubsystem extends SubsystemBase {
 
     // FeedbackConfigs and offsets
     if (InstalledHardware.wristCanCoderInstalled) {
-      DataLogManager.log("Configuring Shooter Angle Motor with CanCoder Feedback.");
+      DataLogManager.log("Configuring Wrist Angle Motor with CanCoder Feedback.");
       angleConfigs.Slot0 = angleMotorGainsForAbsoluteEncoder;
       angleConfigs.Feedback.SensorToMechanismRatio = angleEncoderGearRatio;
       angleConfigs.Feedback.RotorToSensorRatio =   angleMotorGearRatio;
       angleConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-      angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.shooterEncoderCanId;
+      angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.wristEncoderCanId;
       // offset is set in CanCoder config above
     } 
 
