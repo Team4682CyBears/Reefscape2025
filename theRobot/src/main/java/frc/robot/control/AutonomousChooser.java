@@ -27,7 +27,6 @@ import frc.robot.common.ElevatorPositions;
  * a class for choosing different auto modes from shuffleboard
  */
 public class AutonomousChooser {
-    private SubsystemCollection subsystems;
     private final SendableChooser<AutonomousPath> autonomousPathChooser = new SendableChooser<>();
 
     private Command testAuto;
@@ -43,11 +42,6 @@ public class AutonomousChooser {
      * @param subsystems - the SubsystemCollection
      */
     public AutonomousChooser(SubsystemCollection subsystems) {
-        this.subsystems = subsystems;
-        // TODO need to make sure that mirroing works for red/blue paths
-        // specifically we want to insure that when we are on the red(mirrored) side we
-        // really do mirror
-
         // TODO add checks for all subsystems the autos rely on besides the drivetrain
         // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {

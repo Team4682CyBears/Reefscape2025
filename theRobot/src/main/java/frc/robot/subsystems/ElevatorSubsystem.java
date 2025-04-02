@@ -23,7 +23,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,8 +32,6 @@ import frc.robot.common.ElevatorDirection;
 import frc.robot.common.ElevatorMovementMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.common.MotorUtils;
-import com.ctre.phoenix6.controls.StrictFollower;
-
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
 
@@ -141,7 +138,9 @@ public class ElevatorSubsystem extends SubsystemBase {
             targetPosition.in(Inches),
             minHeight.in(Inches),
             maxHeight.in(Inches)));
-    // TODO check this logic. Why are we doing it this way?
+    // TODO fix this logic. 
+    // Why are we doing it this way?
+    // We believe this is causing a small jump in the position when it stops. 
     if (getCurrentHeight().gt(targetPosition)) {
       targetPosition = targetPosition.minus(Inches.of(0.5));
     } else if (getCurrentHeight().lt(targetPosition)) {

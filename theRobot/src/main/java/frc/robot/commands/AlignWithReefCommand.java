@@ -28,7 +28,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
@@ -60,11 +59,6 @@ public class AlignWithReefCommand extends Command {
     private Stage stage = Stage.LOOKINGFORTAG;
 
     FollowPathCommand followPathCommand;
-
-    private double maxVelocityMPS = 5.3;
-    private double maxAccelerationPMSSq = 3.5; // 6.0 max
-    private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
-    private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
 
     /**
      * Constructor to make a command to align with an april tag on the reef

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.common.EndEffectorDirection;
 import frc.robot.common.EndEffectorSpeed;
+import frc.robot.common.MotorUtils;
 import frc.robot.common.ToFDetector;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
@@ -85,7 +86,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
             scalar = -1;
         }
 
-        eeDutyCycle.withOutput(clamp(motorSpeed * scalar, -1, 1));
+        eeDutyCycle.withOutput(MotorUtils.clamp(motorSpeed * scalar, -1, 1));
         eeMotor.setControl(eeDutyCycle);
     }
 
@@ -149,10 +150,5 @@ public class EndEffectorSubsystem extends SubsystemBase {
             System.out.println(
                     "TalonFX ID " + eeMotor.getDeviceID() + " failed config with error " + response.toString());
         }
-    }
-
-    // TODO when integrating into theRobot, use the clamp in MotorUtils.
-    private double clamp(double x, double min, double max) {
-        return Math.max(min, Math.min(x, max));
     }
 }
