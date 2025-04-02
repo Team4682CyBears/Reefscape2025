@@ -42,6 +42,8 @@ public class AutonomousChooser {
      * @param subsystems - the SubsystemCollection
      */
     public AutonomousChooser(SubsystemCollection subsystems) {
+        // TODO add checks for all subsystems the autos rely on besides the drivetrain
+        // here
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
             autonomousPathChooser.setDefaultOption("Do Nothing", AutonomousPath.DONOTHING);

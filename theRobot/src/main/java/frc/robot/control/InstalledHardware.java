@@ -41,7 +41,7 @@ public class InstalledHardware {
     // the other TOF sensors that are installed will not work.
     public static final boolean BranchTofLeft = true;
     public static final boolean BranchTofRight = true;
-    // this one controls the install of both ee TOFs. 
+    // this one controls the install of both ee TOFs.
     public static final boolean handoffTofsInstalled = true;
 
     // LED Hardware

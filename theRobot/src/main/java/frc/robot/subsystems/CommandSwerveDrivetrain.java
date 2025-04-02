@@ -13,19 +13,20 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
 /**
-* Stub CTRE's CommandSwerveDrivetrain because their generated code TunerConstants.java depends on it.
+ * Stub CTRE's CommandSwerveDrivetrain because their generated code
+ * TunerConstants.java depends on it.
  */
 public class CommandSwerveDrivetrain {
 
     /**
      * STUB - does nothing
+     * 
      * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
      * @param modules             Constants for each specific module
      */
     public CommandSwerveDrivetrain(
-        SwerveDrivetrainConstants drivetrainConstants,
-        SwerveModuleConstants<?, ?, ?>... modules
-    ) {
+            SwerveDrivetrainConstants drivetrainConstants,
+            SwerveModuleConstants<?, ?, ?>... modules) {
 
     }
 

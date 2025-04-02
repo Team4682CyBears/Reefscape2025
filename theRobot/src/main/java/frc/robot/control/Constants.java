@@ -26,14 +26,14 @@ public final class Constants {
 
     //////// SWERVE MODULE CONFIGS ///////////
     public static final double SWERVE_MAX_SPEED = 5.0; // m/s
-    //We got 657 from path planner
+    // We got 657 from path planner
     public static final double SWERVE_MAX_ANGULAR_SPEED = Rotation2d.fromDegrees(657).getRadians(); // rad/s
 
     // *****************************************************************
     // Auto Constants
     public static final PPHolonomicDriveController pathFollower = new PPHolonomicDriveController(
-        new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-        new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants 
+            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(4.5, 0.001, 0.0) // Rotation PID constants
     );
 
     public static final PathConstraints autoAlignPathConstraints = new PathConstraints(3.0, 2.0, 540, 720);
@@ -56,7 +56,7 @@ public final class Constants {
     // Motor Constants for End Effector and Elevator
     public static final double motorStatorCurrentMaximumAmps = 100.0;
     public static final double motorSupplyCurrentMaximumAmps = 50.0;
-    
+
     public static final double motorSupplyVoltageTimeConstant = 0.02;
     public static final double falconMaxVoltage = 12.0;
 
@@ -92,7 +92,7 @@ public final class Constants {
 
     public static final double limelightToWPIBlueXOffest = 8.75;
     public static final double limelightToWPIBlueYOffset = 4.0;
-  
+
     // ********************************************************************
     // Controller Constants
     public static final double rumbleTimeSeconds = 0.15;
@@ -107,7 +107,7 @@ public final class Constants {
     // Elevator Constants
 
     public static final Distance elevatorZeroFromFloor = Inches.of(9);
-    public static final Distance L1Height = Inches.of(25.2).minus(elevatorZeroFromFloor); 
+    public static final Distance L1Height = Inches.of(25.2).minus(elevatorZeroFromFloor);
     public static final Distance L2Height = Inches.of(31.5).minus(elevatorZeroFromFloor);
     public static final Distance L3Height = Inches.of(47.75).minus(elevatorZeroFromFloor);
     public static final Distance L4Height = Inches.of(72.0).minus(elevatorZeroFromFloor);

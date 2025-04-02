@@ -33,7 +33,8 @@ import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 /**
- * Class to form a command that will make a command to align with an april tag on a reef
+ * Class to form a command that will make a command to align with an april tag
+ * on a reef
  */
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
@@ -72,7 +73,8 @@ public class AlignWithReefCommand extends Command {
 
         this.shouldAlignBranch = shouldAlignBranch;
 
-        //We dont require any subsystems because we call a command later that requires the drivetrain
+        // We dont require any subsystems because we call a command later that requires
+        // the drivetrain
     }
 
     @Override
@@ -112,8 +114,9 @@ public class AlignWithReefCommand extends Command {
                 PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
                         drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
 
-                //We cant run a path shorter than .5meters this is "intended" by path planner
-                if (!Double.isNaN(traj.getTotalTimeSeconds()) && drivetrain.getRobotPosition().getTranslation().getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) >= 0.5){
+                // We cant run a path shorter than .5meters this is "intended" by path planner
+                if (!Double.isNaN(traj.getTotalTimeSeconds()) && drivetrain.getRobotPosition().getTranslation()
+                        .getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) >= 0.5) {
                     followPathCommand = new FollowPathCommand(
                             path,
                             drivetrain::getRobotPosition, // Pose supplier
@@ -132,17 +135,18 @@ public class AlignWithReefCommand extends Command {
                 break;
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
-        
-                //We are launching a string of commands from this command because we want to use path planners follow path command and then do stuff after
+
+                // We are launching a string of commands from this command because we want to
+                // use path planners follow path command and then do stuff after
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
                                 new AlignToBranchCommand(drivetrain,
                                         this.subsystemCollection.getBranchDetectorSubsystem(),
-                                        () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
+                                        () -> this.subsystemCollection.getAlignWithBranchDirection()
+                                                .getAlignWithBranchSide()),
                                 new InstantCommand(),
                                 () -> shouldAlignBranch))
                         .schedule();
-                
 
                 done = true;
                 break;
@@ -164,7 +168,9 @@ public class AlignWithReefCommand extends Command {
 
     /**
      * a method to return wether or not we want to mirror the path
-     * @return when using paths generated from april tag coords always turn mirroring off
+     * 
+     * @return when using paths generated from april tag coords always turn
+     *         mirroring off
      */
     private boolean mirrorPathForRedAliance() {
         return false;

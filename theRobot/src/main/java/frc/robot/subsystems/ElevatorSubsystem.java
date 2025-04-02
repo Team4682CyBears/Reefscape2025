@@ -101,14 +101,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     return angleToDistance(elevatorCorrectableEncoder.getCurrentEncoderPosition());
   }
 
-    /**
-   * returns true when the elevator is within a certain tolerance of the stow position
+  /**
+   * returns true when the elevator is within a certain tolerance of the stow
+   * position
+   * 
    * @return
    */
   public boolean isAtStow() {
     return getCurrentHeight().isNear(Constants.stowHeight, heightTolerance);
   }
-  
+
   /*
    * returns true when the elevator is within a certain tolerance of the target
    * height
@@ -166,20 +168,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     // get current height
     Distance currentHeight = getCurrentHeight();
 
-    // 
+    //
     SmartDashboard.putNumber("ElevatorHeight", getCurrentHeight().in(Inches));
     SmartDashboard.putNumber("ElevatorTargetPosition", targetHeight.in(Inches));
 
-    //  check velcity and up mode (and below max height)
+    // check velcity and up mode (and below max height)
     if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
-      elevatorDirection == ElevatorDirection.UP &&
-      currentHeight.lt(maxHeight)) {
+        elevatorDirection == ElevatorDirection.UP &&
+        currentHeight.lt(maxHeight)) {
 
-        // run motor
-        elevatorJoystickController.withOutput(elevatorExtendSpeed);
-        elevatorMotor.setControl(elevatorJoystickController);
+      // run motor
+      elevatorJoystickController.withOutput(elevatorExtendSpeed);
+      elevatorMotor.setControl(elevatorJoystickController);
 
-    // check if velocity and down mode (and above min height)
+      // check if velocity and down mode (and above min height)
     } else if (elevatorMovementMode == ElevatorMovementMode.VELOCITY &&
         elevatorDirection == ElevatorDirection.DOWN &&
         currentHeight.gt(minHeight)) {
@@ -188,18 +190,19 @@ public class ElevatorSubsystem extends SubsystemBase {
       elevatorJoystickController.withOutput(getElevatorRetractSpeed());
       elevatorMotor.setControl(elevatorJoystickController);
 
-    // check if elevator is in position mode, and is not at target height
+      // check if elevator is in position mode, and is not at target height
     } else if (elevatorMovementMode == ElevatorMovementMode.POSITION && !isAtTargetHeight()) {
 
       // run motor
       elevatorPositionalController.withPosition(distanceToAngle(targetHeight));
       elevatorMotor.setControl(elevatorPositionalController);
 
-    // if the elevator is in position mode and is at target position or if the movement mode is stopped
+      // if the elevator is in position mode and is at target position or if the
+      // movement mode is stopped
     } else {
-      //if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
+      // if (elevatorMovementMode != ElevatorMovementMode.STOPPED) {
       if (previousElevatorMovementMode != ElevatorMovementMode.STOPPED) {
-        // if we have just changed into STOPPED state, set the hold position 
+        // if we have just changed into STOPPED state, set the hold position
         targetHeight = getCurrentHeight();
       }
 
@@ -239,7 +242,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     motorTalonMotorConfiguration.Slot0 = slot0Configs;
     motorTalonMotorConfiguration.ClosedLoopRamps.withVoltageClosedLoopRampPeriod(0.02);
     // do not config feedbacksource, since the default is the internal one.
-    motorTalonMotorConfiguration.Voltage.PeakForwardVoltage = Constants.falconMaxVoltage;;
+    motorTalonMotorConfiguration.Voltage.PeakForwardVoltage = Constants.falconMaxVoltage;
+    ;
     motorTalonMotorConfiguration.Voltage.PeakReverseVoltage = -Constants.falconMaxVoltage;
     motorTalonMotorConfiguration.Voltage.SupplyVoltageTimeConstant = Constants.motorSupplyVoltageTimeConstant;
 
@@ -265,7 +269,7 @@ public class ElevatorSubsystem extends SubsystemBase {
           "TalonFX ID " + elevatorMotor.getDeviceID() + " failed config with error " + response.toString());
     }
 
-    // change invert for angleRightMotor 
+    // change invert for angleRightMotor
     motorTalonMotorConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     // apply configs
     response = secondElevatorMotor.getConfigurator().apply(motorTalonMotorConfiguration);
@@ -281,7 +285,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   private void configurePositionalController() {
     elevatorPositionalController.UpdateFreqHz = 0;
-    //elevatorPositionalController.OverrideBrakeDurNeutral = true;
+    // elevatorPositionalController.OverrideBrakeDurNeutral = true;
     elevatorPositionalController.UseTimesync = false;
     elevatorPositionalController.LimitForwardMotion = false;
     elevatorPositionalController.LimitReverseMotion = false;

@@ -27,7 +27,6 @@ import frc.robot.control.ElevatorHeightState;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 
-
 public class RobotContainer {
 
   private SubsystemCollection subsystems = new SubsystemCollection();
@@ -59,7 +58,7 @@ public class RobotContainer {
 
     // init the end effector
     this.initializeEndEffectorSubsystem();
-    
+
     // init the funneldefault
     this.initializeFunnelSubsystem();
 
@@ -71,23 +70,23 @@ public class RobotContainer {
 
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
-    if (subsystems.isDriveTrainSubsystemAvailable()){
+    if (subsystems.isDriveTrainSubsystemAvailable()) {
       AutonomousChooser.configureAutoBuilder(subsystems);
-      autonomousChooser  = new AutonomousChooser(subsystems);
+      autonomousChooser = new AutonomousChooser(subsystems);
       DataLogManager.log("SUCCESS: initializeAutoChooser");
-  } else {
+    } else {
       DataLogManager.log("FAIL: initializeAutoChooser");
-  }
+    }
 
     // Configure the button bindings
-    if(this.subsystems.isManualInputInterfacesAvailable()) {
-        DataLogManager.log(">>>> Initializing button bindings.");
-        this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
-        DataLogManager.log(">>>> Finished initializing button bindings.");
-      }
-      
-      // TODO For debugging. Can remove for final competition build. 
-      this.initializeDebugDashboard();
+    if (this.subsystems.isManualInputInterfacesAvailable()) {
+      DataLogManager.log(">>>> Initializing button bindings.");
+      this.subsystems.getManualInputInterfaces().initializeButtonCommandBindings();
+      DataLogManager.log(">>>> Finished initializing button bindings.");
+    }
+
+    // TODO For debugging. Can remove for final competition build.
+    this.initializeDebugDashboard();
 
     if (subsystems.isDriveTrainSubsystemAvailable() && Constants.putDiagnosticPaths) {
       // Path Planner Path Commands
@@ -95,11 +94,11 @@ public class RobotContainer {
       TestTrajectories testtrajectories = new TestTrajectories();
 
       SmartDashboard.putData("One Meter",
-        FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
+          FollowTrajectoryCommandBuilder.build(testtrajectories.oneMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Two Meter",
-        FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
+          FollowTrajectoryCommandBuilder.build(testtrajectories.twoMeter, this.subsystems.getDriveTrainSubsystem()));
       SmartDashboard.putData("Three Meter",
-        FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
+          FollowTrajectoryCommandBuilder.build(testtrajectories.threeMeter, this.subsystems.getDriveTrainSubsystem()));
     }
   }
 
@@ -107,7 +106,7 @@ public class RobotContainer {
     return autonomousChooser.getCommand();
   }
 
-   /**
+  /**
    * A method to init all the data logging
    */
   private void initializeDataLogging() {
@@ -119,10 +118,10 @@ public class RobotContainer {
    * A method to init the PDP watcher
    */
   private void initializePowerDistributionPanelWatcherSubsystem() {
-    if(InstalledHardware.powerDistributionPanelInstalled) {
+    if (InstalledHardware.powerDistributionPanelInstalled) {
       subsystems.setPowerDistributionPanelWatcherSubsystem(new PowerDistributionPanelWatcherSubsystem());
       DataLogManager.log("SUCCESS: initializePowerDistributionPanelWatcherSubsystem");
-    }    else {
+    } else {
       DataLogManager.log("FAIL: initializePowerDistributionPanelWatcherSubsystem");
     }
   }
@@ -131,7 +130,7 @@ public class RobotContainer {
    * A method to init the drive train
    */
   private void initializeDrivetrainSubsystem() {
-    if(InstalledHardware.drivetrainInstalled){
+    if (InstalledHardware.drivetrainInstalled) {
       // The robot's subsystems and commands are defined here...
       subsystems.setDriveTrainSubsystem(new DrivetrainSubsystem(subsystems));
       subsystems.setDriveTrainPowerSubsystem(new DrivetrainPowerSubsystem(subsystems.getDriveTrainSubsystem()));
@@ -143,161 +142,164 @@ public class RobotContainer {
       // Left stick X axis -> left and right movement
       // Right stick X axis -> rotation
       subsystems.getDriveTrainSubsystem().setDefaultCommand(
-        new DefaultDriveCommand(
-          subsystems.getDriveTrainSubsystem(),
-          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-          () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-          () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-        ));
-    }
-    else {
+          new DefaultDriveCommand(
+              subsystems.getDriveTrainSubsystem(),
+              () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveY())
+                  * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+              () -> RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputArcadeDriveX())
+                  * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+              () -> -RobotContainer.modifyAxisSquare(subsystems.getManualInputInterfaces().getInputSpinDriveX())
+                  * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
+    } else {
       DataLogManager.log("FAIL: initializeDrivetrain");
     }
   }
 
-    /**
-     * A method to init items for the debug dashboard
-     */
-    private void initializeDebugDashboard() {
-        SmartDashboard.putData("Debug: CommandScheduler", CommandScheduler.getInstance());
+  /**
+   * A method to init items for the debug dashboard
+   */
+  private void initializeDebugDashboard() {
+    SmartDashboard.putData("Debug: CommandScheduler", CommandScheduler.getInstance());
+  }
+
+  /**
+   * A method to init the ClimberSubsystem
+   */
+  private void initializeClimberSubsystem() {
+    if (InstalledHardware.climberInstalled) {
+      subsystems.setClimberSubsystem(
+          new SimpleNeoMotorSubsystem(Constants.climberMotorCanID, Constants.ClimberMotorMaxSpeed));
+
+      SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
+
+      climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
+          () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
+              * subsystems.getClimberSubsystem().getMaxSpeed(),
+          () -> subsystems.getManualInputInterfaces().isCLimberLimSwitchPressed()));
+      DataLogManager.log("SUCCESS: initializeClimber");
+    } else {
+      DataLogManager.log("FAIL: initializeClimber");
     }
+  }
 
-    /**
-     * A method to init the ClimberSubsystem
-     */
-    private void initializeClimberSubsystem() {
-        if (InstalledHardware.climberInstalled) {
-            subsystems.setClimberSubsystem(new SimpleNeoMotorSubsystem(Constants.climberMotorCanID, Constants.ClimberMotorMaxSpeed));
-
-            SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
-
-            climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
-                    () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
-                            * subsystems.getClimberSubsystem().getMaxSpeed(), 
-                    () -> subsystems.getManualInputInterfaces().isCLimberLimSwitchPressed()));
-            DataLogManager.log("SUCCESS: initializeClimber");
-        } else {
-            DataLogManager.log("FAIL: initializeClimber");
-        }
+  /**
+   * A method to init the FunnelSubsystem
+   */
+  private void initializeFunnelSubsystem() {
+    if (InstalledHardware.funnelInstalled) {
+      subsystems
+          .setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
+      DataLogManager.log("SUCCESS: initializeFunnel");
+    } else {
+      DataLogManager.log("FAIL: initializeFunnel");
     }
-
-    /**
-     * A method to init the FunnelSubsystem
-     */
-    private void initializeFunnelSubsystem() {
-        if (InstalledHardware.funnelInstalled) {
-            subsystems.setFunnelSubsystem(new SimpleNeoMotorSubsystem(Constants.funnelMotorCanID, Constants.funnelMotorSpeed));
-            DataLogManager.log("SUCCESS: initializeFunnel");
-        } else {
-            DataLogManager.log("FAIL: initializeFunnel");
-        }
-    }
+  }
 
   /**
    * A method to init the BranchDetectorSubsystem
    */
-  private void initailizeBranchDetectorSubsystem(){
-    if(InstalledHardware.branchDetectorInstalled) {
+  private void initailizeBranchDetectorSubsystem() {
+    if (InstalledHardware.branchDetectorInstalled) {
       subsystems.setBranchDetectorSubsystem(new BranchDetectorSubsystem());
 
-      if(subsystems.isLEDSubsystemAvailable()) {
+      if (subsystems.isLEDSubsystemAvailable()) {
         subsystems.getLedSubsystem().registerStateAction(
-          LEDState.Yellow,
-          this.subsystems.getBranchDetectorSubsystem()::isBranchDetected);
+            LEDState.Yellow,
+            this.subsystems.getBranchDetectorSubsystem()::isBranchDetected);
       }
       DataLogManager.log("SUCCESS: initailize Branch Detector Subsystem");
-    }
-    else {
+    } else {
       DataLogManager.log("FAIL: initialize Branch Detector Subsystem");
     }
   }
 
-    /**
-     * A method to init the ElevatorSubsystem
-     */
-    private void initializeElevatorSubsystem() {
-        if (InstalledHardware.elevatorInstalled) {
+  /**
+   * A method to init the ElevatorSubsystem
+   */
+  private void initializeElevatorSubsystem() {
+    if (InstalledHardware.elevatorInstalled) {
 
-            ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+      ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
-            subsystems.setElevatorSubsystem(elevatorSubsystem);
-            subsystems.setElevatorHeightState(new ElevatorHeightState());
+      subsystems.setElevatorSubsystem(elevatorSubsystem);
+      subsystems.setElevatorHeightState(new ElevatorHeightState());
 
-            elevatorSubsystem.setDefaultCommand(
-              new DefaultElevatorCommand(
-                elevatorSubsystem, 
-                () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.1)));
-            DataLogManager.log("SUCCESS: initializeElevator");
-        } else {
-            DataLogManager.log("FAIL: initializeElevator");
-        }
+      elevatorSubsystem.setDefaultCommand(
+          new DefaultElevatorCommand(
+              elevatorSubsystem,
+              () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.1)));
+      DataLogManager.log("SUCCESS: initializeElevator");
+    } else {
+      DataLogManager.log("FAIL: initializeElevator");
     }
+  }
 
-    /**
-     * A method to init the EndEffectorSubsystem
-     */
-    private void initializeEndEffectorSubsystem() {
-        if (InstalledHardware.endEffectorInstalled) {
+  /**
+   * A method to init the EndEffectorSubsystem
+   */
+  private void initializeEndEffectorSubsystem() {
+    if (InstalledHardware.endEffectorInstalled) {
 
-            EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
+      EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
 
-            endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
+      endEffectorSubsystem.setDefaultCommand(new StopEndEffectorCommand(endEffectorSubsystem));
 
-            subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
-            if(subsystems.isLEDSubsystemAvailable()) {
-              subsystems.getLedSubsystem().registerStateAction(
-                LEDState.Green,
-                this.subsystems.getEndEffectorSubsystem()::isCoralDetected);
-            }
+      subsystems.setEndEffectorSubsystem(endEffectorSubsystem);
+      if (subsystems.isLEDSubsystemAvailable()) {
+        subsystems.getLedSubsystem().registerStateAction(
+            LEDState.Green,
+            this.subsystems.getEndEffectorSubsystem()::isCoralDetected);
+      }
 
-            endEffectorSubsystem.setDefaultCommand(new DefaultEndEffectorCommand(subsystems.getEndEffectorSubsystem(), subsystems.getElevatorSubsystem()));
+      endEffectorSubsystem.setDefaultCommand(
+          new DefaultEndEffectorCommand(subsystems.getEndEffectorSubsystem(), subsystems.getElevatorSubsystem()));
 
-            DataLogManager.log("SUCCESS: initializeEndEffector");
-        } else {
-            DataLogManager.log("FAIL: initializeEndEffector");
-        }
+      DataLogManager.log("SUCCESS: initializeEndEffector");
+    } else {
+      DataLogManager.log("FAIL: initializeEndEffector");
     }
+  }
 
-    /**
-     * A method to init the CameraSubsystem
-     */
-    private void initializeCameraSubsystem() {
-        if (InstalledHardware.limelightInstalled) {
-            subsystems.setCameraSubsystem(new CameraSubsystem());
-            DataLogManager.log("SUCCESS: initializeCamera");
-        } else {
-            DataLogManager.log("FAIL: initializeCamera");
-        }
+  /**
+   * A method to init the CameraSubsystem
+   */
+  private void initializeCameraSubsystem() {
+    if (InstalledHardware.limelightInstalled) {
+      subsystems.setCameraSubsystem(new CameraSubsystem());
+      DataLogManager.log("SUCCESS: initializeCamera");
+    } else {
+      DataLogManager.log("FAIL: initializeCamera");
     }
+  }
 
-    /**
-     * A method to init the LEDSubsystem
-     */
-    private void initializeLEDSubsystem() {
-        if (InstalledHardware.LEDSInstalled) {
-            subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledPWMID));
-            System.out.println("SUCCESS: initializeLEDS");
-        } else {
-            System.out.println("FAIL: initializeLEDS");
-        }
+  /**
+   * A method to init the LEDSubsystem
+   */
+  private void initializeLEDSubsystem() {
+    if (InstalledHardware.LEDSInstalled) {
+      subsystems.setLEDSubsystem(new LEDSubsystem(Constants.ledPWMID));
+      System.out.println("SUCCESS: initializeLEDS");
+    } else {
+      System.out.println("FAIL: initializeLEDS");
     }
+  }
 
   /**
    * A method to init the input interfaces
    */
   private void initializeManualInputInterfaces() {
-    // note: in this case it is safe to build the interfaces if only one of the controllers is present
-    // because button binding assignment code checks that each is installed later (see: initializeButtonCommandBindings)
-    if(InstalledHardware.driverXboxControllerInstalled ||
-      InstalledHardware.coDriverXboxControllerInstalled) {
+    // note: in this case it is safe to build the interfaces if only one of the
+    // controllers is present
+    // because button binding assignment code checks that each is installed later
+    // (see: initializeButtonCommandBindings)
+    if (InstalledHardware.driverXboxControllerInstalled ||
+        InstalledHardware.coDriverXboxControllerInstalled) {
       subsystems.setManualInputInterfaces(new ManualInputInterfaces(subsystems));
       DataLogManager.log("SUCCESS: initializeManualInputInterfaces");
-    }
-    else {
+    } else {
       DataLogManager.log("FAIL: initializeManualInputInterfaces");
     }
   }
-
 
   /**
    * A method to late binding of default commands
@@ -309,12 +311,10 @@ public class RobotContainer {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
         return (value - deadband) / (1.0 - deadband);
-      }
-      else {
+      } else {
         return (value + deadband) / (1.0 - deadband);
       }
-    }
-    else {
+    } else {
       return 0.0;
     }
   }

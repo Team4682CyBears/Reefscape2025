@@ -99,9 +99,10 @@ public class ManualInputInterfaces {
 
     /**
      * A method to get if the climber lim switch is pressed
+     * 
      * @return - a boolean of wether the lim switch is pressed
      */
-    public boolean isCLimberLimSwitchPressed(){
+    public boolean isCLimberLimSwitchPressed() {
         return climberLimSwitch.get();
     }
 
@@ -122,198 +123,207 @@ public class ManualInputInterfaces {
         }
     }
 
-        /**
-         * Will attach commands to the Driver XBox buttons
-         */
-        private void bindCommandsToDriverXboxButtons() {
-                if (InstalledHardware.driverXboxControllerInstalled) {
-                        if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
-                                // Back button zeros the gyroscope (as in zero yaw)
-                                this.driverController.back().onTrue(
-                                                new ParallelCommandGroup(
-                                                                new InstantCommand(
-                                                                                subsystemCollection
-                                                                                                .getDriveTrainSubsystem()::zeroGyroscope),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.back()",
-                                                                                "zero gyroscope")));
-                                DataLogManager.log("FINISHED registering back button to zero gyroscope ... ");
+    /**
+     * Will attach commands to the Driver XBox buttons
+     */
+    private void bindCommandsToDriverXboxButtons() {
+        if (InstalledHardware.driverXboxControllerInstalled) {
+            if (this.subsystemCollection.isDriveTrainSubsystemAvailable()) {
+                // Back button zeros the gyroscope (as in zero yaw)
+                this.driverController.back().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(
+                                        subsystemCollection
+                                                .getDriveTrainSubsystem()::zeroGyroscope),
+                                new ButtonPressCommand(
+                                        "driverController.back()",
+                                        "zero gyroscope")));
+                DataLogManager.log("FINISHED registering back button to zero gyroscope ... ");
 
-                                // Align to branch for scoring
-                                this.driverController.a().onTrue(
-                                                new ParallelCommandGroup(
-                                                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(), subsystemCollection.getBranchDetectorSubsystem(), () -> subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.a()",
-                                                                                "Align to branch")));
-                                // Align to reef for scoring
-                                this.driverController.b().onTrue(
-                                                new ParallelCommandGroup(
-                                                                new AlignWithReefCommand(subsystemCollection, false),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.b()",
-                                                                                "Align to reef")));
-                        }
+                // Align to branch for scoring
+                this.driverController.a().onTrue(
+                        new ParallelCommandGroup(
+                                new AlignToBranchCommand(subsystemCollection.getDriveTrainSubsystem(),
+                                        subsystemCollection.getBranchDetectorSubsystem(),
+                                        () -> subsystemCollection.getAlignWithBranchDirection()
+                                                .getAlignWithBranchSide()),
+                                new ButtonPressCommand(
+                                        "driverController.a()",
+                                        "Align to branch")));
+                // Align to reef for scoring
+                this.driverController.b().onTrue(
+                        new ParallelCommandGroup(
+                                new AlignWithReefCommand(subsystemCollection, false),
+                                new ButtonPressCommand(
+                                        "driverController.b()",
+                                        "Align to reef")));
+            }
 
-                        if (this.subsystemCollection.isDriveTrainPowerSubsystemAvailable()) {
-                                // Enable pit limiter
-                                this.driverController.leftTrigger().onTrue(
-                                                new ParallelCommandGroup(
-                                                                new InstantCommand(
-                                                                                subsystemCollection
-                                                                                                .getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
-                                                                                subsystemCollection
-                                                                                                .getDriveTrainPowerSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.leftTrigger()",
-                                                                                "ramp down to reduced speed")));
+            if (this.subsystemCollection.isDriveTrainPowerSubsystemAvailable()) {
+                // Enable pit limiter
+                this.driverController.leftTrigger().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(
+                                        subsystemCollection
+                                                .getDriveTrainPowerSubsystem()::setReducedPowerReductionFactor,
+                                        subsystemCollection
+                                                .getDriveTrainPowerSubsystem()),
+                                new ButtonPressCommand(
+                                        "driverController.leftTrigger()",
+                                        "ramp down to reduced speed")));
 
-                                // Disable pit limiter
-                                this.driverController.leftTrigger().onFalse(
-                                                new ParallelCommandGroup(
-                                                                new InstantCommand(
-                                                                                subsystemCollection
-                                                                                                .getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
-                                                                                subsystemCollection
-                                                                                                .getDriveTrainPowerSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.leftTrigger()",
-                                                                                "ramp up to default speed")));
-                        }
+                // Disable pit limiter
+                this.driverController.leftTrigger().onFalse(
+                        new ParallelCommandGroup(
+                                new InstantCommand(
+                                        subsystemCollection
+                                                .getDriveTrainPowerSubsystem()::resetPowerReductionFactor,
+                                        subsystemCollection
+                                                .getDriveTrainPowerSubsystem()),
+                                new ButtonPressCommand(
+                                        "driverController.leftTrigger()",
+                                        "ramp up to default speed")));
+            }
 
-                        // x button press will stop all
-                        this.driverController.x().onTrue(
-                                        new ParallelCommandGroup(
-                                                        new AllStopCommand(
-                                                                        this.subsystemCollection),
-                                                        new ButtonPressCommand(
-                                                                        "driverController.x()",
-                                                                        "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
+            // x button press will stop all
+            this.driverController.x().onTrue(
+                    new ParallelCommandGroup(
+                            new AllStopCommand(
+                                    this.subsystemCollection),
+                            new ButtonPressCommand(
+                                    "driverController.x()",
+                                    "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-                        if (this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-                                this.driverController.leftBumper().whileTrue(
-                                                new ParallelCommandGroup(
-                                                        new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.leftBumper()",
-                                                                                "Remove Algae")));
+            if (this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
+                this.driverController.leftBumper().whileTrue(
+                        new ParallelCommandGroup(
+                                new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
+                                new ButtonPressCommand(
+                                        "driverController.leftBumper()",
+                                        "Remove Algae")));
 
-                                // Score Coral with EndEffector
-                                this.driverController.y().whileTrue(
-                                                new ParallelCommandGroup(
-                                                                new ScoreCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.y()",
-                                                                                "Score Coral")));
+                // Score Coral with EndEffector
+                this.driverController.y().whileTrue(
+                        new ParallelCommandGroup(
+                                new ScoreCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
+                                new ButtonPressCommand(
+                                        "driverController.y()",
+                                        "Score Coral")));
 
-                                // Score Coral with EndEffector
-                                this.driverController.rightBumper().onTrue(
-                                                new ParallelCommandGroup(
-                                                                new IntakeCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "driverController.rightBumper()",
-                                                                                "Intake Coral")));
-                        }
-                }
+                // Score Coral with EndEffector
+                this.driverController.rightBumper().onTrue(
+                        new ParallelCommandGroup(
+                                new IntakeCoralCommand(this.subsystemCollection.getEndEffectorSubsystem()),
+                                new ButtonPressCommand(
+                                        "driverController.rightBumper()",
+                                        "Intake Coral")));
+            }
         }
+    }
 
-        /**
-         * Will attach commands to the Co Driver XBox buttons
-         */
-        private void bindCommandsToCoDriverXboxButtons() {
-                if (InstalledHardware.coDriverXboxControllerInstalled) {
-                        // x button press will stop all
-                        this.coDriverController.x().onTrue(
-                                        new ParallelCommandGroup(
-                                                        new AllStopCommand(
-                                                                        this.subsystemCollection),
-                                                        new ButtonPressCommand(
-                                                                        "coDriverController.x()",
-                                                                        "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
+    /**
+     * Will attach commands to the Co Driver XBox buttons
+     */
+    private void bindCommandsToCoDriverXboxButtons() {
+        if (InstalledHardware.coDriverXboxControllerInstalled) {
+            // x button press will stop all
+            this.coDriverController.x().onTrue(
+                    new ParallelCommandGroup(
+                            new AllStopCommand(
+                                    this.subsystemCollection),
+                            new ButtonPressCommand(
+                                    "coDriverController.x()",
+                                    "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
 
-                        if (this.subsystemCollection.isElevatorSubsystemAvailable()) {
-                                // Move elevator to selected level (L1-L4)
-                                this.coDriverController.y().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new MoveToPositionCommand(
-                                                                this.subsystemCollection.getElevatorSubsystem(),
-                                                                this.subsystemCollection.getElevatorHeightState()::getElevatorPosition),
-                                                                new ButtonPressCommand(
-                                                                                "coDriverController.y()",
-                                                                                "Move elevator to previously selected position")));
+            if (this.subsystemCollection.isElevatorSubsystemAvailable()) {
+                // Move elevator to selected level (L1-L4)
+                this.coDriverController.y().onTrue(
+                        new ParallelCommandGroup(
+                                new MoveToPositionCommand(
+                                        this.subsystemCollection.getElevatorSubsystem(),
+                                        this.subsystemCollection.getElevatorHeightState()::getElevatorPosition),
+                                new ButtonPressCommand(
+                                        "coDriverController.y()",
+                                        "Move elevator to previously selected position")));
 
-                                // Move elevator to lowest height
-                                this.coDriverController.a().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new MoveToPositionCommand(this.subsystemCollection.getElevatorSubsystem(),
-                                                        () -> ElevatorPositions.STOW),
-                                                                new ButtonPressCommand(
-                                                                                "coDriverController.a()",
-                                                                                "Move elevator to stow position")));
+                // Move elevator to lowest height
+                this.coDriverController.a().onTrue(
+                        new ParallelCommandGroup(
+                                new MoveToPositionCommand(this.subsystemCollection.getElevatorSubsystem(),
+                                        () -> ElevatorPositions.STOW),
+                                new ButtonPressCommand(
+                                        "coDriverController.a()",
+                                        "Move elevator to stow position")));
 
-                                // Change target elevator position to L1 (Does not actually move the elevator)
-                                this.coDriverController.povLeft().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L1)),
-                                                        new ButtonPressCommand(
-                                                                                "coDriverController.povLeft()",
-                                                                                "Set target elevator position to L1")));
-                                // Change target elevator position to L2 (Does not actually move the elevator)
-                                this.coDriverController.povDown().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L2)),
-                                                        new ButtonPressCommand(
-                                                                                "coDriverController.povDown()",
-                                                                                "Set target elevator position to L2")));
-                                // Change target elevator position to L3 (Does not actually move the elevator)
-                                this.coDriverController.povRight().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L3)),
-                                                        new ButtonPressCommand(
-                                                                                "coDriverController.povRight()",
-                                                                                "Set target elevator position to L3")));
-                                // Change target elevator position to L4 (Does not actually move the elevator)
-                                this.coDriverController.povUp().onTrue(
-                                                new ParallelCommandGroup(
-                                                        new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState().setElevatorPosition(ElevatorPositions.L4)),
-                                                        new ButtonPressCommand(
-                                                                                "coDriverController.povUp()",
-                                                                                "Set target elevator position to L4")));
-                        }
+                // Change target elevator position to L1 (Does not actually move the elevator)
+                this.coDriverController.povLeft().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState()
+                                        .setElevatorPosition(ElevatorPositions.L1)),
+                                new ButtonPressCommand(
+                                        "coDriverController.povLeft()",
+                                        "Set target elevator position to L1")));
+                // Change target elevator position to L2 (Does not actually move the elevator)
+                this.coDriverController.povDown().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState()
+                                        .setElevatorPosition(ElevatorPositions.L2)),
+                                new ButtonPressCommand(
+                                        "coDriverController.povDown()",
+                                        "Set target elevator position to L2")));
+                // Change target elevator position to L3 (Does not actually move the elevator)
+                this.coDriverController.povRight().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState()
+                                        .setElevatorPosition(ElevatorPositions.L3)),
+                                new ButtonPressCommand(
+                                        "coDriverController.povRight()",
+                                        "Set target elevator position to L3")));
+                // Change target elevator position to L4 (Does not actually move the elevator)
+                this.coDriverController.povUp().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> this.subsystemCollection.getElevatorHeightState()
+                                        .setElevatorPosition(ElevatorPositions.L4)),
+                                new ButtonPressCommand(
+                                        "coDriverController.povUp()",
+                                        "Set target elevator position to L4")));
+            }
 
-                        if (this.subsystemCollection.isFunnelSubsystemAvailable()) {
-                                // Collapse the funnel when both Left Bumper and B are pressed
-                                Trigger doubleButtonTrigger = new Trigger(
-                                                () -> this.coDriverController.leftBumper().getAsBoolean()
-                                                                && this.coDriverController.b().getAsBoolean());
-                                doubleButtonTrigger.whileTrue(
-                                                new ParallelCommandGroup(
-                                                                new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
-                                                                new ButtonPressCommand(
-                                                                                "coDriverController leftBumper && b",
-                                                                                "Collapse Funnel")));
-                                this.coDriverController.rightBumper().whileTrue(
-                                                new ParallelCommandGroup(
-                                                        new CloseFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
-                                                        new ButtonPressCommand("coDriverController right bumper",
-                                                                                "Close Funnel")));
-                        }
+            if (this.subsystemCollection.isFunnelSubsystemAvailable()) {
+                // Collapse the funnel when both Left Bumper and B are pressed
+                Trigger doubleButtonTrigger = new Trigger(
+                        () -> this.coDriverController.leftBumper().getAsBoolean()
+                                && this.coDriverController.b().getAsBoolean());
+                doubleButtonTrigger.whileTrue(
+                        new ParallelCommandGroup(
+                                new OpenFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
+                                new ButtonPressCommand(
+                                        "coDriverController leftBumper && b",
+                                        "Collapse Funnel")));
+                this.coDriverController.rightBumper().whileTrue(
+                        new ParallelCommandGroup(
+                                new CloseFunnelCommand(this.subsystemCollection.getFunnelSubsystem()),
+                                new ButtonPressCommand("coDriverController right bumper",
+                                        "Close Funnel")));
+            }
 
-                        // Change alignment mode to left (changes the align with branch settings)
-                        this.coDriverController.leftTrigger().onTrue(
-                                        new ParallelCommandGroup(
-                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.LEFT)),
-                                                        new ButtonPressCommand(
-                                                                        "coDriverController.leftTrigger()",
-                                                                        "Align Left")));
+            // Change alignment mode to left (changes the align with branch settings)
+            this.coDriverController.leftTrigger().onTrue(
+                    new ParallelCommandGroup(
+                            new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection()
+                                    .setAlignWithBranchSide(AlignToBranchSide.LEFT)),
+                            new ButtonPressCommand(
+                                    "coDriverController.leftTrigger()",
+                                    "Align Left")));
 
-                        // Change alignment mode to right (changes the align with branch settings)
-                        this.coDriverController.rightTrigger().onTrue(
-                                        new ParallelCommandGroup(
-                                                        new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection().setAlignWithBranchSide(AlignToBranchSide.RIGHT)),
-                                                        new ButtonPressCommand(
-                                                                        "coDriverController.rightBumper()",
-                                                                        "Align Right")));
-                }
+            // Change alignment mode to right (changes the align with branch settings)
+            this.coDriverController.rightTrigger().onTrue(
+                    new ParallelCommandGroup(
+                            new InstantCommand(() -> subsystemCollection.getAlignWithBranchDirection()
+                                    .setAlignWithBranchSide(AlignToBranchSide.RIGHT)),
+                            new ButtonPressCommand(
+                                    "coDriverController.rightBumper()",
+                                    "Align Right")));
+        }
     }
 }

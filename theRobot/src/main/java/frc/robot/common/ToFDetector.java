@@ -30,11 +30,14 @@ public class ToFDetector {
 
   /**
    * Constructor for ToFDetector class.
-   * Initializes a Time of Flight sensor with specified CAN ID and detection threshold.
-   * Sets the sensor to short ranging mode with 20ms sample time to match robot update rate.
+   * Initializes a Time of Flight sensor with specified CAN ID and detection
+   * threshold.
+   * Sets the sensor to short ranging mode with 20ms sample time to match robot
+   * update rate.
    * 
-   * @param canId The CAN ID of the Time of Flight sensor
-   * @param detectionThresholdInches The threshold distance (in inches) for object detection
+   * @param canId                    The CAN ID of the Time of Flight sensor
+   * @param detectionThresholdInches The threshold distance (in inches) for object
+   *                                 detection
    */
   public ToFDetector(int canId, double maximumDetectionThresholdInches, double minimumDetectionThresholdInches) {
     tofSensor = new TimeOfFlight(canId);
@@ -51,7 +54,7 @@ public class ToFDetector {
   /**
    * A method to flash the sensor
    */
-  public void blinkSensor(){
+  public void blinkSensor() {
     tofSensor.identifySensor();
   }
 
@@ -60,7 +63,7 @@ public class ToFDetector {
    * 
    * @return - the display name
    */
-  public String getDisplayName(){
+  public String getDisplayName() {
     return displayName;
   }
 
@@ -69,7 +72,7 @@ public class ToFDetector {
    * 
    * @return - the current range in inches
    */
-  public double getRangeInches(){
+  public double getRangeInches() {
     return Units.metersToInches(tofSensor.getRange() / 1000);
   }
 
@@ -78,7 +81,7 @@ public class ToFDetector {
    * 
    * @return standard deviation in millimeters
    */
-  public final double getRangeSigma(){
+  public final double getRangeSigma() {
     return tofSensor.getRangeSigma();
   }
 
@@ -103,7 +106,7 @@ public class ToFDetector {
    * 
    * @return true if the sensor correctly measured the distance
    */
-  public boolean isRangeValid(){
+  public boolean isRangeValid() {
     return tofSensor.isRangeValid();
   }
 
@@ -111,7 +114,7 @@ public class ToFDetector {
    * A method that will publish the telemetry associated with this TOF sensor to
    * Shuffleboard
    */
-  public void publishTelemetery(){
+  public void publishTelemetery() {
     SmartDashboard.putNumber(displayName + " Range Inches", this.getRangeInches());
     SmartDashboard.putBoolean(displayName + " Detected", this.isDetected());
     SmartDashboard.putBoolean(displayName + " Range Is Valid", this.isRangeValid());
