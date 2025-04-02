@@ -75,7 +75,7 @@ public class LEDSubsystem extends SubsystemBase {
       currentActions.put(entry.getKey(), entry.getValue().getRecentState());
     }
     // find the states in precidence order
-    LEDState targetLedState = LEDState.Blue;
+    targetLedState = LEDState.Blue;
     if(currentActions.containsKey(LEDState.Green) && currentActions.get(LEDState.Green).booleanValue()) {
       targetLedState = LEDState.Green;
     }

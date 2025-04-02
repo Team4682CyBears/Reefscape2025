@@ -27,7 +27,6 @@ import frc.robot.common.ElevatorPositions;
  * a class for choosing different auto modes from shuffleboard
  */
 public class AutonomousChooser {
-    private SubsystemCollection subsystems;
     private final SendableChooser<AutonomousPath> autonomousPathChooser = new SendableChooser<>();
 
     private Command testAuto;
@@ -43,7 +42,6 @@ public class AutonomousChooser {
      * @param subsystems - the SubsystemCollection
      */
     public AutonomousChooser(SubsystemCollection subsystems) {
-        this.subsystems = subsystems;
         if (subsystems.isDriveTrainPowerSubsystemAvailable()) {
 
             autonomousPathChooser.setDefaultOption("Do Nothing", AutonomousPath.DONOTHING);
