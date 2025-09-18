@@ -51,7 +51,9 @@ public class FollowTrajectoryCommandBuilder {
                         traj,
                         drivetrain::getRobotPosition, // Pose supplier
                         drivetrain::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                        (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+                        (speeds, feedforwards) -> drivetrain.driveRobotCentric(speeds), // Method that will drive the
+                                                                                        // robot given ROBOT RELATIVE
+                                                                                        // ChassisSpeeds.
                         // We do not currently use the module feedforwards
                         Constants.pathFollower,
                         drivetrain.getPathPlannerConfig(), // The robot configuration
@@ -79,7 +81,7 @@ public class FollowTrajectoryCommandBuilder {
         if (alliance.isPresent()) {
             return alliance.get() == Alliance.Red;
         }
-         
+
         return false;
     }
 
@@ -88,7 +90,7 @@ public class FollowTrajectoryCommandBuilder {
      * Used for paths that should never be mirrored
      */
     public static boolean neverMirrorPath() {
-        //when using paths generated from april tag coords always turn mirroring off
+        // when using paths generated from april tag coords always turn mirroring off
         return false;
     }
 

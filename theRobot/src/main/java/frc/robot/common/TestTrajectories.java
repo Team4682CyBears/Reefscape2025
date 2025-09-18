@@ -35,8 +35,9 @@ public class TestTrajectories {
   public PathPlannerPath threeMeter;
 
   private Pose2d traverseBackwardArcStartPosition = new Pose2d(2.0, 0.0, Rotation2d.fromDegrees(0.0));
-  
-  // TODO These velocities and acccelerations were copied from Ted. May need to be changed for new robot. 
+
+  // TODO These velocities and acccelerations were copied from Ted. May need to be
+  // changed for new robot.
   private double maxVelocityMPS = DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
   private double maxAccelerationPMSSq = 1.25; // 6.0 max
   private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
@@ -127,10 +128,10 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      // maybe need to add rotations to get the right direction of travel?
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
-      new Pose2d(1.5, 0.5, Rotation2d.fromDegrees(0)),
-      new Pose2d(3.0, -0.5, Rotation2d.fromDegrees(0)));
+        // maybe need to add rotations to get the right direction of travel?
+        new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
+        new Pose2d(1.5, 0.5, Rotation2d.fromDegrees(0)),
+        new Pose2d(3.0, -0.5, Rotation2d.fromDegrees(0)));
 
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
@@ -151,8 +152,8 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(0.0, 1.0, Rotation2d.fromDegrees(0.0)));
+        new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(0.0, 1.0, Rotation2d.fromDegrees(0.0)));
 
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
@@ -173,11 +174,11 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
-      new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),
-      this.traverseBackwardArcStartPosition);
+        new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
+        new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),
+        this.traverseBackwardArcStartPosition);
 
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
@@ -198,11 +199,11 @@ public class TestTrajectories {
     // The rotation component of the pose should be the direction of travel. Do not
     // use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-      this.traverseBackwardArcStartPosition,
-      new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),      
-      new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
-      new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
-      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
+        this.traverseBackwardArcStartPosition,
+        new Pose2d(1.5, 0.25, Rotation2d.fromDegrees(0)),
+        new Pose2d(1.0, 0.50, Rotation2d.fromDegrees(0)),
+        new Pose2d(0.5, 0.25, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0.0)));
 
     // Create the path using the waypoints created above
     PathPlannerPath p = new PathPlannerPath(
@@ -220,13 +221,14 @@ public class TestTrajectories {
 
   /**
    * A method to return a new path constraint with the default values
+   * 
    * @return PathConstraints
    */
-  private PathConstraints getPathConstraints(){
+  private PathConstraints getPathConstraints() {
     return new PathConstraints(
-      maxVelocityMPS, 
-      maxAccelerationPMSSq, 
-      maxAngularVelocityRadPerSecond, 
-      maxAngularAccelerationRadPerSecondSq);
+        maxVelocityMPS,
+        maxAccelerationPMSSq,
+        maxAngularVelocityRadPerSecond,
+        maxAngularAccelerationRadPerSecondSq);
   }
 }

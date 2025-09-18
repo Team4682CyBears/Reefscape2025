@@ -28,13 +28,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 /**
- * Class to form a command that will make a command to align with an april tag on a reef
+ * Class to form a command that will make a command to align with an april tag
+ * on a reef
  */
 public class AlignWithReefCommand extends Command {
     private Timer timer = new Timer();
@@ -60,11 +60,6 @@ public class AlignWithReefCommand extends Command {
 
     FollowPathCommand followPathCommand;
 
-    private double maxVelocityMPS = 5.3;
-    private double maxAccelerationPMSSq = 3.5; // 6.0 max
-    private double maxAngularVelocityRadPerSecond = DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
-    private double maxAngularAccelerationRadPerSecondSq = 10.0; // 12.0 max
-
     /**
      * Constructor to make a command to align with an april tag on the reef
      * 
@@ -78,7 +73,8 @@ public class AlignWithReefCommand extends Command {
 
         this.shouldAlignBranch = shouldAlignBranch;
 
-        //We dont require any subsystems because we call a command later that requires the drivetrain
+        // We dont require any subsystems because we call a command later that requires
+        // the drivetrain
     }
 
     @Override
@@ -111,15 +107,16 @@ public class AlignWithReefCommand extends Command {
 
                 path = new PathPlannerPath(
                         waypoints,
-                        getPathConstraints(),
+                        Constants.autoAlignPathConstraints,
                         null,
                         new GoalEndState(0.0, RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getRotation()));
 
                 PathPlannerTrajectory traj = new PathPlannerTrajectory(path, drivetrain.getChassisSpeeds(),
                         drivetrain.getGyroscopeRotation(), drivetrain.getPathPlannerConfig());
 
-                //We cant run a path shorter than .5meters this is "intended" by path planner
-                if (!Double.isNaN(traj.getTotalTimeSeconds()) && drivetrain.getRobotPosition().getTranslation().getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) >= 0.5){
+                // We cant run a path shorter than .5meters this is "intended" by path planner
+                if (!Double.isNaN(traj.getTotalTimeSeconds()) && drivetrain.getRobotPosition().getTranslation()
+                        .getDistance(RobotPosesForReef.getPoseFromTagIDWithOffset(tagID).getTranslation()) >= 0.5) {
                     followPathCommand = new FollowPathCommand(
                             path,
                             drivetrain::getRobotPosition, // Pose supplier
@@ -138,17 +135,18 @@ public class AlignWithReefCommand extends Command {
                 break;
             case DRIVINGCOMMAND:
                 drivetrain.setUseVision(false);
-                
-                //We are launching a string of commands from this command because we want to use path planners follow path command and then do stuff after
+
+                // We are launching a string of commands from this command because we want to
+                // use path planners follow path command and then do stuff after
                 followPathCommand.andThen(() -> drivetrain.setUseVision(true))
                         .andThen(new ConditionalCommand(
                                 new AlignToBranchCommand(drivetrain,
                                         this.subsystemCollection.getBranchDetectorSubsystem(),
-                                        () -> this.subsystemCollection.getAlignWithBranchDirection().getAlignWithBranchSide()),
+                                        () -> this.subsystemCollection.getAlignWithBranchDirection()
+                                                .getAlignWithBranchSide()),
                                 new InstantCommand(),
                                 () -> shouldAlignBranch))
                         .schedule();
-                
 
                 done = true;
                 break;
@@ -169,20 +167,10 @@ public class AlignWithReefCommand extends Command {
     }
 
     /**
-   * A method to return a new path constraint with the default values
-   * @return PathConstraints
-   */
-    private PathConstraints getPathConstraints() {
-        return new PathConstraints(
-                maxVelocityMPS,
-                maxAccelerationPMSSq,
-                maxAngularVelocityRadPerSecond,
-                maxAngularAccelerationRadPerSecondSq);
-    }
-
-    /**
      * a method to return wether or not we want to mirror the path
-     * @return when using paths generated from april tag coords always turn mirroring off
+     * 
+     * @return when using paths generated from april tag coords always turn
+     *         mirroring off
      */
     private boolean mirrorPathForRedAliance() {
         return false;

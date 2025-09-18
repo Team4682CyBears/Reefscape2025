@@ -12,7 +12,8 @@ package frc.robot.control;
 
 import frc.robot.subsystems.DrivetrainPowerSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.FunnelSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.EndEffectorSubsystem;
 import frc.robot.subsystems.BranchDetectorSubsystem;
 import frc.robot.subsystems.PowerDistributionPanelWatcherSubsystem;
 import frc.robot.subsystems.WristSubsystem;
@@ -28,12 +29,13 @@ public class SubsystemCollection {
     private CameraSubsystem cameraSubsystem = null;
     private DrivetrainSubsystem driveTrainSubsystem = null;
     private BranchDetectorSubsystem branchDetectorSubsystem = null;
+    private AlignWithBranchDirection alignWithBranchDirection = null;
     private DrivetrainPowerSubsystem driveTrainPowerSubsystem = null;
     private PowerDistributionPanelWatcherSubsystem powerDistributionPanelWatcherSubsystem = null;
     private LEDSubsystem ledSubsystem = null;
-    private AlignWithBranchDirection alignWithBranchDirection = null;
-    private Object elevatorSubsystem = null; // TODO: Replace with real subsystem
-    private Object endEffectorSubsystem = null; // TODO: Replace with real subsystem
+    private ElevatorSubsystem elevatorSubsystem = null;
+    private ElevatorHeightState elevatorHeightState = null;
+    private EndEffectorSubsystem endEffectorSubsystem = null; 
     private WristSubsystem wristSubsystem = null;
     private SimpleNeoMotorSubsystem funnelSubsystem = null;
     private SimpleNeoMotorSubsystem climberSubsystem = null;
@@ -47,28 +49,62 @@ public class SubsystemCollection {
     public DrivetrainSubsystem getDriveTrainSubsystem() {
         return driveTrainSubsystem;
     }
+
     public boolean isDriveTrainSubsystemAvailable() {
         return driveTrainSubsystem != null;
     }
+
     public void setDriveTrainSubsystem(DrivetrainSubsystem value) {
         driveTrainSubsystem = value;
     }
 
-    public BranchDetectorSubsystem getBranchDetectorSubsystem() { return branchDetectorSubsystem; }
-    public void setBranchDetectorSubsystem(BranchDetectorSubsystem value) { branchDetectorSubsystem = value; }
-    public boolean isBranchDetectorSubsystemAvailable() { return branchDetectorSubsystem != null; }
+    public BranchDetectorSubsystem getBranchDetectorSubsystem() {
+        return branchDetectorSubsystem;
+    }
 
-    public CameraSubsystem getCameraSubsystem() { return cameraSubsystem; }
-    public void setCameraSubsystem(CameraSubsystem value) { cameraSubsystem = value; }
-    public boolean isCameraSubsystemAvailable() { return cameraSubsystem != null; }
+    public void setBranchDetectorSubsystem(BranchDetectorSubsystem value) {
+        branchDetectorSubsystem = value;
+    }
 
-    public LEDSubsystem getLedSubsystem() { return ledSubsystem; }
-    public void setLEDSubsystem(LEDSubsystem value) { ledSubsystem = value; }
-    public boolean isLEDSubsystemAvailable() { return cameraSubsystem != null; }
+    public boolean isBranchDetectorSubsystemAvailable() {
+        return branchDetectorSubsystem != null;
+    }
 
-    public AlignWithBranchDirection getAlignWithBranchDirection() { return alignWithBranchDirection; }
-    public void setAlignWithBranchDirection(AlignWithBranchDirection value) { alignWithBranchDirection = value; }
-    public boolean isAlignWithBranchDirection() { return alignWithBranchDirection != null; }
+    public CameraSubsystem getCameraSubsystem() {
+        return cameraSubsystem;
+    }
+
+    public void setCameraSubsystem(CameraSubsystem value) {
+        cameraSubsystem = value;
+    }
+
+    public boolean isCameraSubsystemAvailable() {
+        return cameraSubsystem != null;
+    }
+
+    public LEDSubsystem getLedSubsystem() {
+        return ledSubsystem;
+    }
+
+    public void setLEDSubsystem(LEDSubsystem value) {
+        ledSubsystem = value;
+    }
+
+    public boolean isLEDSubsystemAvailable() {
+        return ledSubsystem != null;
+    }
+
+    public AlignWithBranchDirection getAlignWithBranchDirection() {
+        return alignWithBranchDirection;
+    }
+
+    public void setAlignWithBranchDirection(AlignWithBranchDirection value) {
+        alignWithBranchDirection = value;
+    }
+
+    public boolean isAlignWithBranchDirection() {
+        return alignWithBranchDirection != null;
+    }
 
     public WristSubsystem getWristSubsystem() { return wristSubsystem; }
     public void setWristSubsystem(WristSubsystem value) { wristSubsystem = value; }
@@ -110,11 +146,11 @@ public class SubsystemCollection {
         return manualInput != null;
     }
 
-    public Object getElevatorSubsystem() {
+    public ElevatorSubsystem getElevatorSubsystem() {
         return elevatorSubsystem;
     }
 
-    public void setElevatorSubsystem(Object value) {
+    public void setElevatorSubsystem(ElevatorSubsystem value) {
         elevatorSubsystem = value;
     }
 
@@ -122,11 +158,23 @@ public class SubsystemCollection {
         return elevatorSubsystem != null;
     }
 
-    public Object getEndEffectorSubsystem() {
+    public ElevatorHeightState getElevatorHeightState() {
+        return elevatorHeightState;
+    }
+
+    public void setElevatorHeightState(ElevatorHeightState value) {
+        elevatorHeightState = value;
+    }
+
+    public boolean isElevatorHeightStateAvailable() {
+        return elevatorHeightState != null;
+    }
+
+    public EndEffectorSubsystem getEndEffectorSubsystem() {
         return endEffectorSubsystem;
     }
 
-    public void setEndEffectorSubsystem(Object value) {
+    public void setEndEffectorSubsystem(EndEffectorSubsystem value) {
         endEffectorSubsystem = value;
     }
 

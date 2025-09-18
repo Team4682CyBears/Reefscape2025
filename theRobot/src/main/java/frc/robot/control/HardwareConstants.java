@@ -17,16 +17,19 @@ public class HardwareConstants {
     public static final double ctreStatorCurrentMaximumAmps = 100.0;
     public static final double ctreSupplyCurrentMaximumAmps = 50.0;
     public static final double ctreSupplyVoltageTimeConstant = 0.02;
-   
+
     // ********************************************************************
     // CAN Optimization Constants
     // ctre
     public static final int ctreMotorStatusFramePeriodMilliseconds = 20; // 20ms refresh rate
     public static final int ctreSensorStatusFramePeriodMilliseconds = 30; // 30ms refresh rate
-    public static final double ctreMotorStatusFramePeriodFrequencyHertz = 1000.0/(double)HardwareConstants.ctreMotorStatusFramePeriodMilliseconds;
-    public static final double ctreSensorStatusFramePeriodFrequencyHertz = 1000.0/(double)HardwareConstants.ctreSensorStatusFramePeriodMilliseconds;
+    public static final double ctreMotorStatusFramePeriodFrequencyHertz = 1000.0
+            / (double) HardwareConstants.ctreMotorStatusFramePeriodMilliseconds;
+    public static final double ctreSensorStatusFramePeriodFrequencyHertz = 1000.0
+            / (double) HardwareConstants.ctreSensorStatusFramePeriodMilliseconds;
     // playing with fusion
-    public static final double playingWithFusionSensorPeriodMilliseconds = 24; // 24ms refresh rate as specified in their documentation (max refresh rate)
+    public static final double playingWithFusionSensorPeriodMilliseconds = 24; // 24ms refresh rate as specified in
+                                                                               // their documentation (max refresh rate)
 
     // ********************************************************************
     // Wrist

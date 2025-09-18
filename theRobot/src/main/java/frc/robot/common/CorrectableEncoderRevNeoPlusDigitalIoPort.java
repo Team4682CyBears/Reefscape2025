@@ -10,8 +10,11 @@
 
 package frc.robot.common;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -24,23 +27,35 @@ public class CorrectableEncoderRevNeoPlusDigitalIoPort implements ICorrectableEn
     private boolean motorEncoderPositionReset = false;
 
     /**
-     * Concrete implementation of a pairing between motor encoder and DIO to coordinate resetting of 
+     * Concrete implementation of a pairing between motor encoder and DIO to
+     * coordinate resetting of
      * encoder position based on state change of DIO
-     * @param revNeoEncoder - the REV Neo motor encoder
-     * @param stateDevice - the DIO state device
-     * @param encoderTicksAtStateChange - the set point to use for the motors encoder when the state
-     * changes between the current and previous calls into getCurrentEncoderPosition
-     * @param sensorTriggeredEncoderInitialPositionTicks - the initial set point to use for the motors
-     * encoder when sensor IS triggered to start 
-     * @param sensorNotTriggeredEncoderInitialPositionTicks - the initial set point to use for the motors
-     * encoder when sensor is NOT triggered to start 
+     * 
+     * @param revNeoEncoder                                 - the REV Neo motor
+     *                                                      encoder
+     * @param stateDevice                                   - the DIO state device
+     * @param encoderTicksAtStateChange                     - the set point to use
+     *                                                      for the motors encoder
+     *                                                      when the state
+     *                                                      changes between the
+     *                                                      current and previous
+     *                                                      calls into
+     *                                                      getCurrentEncoderPosition
+     * @param sensorTriggeredEncoderInitialPositionTicks    - the initial set point
+     *                                                      to use for the motors
+     *                                                      encoder when sensor IS
+     *                                                      triggered to start
+     * @param sensorNotTriggeredEncoderInitialPositionTicks - the initial set point
+     *                                                      to use for the motors
+     *                                                      encoder when sensor is
+     *                                                      NOT triggered to start
      */
     public CorrectableEncoderRevNeoPlusDigitalIoPort(
-        RelativeEncoder revNeoEncoder,
-        DigitalInput stateDevice,
-        double encoderTicksAtStateChange,
-        double sensorTriggeredEncoderInitialPositionTicks,
-        double sensorNotTriggeredEncoderInitialPositionTicks) {
+            RelativeEncoder revNeoEncoder,
+            DigitalInput stateDevice,
+            double encoderTicksAtStateChange,
+            double sensorTriggeredEncoderInitialPositionTicks,
+            double sensorNotTriggeredEncoderInitialPositionTicks) {
 
         revNeoMotorEncoder = revNeoEncoder;
         dioStateDevice = stateDevice;
@@ -49,39 +64,46 @@ public class CorrectableEncoderRevNeoPlusDigitalIoPort implements ICorrectableEn
         lastState = dioStateDevice.get();
 
         // dio state of false is 'triggered' (as in LED is illuminated for 2023 sensors)
-        if(lastState == false) {
+        if (lastState == false) {
             this.revNeoMotorEncoder.setPosition(sensorTriggeredEncoderInitialPositionTicks);
-        }
-        else {
+        } else {
             this.revNeoMotorEncoder.setPosition(sensorNotTriggeredEncoderInitialPositionTicks);
         }
     }
 
     /**
-     * An method intended to be called periodically (as in 1x per 20 ms) that will be used to both
-     * correct the motors encoder (when necessary) and also return the current motor encoder position.
+     * An method intended to be called periodically (as in 1x per 20 ms) that will
+     * be used to both
+     * correct the motors encoder (when necessary) and also return the current motor
+     * encoder position.
+     * 
      * @return a double representing the motor encoder ticks
      */
-    public double getCurrentEncoderPosition() {
+    public Angle getCurrentEncoderPosition() {
 
         boolean currentState = this.dioStateDevice.get();
 
-        if(currentState != this.lastState) {
+        if (currentState != this.lastState) {
             this.revNeoMotorEncoder.setPosition(this.encoderTicksAtStateChangeSetPoint);
             this.lastState = currentState;
             motorEncoderPositionReset = true;
             DataLogManager.log(">>>>>>> Climber Sensor triggered. Resetting motor encoder position");
         }
 
-        return this.revNeoMotorEncoder.getPosition();
+        return Rotations.of(this.revNeoMotorEncoder.getPosition());
     }
 
     /**
-     * An  method that will be used to determine if the motor encoder position has ever been reset.
+     * An method that will be used to determine if the motor encoder position has
+     * ever been reset.
+     * 
      * @return a boolean to describe if the motor encoder has ever been reset
      */
     public boolean getMotorEncoderEverReset() {
         return motorEncoderPositionReset;
+    }
+
+    public void updateEncoderPosition() {
     }
 
 }

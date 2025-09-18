@@ -15,15 +15,16 @@ import frc.robot.control.Constants;
 import frc.robot.subsystems.SimpleNeoMotorSubsystem;
 
 /**
- * Forms a command to open the funnel. 
+ * Forms a command to open the funnel.
  */
 public class OpenFunnelCommand extends Command {
     SimpleNeoMotorSubsystem funnelSubsystem;
-    
+
     private static final double openSpeed = Constants.funnelMotorSpeed;
 
     /**
-     * Constructor for open funnel command. 
+     * Constructor for open funnel command.
+     * 
      * @param funnelSubsystem
      */
     public OpenFunnelCommand(SimpleNeoMotorSubsystem funnelSubsystem) {
@@ -33,7 +34,7 @@ public class OpenFunnelCommand extends Command {
     }
 
     /**
-     * Called once per tick when the command is running. 
+     * Called once per tick when the command is running.
      */
     @Override
     public void execute() {
@@ -49,12 +50,12 @@ public class OpenFunnelCommand extends Command {
     }
 
     /**
-     * Returns true when the command should end. 
+     * Returns true when the command should end.
      */
     @Override
     public boolean isFinished() {
         // Using this command with an onTrue trigger. Command will be canceled once
-        // the trigger is false. 
-        return false; 
+        // the trigger is false.
+        return false;
     }
 }

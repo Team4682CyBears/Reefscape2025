@@ -19,5 +19,5 @@ public enum LEDState {
     OrangeSolid,
     Yellow,
     Green,
+    Blue
 }
-

@@ -21,10 +21,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.common.MotorUtils;
 
 /**
- * Forms a class for a simple neo motor subsystem. 
+ * Forms a class for a simple neo motor subsystem.
  * Can be used in multiple places.
- * Supports a notion of a max speed, and setting the motor to the desired speed (up to max speed), 
- * and stopping the motor. 
+ * Supports a notion of a max speed, and setting the motor to the desired speed
+ * (up to max speed),
+ * and stopping the motor.
  */
 public class SimpleNeoMotorSubsystem extends SubsystemBase {
     // configurtition for the motor begins here
@@ -32,9 +33,10 @@ public class SimpleNeoMotorSubsystem extends SubsystemBase {
     private double maxSpeed;
 
     /**
-     * Constructor for simpleNeoMotorSubsystem. 
-     * @param canID the can ID of the motor
-     * @param maxSpeed the max speed of the motor. 
+     * Constructor for simpleNeoMotorSubsystem.
+     * 
+     * @param canID    the can ID of the motor
+     * @param maxSpeed the max speed of the motor.
      */
     public SimpleNeoMotorSubsystem(int canID, double maxSpeed) {
         this.maxSpeed = maxSpeed;
@@ -50,9 +52,10 @@ public class SimpleNeoMotorSubsystem extends SubsystemBase {
 
     /**
      * A method to return the max speed
+     * 
      * @return max speed
      */
-    public double getMaxSpeed(){
+    public double getMaxSpeed() {
         return this.maxSpeed;
     }
 

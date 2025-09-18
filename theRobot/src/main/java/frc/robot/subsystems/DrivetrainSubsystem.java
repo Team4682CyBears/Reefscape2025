@@ -23,6 +23,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import frc.robot.control.Constants;
 import frc.robot.control.InstalledHardware;
 import frc.robot.generated.LimelightHelpers;
+import frc.robot.generated.TardiTunerConstants;
 import frc.robot.generated.Telemetry;
 import frc.robot.control.SwerveDriveMode;
 import frc.robot.generated.TedTunerConstants;
@@ -39,8 +40,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -98,13 +97,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private SwerveDriveMode swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
 
-  // TODO when the second TunerConstants is generated, change this to 
-  // InstalledHardware.tedDrivetrainInstalled ? 
-  // new TedTunerConstants.TunerSwerveDrivetrain(...) :
-  // new FooTunerConstants.TunerSwerveDrivetrain(...)
-  private SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = new TedTunerConstants.TunerSwerveDrivetrain(TedTunerConstants.DrivetrainConstants, 0,
-      odometryStdDev, visionStdDev,
-      TedTunerConstants.FrontLeft, TedTunerConstants.FrontRight, TedTunerConstants.BackLeft, TedTunerConstants.BackRight);
+  private SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain = InstalledHardware.tardiDrivetrainInstalled
+      ? new TardiTunerConstants.TunerSwerveDrivetrain(TardiTunerConstants.DrivetrainConstants, 0,
+          odometryStdDev, visionStdDev,
+          TardiTunerConstants.FrontLeft, TardiTunerConstants.FrontRight, TardiTunerConstants.BackLeft,
+          TardiTunerConstants.BackRight)
+      : new TedTunerConstants.TunerSwerveDrivetrain(TedTunerConstants.DrivetrainConstants, 0,
+          odometryStdDev, visionStdDev,
+          TedTunerConstants.FrontLeft, TedTunerConstants.FrontRight, TedTunerConstants.BackLeft,
+          TedTunerConstants.BackRight);
 
   private SwerveRequest.FieldCentric fieldCentricDriveController = new SwerveRequest.FieldCentric()
       .withDriveRequestType(com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType.OpenLoopVoltage);
@@ -123,7 +124,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * Constructor for this DrivetrainSubsystem
    */
   public DrivetrainSubsystem(SubsystemCollection subsystems) {
-    if(InstalledHardware.limelightInstalled){
+    if (InstalledHardware.limelightInstalled) {
       cameraSubsystem = subsystems.getCameraSubsystem();
     }
 
@@ -131,31 +132,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     publisher = NetworkTableInstance.getDefault().getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-
     // TODO change this to use the explicit config below (one debugged)
-    // We don't want to rely on accessing PathPlanner GUI in a match. 
+    // We don't want to rely on accessing PathPlanner GUI in a match.
     // get Path Planner config from GUI settings.
-    try{
+    try {
       pathPlannerRobotConfig = RobotConfig.fromGUISettings();
     } catch (Exception e) {
       // Handle exception as needed
       e.printStackTrace();
     }
     /**
-    pathPlannerRobotConfig = new RobotConfig(
-      29.0, 
-      4.2,
-      new ModuleConfig(
-        Constants.SWERVE_WHEEL_DIAMETER / 2,
-        MAX_VELOCITY_METERS_PER_SECOND + 1.0, //PP doesn't like our low velocity?
-        1.0, // default value
-        // from CTRE Kraken x 60 https://ctre.download/files/datasheet/Motor%20Performance%20Analysis%20Report.pdf
-        new DCMotor(12.0, 7.09,  374.38, 2.0, 6000 * 2 * Math.PI * 60, 1),
-        1.0/SWERVE_DRIVE_REDUCTION,
-        50,
-        1));
-    */
+     * pathPlannerRobotConfig = new RobotConfig(
+     * 29.0,
+     * 4.2,
+     * new ModuleConfig(
+     * Constants.SWERVE_WHEEL_DIAMETER / 2,
+     * MAX_VELOCITY_METERS_PER_SECOND + 1.0, //PP doesn't like our low velocity?
+     * 1.0, // default value
+     * // from CTRE Kraken x 60
+     * https://ctre.download/files/datasheet/Motor%20Performance%20Analysis%20Report.pdf
+     * new DCMotor(12.0, 7.09, 374.38, 2.0, 6000 * 2 * Math.PI * 60, 1),
+     * 1.0/SWERVE_DRIVE_REDUCTION,
+     * 50,
+     * 1));
+     */
   }
 
   /**
@@ -167,14 +167,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveFieldCentric(ChassisSpeeds updatedChassisSpeeds) {
-    // if we are switching from robot centric to field centric, 
-    // convert the previous chassis speeds to the correct frame of reference. 
-    if (swerveDriveMode == SwerveDriveMode.ROBOT_CENTRIC_DRIVING){
+    // if we are switching from robot centric to field centric,
+    // convert the previous chassis speeds to the correct frame of reference.
+    if (swerveDriveMode == SwerveDriveMode.ROBOT_CENTRIC_DRIVING) {
       this.previousChassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
     }
     this.swerveDriveMode = SwerveDriveMode.FIELD_CENTRIC_DRIVING;
     this.chassisSpeeds = updatedChassisSpeeds;
-    
+
   }
 
   /**
@@ -188,9 +188,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param updatedChassisSpeeds - the updated chassis speeds (x, y and rotation)
    */
   public void driveRobotCentric(ChassisSpeeds updatedChassisSpeeds) {
-    // if we are switching from field centric to robot centric, 
-    // convert the previous chassis speeds to the correct frame of reference. 
-    if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING){
+    // if we are switching from field centric to robot centric,
+    // convert the previous chassis speeds to the correct frame of reference.
+    if (swerveDriveMode == SwerveDriveMode.FIELD_CENTRIC_DRIVING) {
       this.previousChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(previousChassisSpeeds, getGyroscopeRotation());
     }
     this.swerveDriveMode = SwerveDriveMode.ROBOT_CENTRIC_DRIVING;
@@ -284,7 +284,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
      * occurs during testing.
      */
     if (DriverStation.isDisabled()) {
-      if (!m_hasAppliedOperatorPerspective){
+      if (!m_hasAppliedOperatorPerspective) {
         DriverStation.getAlliance().ifPresent(allianceColor -> {
           drivetrain.setOperatorPerspectiveForward(
               allianceColor == Alliance.Red
@@ -293,9 +293,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
           m_hasAppliedOperatorPerspective = true;
         });
       }
-      //TODO validate this at test field
-      //When disabled countinually set the botpose to what the vision says
-      
+      // When disabled countinually set the botpose to what the vision says
+
       this.seedRobotPositionFromVision();
     }
 
@@ -308,7 +307,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
           recentVisionYaws.remove(0);
         }
       }
-      if(DriverStation.isEnabled()){
+      if (DriverStation.isEnabled()) {
         this.addVisionMeasurement(visionMeasurement);
       }
     }
@@ -399,16 +398,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * Take the median of multiple vision-based yaws from botPose
    * Seed that yaw into the camera.
    * Read the botPoseOrb
-   * Use the combination of botPoseOrb translation with median rotation to set robot position
-   * this should only be called when robot is stationary (i.e. when disabled or otherwise not moving)
+   * Use the combination of botPoseOrb translation with median rotation to set
+   * robot position
+   * this should only be called when robot is stationary (i.e. when disabled or
+   * otherwise not moving)
    */
   public void seedRobotPositionFromVision() {
     if (recentVisionYaws.size() != 0) {
-      //TODO check the latency between SetRobotOrientation and being able to getVisionBotPoseOrb based on that updated orientation being set
+      // TODO check the latency between SetRobotOrientation and being able to
+      // getVisionBotPoseOrb based on that updated orientation being set
       LimelightHelpers.SetRobotOrientation("", getMedianOfList(recentVisionYaws), 0, 0, 0, 0, 0);
       Pose2d visonBotPoseOrb = cameraSubsystem.getVisionBotPoseOrb().getRobotPosition();
       if (visonBotPoseOrb != null) {
-        Pose2d combinedBotPose = new Pose2d(visonBotPoseOrb.getTranslation(), Rotation2d.fromDegrees(getMedianOfList(recentVisionYaws)));
+        Pose2d combinedBotPose = new Pose2d(visonBotPoseOrb.getTranslation(),
+            Rotation2d.fromDegrees(getMedianOfList(recentVisionYaws)));
         this.setRobotPosition(combinedBotPose);
       }
     }
@@ -420,10 +423,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param list the list of Double values to find the median of
    * @return the median value of the list
    */
-  public Double getMedianOfList(ArrayList<Double> list){
+  public Double getMedianOfList(ArrayList<Double> list) {
     ArrayList<Double> modifiedList = new ArrayList<Double>(list);
     Collections.sort(modifiedList);
-    return modifiedList.get((int)(modifiedList.size()/2));
+    return modifiedList.get((int) (modifiedList.size() / 2));
   }
 
   /**
@@ -440,7 +443,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
       if (visionComputedMeasurement != null) {
         // we want to reject vision measurements that are more than 1 meter away in case
         // vison gives a bad read
-        lessThanAMeter = visionComputedMeasurement.getTranslation().getDistance(getRobotPosition().getTranslation()) <= 1;
+        lessThanAMeter = visionComputedMeasurement.getTranslation()
+            .getDistance(getRobotPosition().getTranslation()) <= 1;
         if (lessThanAMeter) {
           drivetrain.addVisionMeasurement(visionComputedMeasurement, visionMeasurement.getTimestamp());
         }
@@ -533,7 +537,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private void displayDiagnostics() {
     if (displayOdometryDiagnostics) {
       VisionMeasurement visionBotPose = cameraSubsystem.getVisionBotPose();
-      if (visionBotPose.getRobotPosition() != null){
+      if (visionBotPose.getRobotPosition() != null) {
         SmartDashboard.putNumber("vision x", visionBotPose.getRobotPosition().getX());
         SmartDashboard.putNumber("vision y", visionBotPose.getRobotPosition().getY());
         SmartDashboard.putNumber("vision theta", visionBotPose.getRobotPosition().getRotation().getDegrees());
