@@ -198,7 +198,7 @@ public class ManualInputInterfaces {
                     && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
                             if(this.subsystemCollection.isWristSubsystemAvailable()) {
                                     // Rotate to coralAngle
-                                    this.driverController.rightBumper().onTrue(
+                                    this.driverController.povUp().onTrue(
                                         new ParallelCommandGroup(
                                             new InstantCommand(),
                                             new WristSetAngleCommand(
@@ -206,7 +206,7 @@ public class ManualInputInterfaces {
                                                 this.subsystemCollection.getWristSubsystem())));
 
                                     // Rotate to algaeRemoverAngle
-                                    this.driverController.leftBumper().onTrue(
+                                    this.driverController.povDown().onTrue(
                                             new ParallelCommandGroup(
                                                 new InstantCommand(),
                                                 new WristSetAngleCommand(
