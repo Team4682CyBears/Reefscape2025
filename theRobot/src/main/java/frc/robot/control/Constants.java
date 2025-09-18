@@ -152,7 +152,6 @@ public final class Constants {
 
     // Climber
     public static final int climberMotorCanID = 22;
-    public static final int funnelMotorCanID = 23;
     public static final double ClimberMotorMaxSpeed = 0.4;
 
     // Wrist
@@ -165,7 +164,7 @@ public final class Constants {
         public static final int kDriverControllerPort = 0;
     }
 
-    public static final double shooterAngle = 0;
+    public static final double coralAngle = 0;
     public static final double algaeAngle = 90;
 
     // MotionMagic 

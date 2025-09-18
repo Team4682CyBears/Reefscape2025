@@ -131,16 +131,16 @@ public class WristSubsystem extends SubsystemBase {
    * @return degrees
    */
   public double positionToDegrees(WristPosition position){
-    double angle = Constants.shooterAngle;
+    double angle = Constants.coralAngle;
     switch (position) {
-      case algae:
+      case ALGAE:
         angle = Constants.algaeAngle;
         break;
-      case shooter:
-        angle = Constants.shooterAngle;
+      case CORAL:
+        angle = Constants.coralAngle;
         break;
       default:
-        angle = Constants.shooterAngle;
+        angle = Constants.coralAngle;
         break;
     }
     return angle;
