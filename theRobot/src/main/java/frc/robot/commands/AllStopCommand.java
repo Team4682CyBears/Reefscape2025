@@ -33,9 +33,11 @@ public class AllStopCommand extends Command {
         if (this.subsystems.isDriveTrainSubsystemAvailable()) {
             addRequirements(this.subsystems.getDriveTrainSubsystem());
         }
-        if(this.subsystems.isWristSubsystemAvailable()) {
-            addRequirements(this.subsystems.getWristSubsystem());
-        }
+
+        // TODO: MERGE CONFLICT, CANNOT FIND METHOD
+        //if(this.subsystems.isWristSubsystemAvailable()) {
+        //    addRequirements(this.subsystems.getWristSubsystem());
+        //}
     }
 
     @Override
@@ -51,9 +53,12 @@ public class AllStopCommand extends Command {
         System.out.println("I CLEARED ALL COMMANDS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         
         // TODO add stop commands for all other subsystems here. 
-        if(this.subsystems.isWristSubsystemAvailable()) {
-            this.subsystems.getWristSubsystem().setAngleDegrees(this.subsystems.getWristSubsystem().getAngleDegrees());
-        }
+
+
+        // TODO: MERGE CONFLICT, CANNOT FIND METHOD
+        //if(this.subsystems.isWristSubsystemAvailable()) {
+        //    this.subsystems.getWristSubsystem().setAngleDegrees(this.subsystems.getWristSubsystem().getAngleDegrees());
+        //}
     }
 
     @Override

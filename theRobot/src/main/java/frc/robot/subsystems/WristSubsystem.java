@@ -36,7 +36,7 @@ import frc.robot.control.Constants;
 import frc.robot.control.HardwareConstants;
 import frc.robot.control.InstalledHardware;
 import frc.robot.common.MotorUtils;
-import frc.robot.common.ShooterPosition;
+import frc.robot.common.WristPosition;
 
 /**
  * Forms a class for the shooter subsystem
@@ -130,7 +130,7 @@ public class WristSubsystem extends SubsystemBase {
    * @param position
    * @return degrees
    */
-  public double positionToDegrees(ShooterPosition position){
+  public double positionToDegrees(WristPosition position){
     double angle = Constants.shooterAngle;
     switch (position) {
       case algae:
