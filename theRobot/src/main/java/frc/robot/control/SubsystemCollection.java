@@ -106,9 +106,17 @@ public class SubsystemCollection {
         return alignWithBranchDirection != null;
     }
 
-    public WristSubsystem getWristSubsystem() { return wristSubsystem; }
-    public void setWristSubsystem(WristSubsystem value) { wristSubsystem = value; }
-    public boolean isWristSubsystemAvailable() { return wristSubsystem != null; }
+    public WristSubsystem getWristSubsystem() {
+        return wristSubsystem;
+    }
+
+    public void setWristSubsystem(WristSubsystem value) {
+        wristSubsystem = value;
+    }
+
+    public boolean isWristSubsystemAvailable() {
+        return wristSubsystem != null;
+    }
 
     public DrivetrainPowerSubsystem getDriveTrainPowerSubsystem() {
         return driveTrainPowerSubsystem;
