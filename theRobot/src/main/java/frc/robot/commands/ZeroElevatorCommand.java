@@ -21,6 +21,8 @@ import frc.robot.control.Constants;
  */
 public class ZeroElevatorCommand extends Command {
     private final ElevatorSubsystem elevatorSubsystem;
+    private static final double TIMEOUT_SECONDS = 3.0;
+    private double startTime;
 
     /**
      * Constructor for ZeroElevatorCommand.
@@ -37,6 +39,7 @@ public class ZeroElevatorCommand extends Command {
      */
     @Override
     public void initialize() {
+        startTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
     }
 
     /**
@@ -47,12 +50,10 @@ public class ZeroElevatorCommand extends Command {
         elevatorSubsystem.moveDown();
     }
 
-    /**
-     * Determines when the command should end.
-     */
     @Override
     public boolean isFinished() {
-        return elevatorSubsystem.isLimitSwitchPressed();
+        double elapsedTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - startTime;
+        return elevatorSubsystem.isLimitSwitchPressed() || elapsedTime >= TIMEOUT_SECONDS;
     }
 
     /**
