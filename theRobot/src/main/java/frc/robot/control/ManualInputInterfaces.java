@@ -287,6 +287,12 @@ public class ManualInputInterfaces {
                                 new ButtonPressCommand(
                                         "coDriverController.povUp()",
                                         "Set target elevator position to L4")));
+                this.coDriverController.back().onTrue(
+                        new ParallelCommandGroup(
+                                new ZeroElevatorCommand(this.subsystemCollection.getElevatorSubsystem()),
+                                new ButtonPressCommand(
+                                        "coDriverController.back()",
+                                        "zero elevator")));
             }
 
             if (this.subsystemCollection.isFunnelSubsystemAvailable()) {

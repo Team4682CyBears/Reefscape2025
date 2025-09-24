@@ -62,6 +62,10 @@ public class CorrectableEncoderPlusDigitalIoPort implements ICorrectableEncoder 
         return position.getValue();
     }
 
+    public void setCurrentEncoderPosition(double rotations) {
+        this.talonFXMotorEncoder.setPosition(rotations);
+    }
+
     /**
      * A method intended to be called periodicially (as in 1x per 20 ms) that will
      * be used to
