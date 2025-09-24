@@ -40,7 +40,7 @@ import static edu.wpi.first.units.Units.Rotations;
 public class ElevatorSubsystem extends SubsystemBase {
 
   // define class variables
-  private double inchesPerRotation = 0.8; // a combination of the wheel circumference and the gearing.
+  private double inchesPerRotation = Constants.inchesPerRotation;
   // We make the assumption that the elevator starts below the mag sensor.
   // It doesn't matter exactly where below the mag sensor.
   // Once it moves up past the mag sensor, then it will have its correct position.
@@ -61,6 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   // contoller for joystick-based movement
   private final DutyCycleOut elevatorJoystickController = new DutyCycleOut(0.0);
 
+  private DigitalInput elevatorLimSwitch = new DigitalInput(Constants.elevatorLimitSwitchChannel);
   private DigitalInput elevatorMageneticSensor = new DigitalInput(Constants.elevatorMageneticSensorID);
   private ElevatorMovementMode elevatorMovementMode = ElevatorMovementMode.STOPPED;
   private ElevatorMovementMode previousElevatorMovementMode = ElevatorMovementMode.STOPPED;
@@ -99,6 +100,17 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public Distance getCurrentHeight() {
     return angleToDistance(elevatorCorrectableEncoder.getCurrentEncoderPosition());
+  }
+
+  public void setCurrentHeight(Distance height) {
+    elevatorCorrectableEncoder.setCurrentEncoderPosition(distanceToAngle(height).in(Rotations));
+  }
+
+  /*
+   * returns if the limit switch is pressed
+   */
+  public boolean isLimitSwitchPressed() {
+    return elevatorLimSwitch.get();
   }
 
   /**
