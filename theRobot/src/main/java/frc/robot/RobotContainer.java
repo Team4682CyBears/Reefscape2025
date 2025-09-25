@@ -172,10 +172,15 @@ public class RobotContainer {
 
       SimpleNeoMotorSubsystem climberSubsystem = subsystems.getClimberSubsystem();
 
-      climberSubsystem.setDefaultCommand(new DefaultClimberCommand(climberSubsystem,
+      climberSubsystem.setDefaultCommand(new DefaultClimberCommand(
+          climberSubsystem,
           () -> -subsystems.getManualInputInterfaces().getCoDriverLeftY()
               * subsystems.getClimberSubsystem().getMaxSpeed(),
-          () -> subsystems.getManualInputInterfaces().isCLimberLimSwitchPressed()));
+          () -> {
+            boolean limitSwitchPressed = subsystems.getManualInputInterfaces().isCLimberLimSwitchPressed();
+            boolean manualOverride = subsystems.getManualInputInterfaces().isCoDriverRightTriggerHeld();
+            return limitSwitchPressed && !manualOverride;
+          }));
       DataLogManager.log("SUCCESS: initializeClimber");
     } else {
       DataLogManager.log("FAIL: initializeClimber");

@@ -87,6 +87,15 @@ public class ManualInputInterfaces {
         return -coDriverController.getLeftY();
     }
 
+/**
+ * Checks if the right trigger on the co-driver's controller is currently being held.
+ *
+ * @return - a boolean if the right trigger is held
+ */
+    public boolean isCoDriverRightTriggerHeld(){
+        return coDriverController.rightTrigger().getAsBoolean();
+    }
+
     /**
      * A method to return the Y value of the right joystick on the co-driver's
      * controller
