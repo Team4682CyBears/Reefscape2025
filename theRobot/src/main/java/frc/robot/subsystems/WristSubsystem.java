@@ -56,8 +56,8 @@ public class WristSubsystem extends SubsystemBase {
   private static final double wristLowVelocityTol = 10;   
 
   // CanIds to "talk" to hardware
-  private TalonFX angleMotor = new TalonFX(Constants.shooterMotorCanId);
-  private CANcoder angleEncoder = new CANcoder(Constants.shooterEncoderCanId);
+  private TalonFX angleMotor = new TalonFX(Constants.wristMotorCanID);
+  private CANcoder angleEncoder = new CANcoder(Constants.wristCANCoderCanID);
 
   // control class
   private final MotionMagicVoltage angleVoltageController = new MotionMagicVoltage(0);
@@ -152,6 +152,7 @@ public class WristSubsystem extends SubsystemBase {
    */
   public void setAngleDegrees(double degrees){
     DataLogManager.log("Setting Wrist Angle to " + degrees + " degrees.");
+    System.out.println("Setting Wrist Angle to " + degrees + " degrees.");
 
     // check if set angle is in between max and min angle range
     double clampedDegrees = MotorUtils.clamp(degrees, Constants.wristMinDegrees, Constants.wristMaxDegrees);
@@ -218,7 +219,7 @@ public class WristSubsystem extends SubsystemBase {
       angleConfigs.Feedback.SensorToMechanismRatio = angleEncoderGearRatio;
       angleConfigs.Feedback.RotorToSensorRatio =   angleMotorGearRatio;
       angleConfigs.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-      angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.shooterEncoderCanId;
+      angleConfigs.Feedback.FeedbackRemoteSensorID = Constants.wristCANCoderCanID;
       // offset is set in CanCoder config above
     } 
 

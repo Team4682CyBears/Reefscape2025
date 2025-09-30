@@ -231,6 +231,12 @@ public class RobotContainer {
           new DefaultElevatorCommand(
               elevatorSubsystem,
               () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.1)));
+      // TODO: Create own thing
+      if (InstalledHardware.wristInstalled) {
+        WristSubsystem wristSubsystem = new WristSubsystem();
+
+        subsystems.setWristSubsystem(wristSubsystem);
+      }
       DataLogManager.log("SUCCESS: initializeElevator");
     } else {
       DataLogManager.log("FAIL: initializeElevator");

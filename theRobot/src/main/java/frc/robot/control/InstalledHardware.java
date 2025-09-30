@@ -51,7 +51,7 @@ public class InstalledHardware {
     public static final boolean branchDetectorInstalled = true;
 
     // EndEffector
-    public static final boolean endEffectorInstalled = true;
+    public static final boolean endEffectorInstalled = false;
 
     // Elevator
     public static final boolean elevatorInstalled = true;

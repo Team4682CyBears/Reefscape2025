@@ -154,10 +154,6 @@ public final class Constants {
     public static final int climberMotorCanID = 22;
     public static final double ClimberMotorMaxSpeed = 0.4;
 
-    // Wrist
-    public static final int shooterMotorCanId = 5;
-    public static final int shooterEncoderCanId = 24;
-
     // ********************************************************************
     // Wrist
     public static class OperatorConstants {
