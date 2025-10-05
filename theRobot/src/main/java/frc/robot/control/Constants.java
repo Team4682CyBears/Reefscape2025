@@ -11,6 +11,7 @@
 package frc.robot.control;
 
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.ImmutableDistance;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import static edu.wpi.first.units.Units.Inches;
@@ -105,6 +106,7 @@ public final class Constants {
 
     // ********************************************************************
     // Elevator Constants
+    public static final double inchesPerRotation = 0.8; // a combination of the wheel circumference and the gearing.
 
     public static final Distance elevatorZeroFromFloor = Inches.of(9);
     public static final Distance L1Height = Inches.of(25.2).minus(elevatorZeroFromFloor);
@@ -114,6 +116,9 @@ public final class Constants {
     public static final Distance stowHeight = Inches.of(13.86).minus(elevatorZeroFromFloor);
 
     public static final int elevatorMageneticSensorID = 0;
+    public static final int elevatorLimitSwitchChannel = 2;
+
+    public static final Distance zeroElevatorHeight = Inches.of(0.0);
 
     // Elevator Motor Config constant variables
     public static final double elevatorMinimumMotorSpeedRpm = 0.25 * 60;
