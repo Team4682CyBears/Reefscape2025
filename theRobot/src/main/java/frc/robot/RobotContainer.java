@@ -68,6 +68,9 @@ public class RobotContainer {
     // do late binding of default commands
     this.lateBindDefaultCommands();
 
+    // shooter subsystem init
+    this.initializeWristSubsystem();
+
     subsystems.setAlignWithBranchDirection(new AlignWithBranchDirection());
 
     if (subsystems.isDriveTrainSubsystemAvailable()) {
@@ -233,6 +236,12 @@ public class RobotContainer {
           new DefaultElevatorCommand(
               elevatorSubsystem,
               () -> RobotContainer.deadband(subsystems.getManualInputInterfaces().getCoDriverRightY(), 0.1)));
+      // TODO: Create own thing
+      if (InstalledHardware.wristInstalled) {
+        WristSubsystem wristSubsystem = new WristSubsystem();
+
+        subsystems.setWristSubsystem(wristSubsystem);
+      }
       DataLogManager.log("SUCCESS: initializeElevator");
     } else {
       DataLogManager.log("FAIL: initializeElevator");
@@ -333,4 +342,17 @@ public class RobotContainer {
 
     return value;
   }
+
+  /**
+   * A method to init the shooter angle
+   */
+  private void initializeWristSubsystem() {
+    if(InstalledHardware.wristInstalled) {
+      DataLogManager.log("SUCCESS: WristSubsystem");
+    }
+    else {
+      DataLogManager.log("FAIL: WristSubsystem");
+    }
+  }
 }
+

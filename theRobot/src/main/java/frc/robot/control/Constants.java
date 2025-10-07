@@ -20,6 +20,11 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
+// imports for shooter angle
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
+
 public final class Constants {
 
     public final static double DriveVoltageScalar = 1.0;
@@ -147,5 +152,33 @@ public final class Constants {
 
     // Climber
     public static final int climberMotorCanID = 22;
-    public static final double ClimberMotorMaxSpeed = 1;
+    public static final double ClimberMotorMaxSpeed = 0.4;
+
+    // ********************************************************************
+    // Wrist
+    public static class OperatorConstants {
+        public static final int kDriverControllerPort = 0;
+    }
+
+    public static final double coralAngle = 0;
+    public static final double algaeAngle = 90;
+
+    // MotionMagic 
+    public static final double cruiseVelocity = 800.0;
+    public static final double acceleration = 160;
+    public static final double jerk = 800; 
+
+    //Motor angle min/max
+    public static final double wristMaxDegrees = 110;
+    public static final double wristMinDegrees = -20;  
+
+    public static InvertedValue angleTalonShooterMotorDefaultDirection = InvertedValue.Clockwise_Positive;
+    public static final double shooterStartingAngleOffsetDegrees = 20.0;
+
+    // *******************************************************************
+    // shooter angle constants 
+    public static SensorDirectionValue wristSensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    public static final double shooterAbsoluteAngleOffsetDegrees = -166.11;
+    public static final double wristToleranceDegrees = 0.5;
+
 }

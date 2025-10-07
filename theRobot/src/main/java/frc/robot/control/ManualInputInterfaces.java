@@ -202,14 +202,30 @@ public class ManualInputInterfaces {
                             new ButtonPressCommand(
                                     "driverController.x()",
                                     "!!!!!!!!!!!!!!!!!!!! ALL STOP !!!!!!!!!!!!!!!!!!!!!")));
+        DataLogManager.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! LOOK AT THIS MESSAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if(this.subsystemCollection.isWristSubsystemAvailable() && this.subsystemCollection.isElevatorSubsystemAvailable()) {
+                // Rotate to coralAngle
+                System.out.println("POV UP/DOWN SELECTED.");
 
-            if (this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
-                this.driverController.leftBumper().whileTrue(
+                this.driverController.povUp().onTrue(
                         new ParallelCommandGroup(
-                                new ClearAlgaeCommand(this.subsystemCollection.getEndEffectorSubsystem()),
-                                new ButtonPressCommand(
-                                        "driverController.leftBumper()",
-                                        "Remove Algae")));
+                        new InstantCommand(),
+                        new WristSetAngleCommand(
+                                Constants.coralAngle, 
+                                this.subsystemCollection.getWristSubsystem())));
+
+                // Rotate to algaeRemoverAngle
+                this.driverController.povDown().onTrue(
+                        new ParallelCommandGroup(
+                                new InstantCommand(),
+                                new WristSetAngleCommand(
+                                Constants.algaeAngle, 
+                                this.subsystemCollection.getWristSubsystem())));
+                DataLogManager.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Abhay is selling! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            }
+
+            if (this.subsystemCollection.isElevatorSubsystemAvailable()
+                    && this.subsystemCollection.isEndEffectorSubsystemAvailable()) {
 
                 // Score Coral with EndEffector
                 this.driverController.y().whileTrue(
