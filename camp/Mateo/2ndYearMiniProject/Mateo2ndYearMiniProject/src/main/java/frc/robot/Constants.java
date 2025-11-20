@@ -18,4 +18,6 @@ public final class Constants {
   }
 
   public static final double RATEOFCHANGE = 0.02;
+  public static final double motorStatorCurrentMaximumAmps = 100.0;
+  public static final double motorSupplyCurrentMaximumAmps = 50.0;
 }
