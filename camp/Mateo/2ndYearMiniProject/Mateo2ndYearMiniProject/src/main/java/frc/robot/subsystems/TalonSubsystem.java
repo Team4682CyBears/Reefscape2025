@@ -7,15 +7,22 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+@SuppressWarnings("unused")
 public class TalonSubsystem extends SubsystemBase {
     public double speed = 0;
     private TalonFX talon = new TalonFX(Constants.talonID);
     private DutyCycleOut tDutyCycle = new DutyCycleOut(0.0);
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
+
+    double min = -1.0;
+    double max = 1.0;
+
+    double result = MathUtil.clamp(speed, min, max);
 
     public TalonSubsystem() {
         configureMotor();
@@ -32,6 +39,11 @@ public class TalonSubsystem extends SubsystemBase {
                 //TODO need to clamp the speed to +/- 1
                 // use MathUtil.clamp?
         speed += Constants.RATEOFCHANGE;
+    }
+
+    public void stopTalon() {
+        System.out.println("!!!!!!!!!!STOP TALON!!!!!!!!!!!!!!!!");
+        speed = 0;
     }
 
     public void periodic(){

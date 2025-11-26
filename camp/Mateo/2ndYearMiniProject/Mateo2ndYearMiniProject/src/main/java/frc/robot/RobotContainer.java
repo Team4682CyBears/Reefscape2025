@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.SpeedDownCommand;
 import frc.robot.commands.SpeedUpCommand;
+import frc.robot.commands.StopTalonCommand;
 import frc.robot.subsystems.TalonSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,6 +29,7 @@ public class RobotContainer {
 
   private final Command upCommand = new SpeedUpCommand(talon);
   private final Command downCommand = new SpeedDownCommand(talon);
+  private final Command stopCommand = new StopTalonCommand(talon);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,6 +51,7 @@ public class RobotContainer {
 
     m_driverController.leftTrigger().whileTrue(downCommand);
     m_driverController.rightTrigger().whileTrue(upCommand);
+    m_driverController.b().onTrue(stopCommand);
   }
 
   /**

@@ -3,21 +3,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.TalonSubsystem;
 
-public class SpeedUpCommand extends Command{
+public class StopTalonCommand extends Command{
     private TalonSubsystem talon;
 
-    public SpeedUpCommand(TalonSubsystem talon) {
+    public StopTalonCommand(TalonSubsystem talon) {
         this.talon = talon;
         addRequirements(talon);
     }
 
     @Override
     public void execute() {
-        talon.increaseSpeed();
+        talon.stopTalon();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return(false);
     }
 }
