@@ -26,6 +26,9 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private final Command upCommand = new SpeedUpCommand(talon);
+  private final Command downCommand = new SpeedDownCommand(talon);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -44,8 +47,8 @@ public class RobotContainer {
   private void configureBindings() {
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
-    m_driverController.leftTrigger().whileTrue(new SpeedDownCommand(talon));
-    m_driverController.rightTrigger().whileTrue(new SpeedUpCommand(talon));
+    m_driverController.leftTrigger().whileTrue(downCommand);
+    m_driverController.rightTrigger().whileTrue(upCommand);
   }
 
   /**
