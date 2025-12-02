@@ -1,3 +1,13 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: RobotContainer.java
+// Intent: main robot body
+// ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -14,11 +24,13 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort = 0; // The controller port
   }
 
-  public static final double RATEOFCHANGE = 0.02;
+  public static final double RATEOFCHANGE = 0.02; // The rate of change in speed for the TalonFX
+  // Current maximum amps
   public static final double motorStatorCurrentMaximumAmps = 100.0;
   public static final double motorSupplyCurrentMaximumAmps = 50.0;
-  public static final int talonID = 4;
+
+  public static final int talonID = 4; // The ID of the TalonFX
 }

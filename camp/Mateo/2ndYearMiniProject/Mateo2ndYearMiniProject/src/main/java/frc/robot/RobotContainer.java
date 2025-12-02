@@ -1,3 +1,13 @@
+// ************************************************************
+// Bishop Blanchet Robotics
+// Home of the Cybears
+// FRC - Reefscape - 2025
+// File: RobotContainer.java
+// Intent: main robot body
+// ************************************************************
+
+// ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ ʕ •ᴥ•ʔ ʕ•ᴥ•  ʔ ʕ  •ᴥ•ʔ ʕ •`ᴥ´•ʔ ʕ° •° ʔ 
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -22,11 +32,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final TalonSubsystem talon = new TalonSubsystem();
+  private final TalonSubsystem talon = new TalonSubsystem(); // Creates the local instance of the TalonSubsystem
 
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(OperatorConstants.kDriverControllerPort); // Creates the Xbox controller and assigns it its port
 
+  // Definition of the commands
   private final Command upCommand = new SpeedUpCommand(talon);
   private final Command downCommand = new SpeedDownCommand(talon);
   private final Command stopCommand = new StopTalonCommand(talon);
@@ -47,8 +58,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // Notifies us when configuration begins
     System.out.println("!!!!!!!!!!!CONFIGURING BUTTON BINDINGS!!!!!!!!!!!!!!");
 
+    // Binds buttons to commands
     m_driverController.leftTrigger().whileTrue(downCommand);
     m_driverController.rightTrigger().whileTrue(upCommand);
     m_driverController.b().onTrue(stopCommand);
