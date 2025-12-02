@@ -19,25 +19,17 @@ public class TalonSubsystem extends SubsystemBase {
     private DutyCycleOut tDutyCycle = new DutyCycleOut(0.0);
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
 
-    double min = -1.0;
-    double max = 1.0;
-
-    double result = MathUtil.clamp(speed, min, max);
-
     public TalonSubsystem() {
         configureMotor();
     }
 
     public void decreaseSpeed() {
         System.out.println("!!!!!!!!!!DECREASE SPEED!!!!!!!!!!!!");
-        //TODO need to clamp the speed to +/- 1
         speed -= Constants.RATEOFCHANGE;
     }
 
     public void increaseSpeed() {
         System.out.println("!!!!!!!!!!INCREASE SPEED!!!!!!!!!!!!");
-                //TODO need to clamp the speed to +/- 1
-                // use MathUtil.clamp?
         speed += Constants.RATEOFCHANGE;
     }
 
@@ -46,10 +38,14 @@ public class TalonSubsystem extends SubsystemBase {
         speed = 0;
     }
 
-    public void periodic(){
-
-        tDutyCycle.withOutput(speed);
-        talon.setControl(tDutyCycle);
+    public void periodic() {
+        if (speed == 0) {
+            talon.stopMotor();
+        } else {
+            // clamp the speed to +/-1 as required by the motor limits
+            tDutyCycle.withOutput(MathUtil.clamp(speed, -1.0, 1.0));
+            talon.setControl(tDutyCycle);
+        }
     }
 
     private void configureMotor() {
