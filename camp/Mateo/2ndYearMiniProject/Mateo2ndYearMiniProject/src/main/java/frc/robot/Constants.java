@@ -27,7 +27,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0; // The controller port
   }
 
-  public static final double RATEOFCHANGE = 0.02; // The rate of change in speed for the TalonFX
+  public static final double rateOfChange = 0.02; // The rate of change in speed for the TalonFX
   // Current maximum amps
   public static final double motorStatorCurrentMaximumAmps = 100.0;
   public static final double motorSupplyCurrentMaximumAmps = 50.0;

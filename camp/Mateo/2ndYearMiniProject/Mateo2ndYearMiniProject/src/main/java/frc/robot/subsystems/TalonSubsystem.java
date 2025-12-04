@@ -18,7 +18,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,20 +26,12 @@ import frc.robot.Constants;
  * the configuration for the TalonFX and all of the methods
  * used to change speed and run the motor.
  */
-@SuppressWarnings("unused")
+
 public class TalonSubsystem extends SubsystemBase { // The subsystem of the TalonFX motor that is being used
     public double speed = 0; // Initializes speed as 0
     private TalonFX talon = new TalonFX(Constants.talonID); // Creates the local instance of the TalonFX motor
     private DutyCycleOut tDutyCycle = new DutyCycleOut(0.0); // Creates the subsystem's DutyCycleOut method
     private final InvertedValue motorOutputInverted = InvertedValue.Clockwise_Positive;
-
-    /**
-     * This method calls the configureMotor() method in
-     * order to configure the TalonFX.
-     */
-    public TalonSubsystem() {
-        configureMotor(); // Configures the motor
-    }
 
     /**
      * This method decreases the speed of the TalonFX motor
@@ -51,7 +42,7 @@ public class TalonSubsystem extends SubsystemBase { // The subsystem of the Talo
      */
     public void decreaseSpeed() {
         System.out.println("!!!!!!!!!!DECREASE SPEED!!!!!!!!!!!!"); // Prints to show what command is being run
-        speed -= Constants.RATEOFCHANGE; // Decreases speed by the rate of change
+        speed -= Constants.rateOfChange; // Decreases speed by the rate of change
     }
 
     /**
@@ -63,19 +54,7 @@ public class TalonSubsystem extends SubsystemBase { // The subsystem of the Talo
      */
     public void increaseSpeed() {
         System.out.println("!!!!!!!!!!INCREASE SPEED!!!!!!!!!!!!"); // Prints to show what command is being run
-        speed += Constants.RATEOFCHANGE; // Increases speed by the rate of change
-    }
-
-    /**
-     * This method sets the speed of the TalonFX motor
-     * to 0.
-     * 
-     * @return a message signalling that the
-     * StopTalonCommand is being run.
-     */
-    public void stopTalon() {
-        System.out.println("!!!!!!!!!!STOP TALON!!!!!!!!!!!!!!!!"); // Prints to show what command is being run
-        speed = 0; // Sets speed to 0
+        speed += Constants.rateOfChange; // Increases speed by the rate of change
     }
 
     /**
@@ -96,8 +75,24 @@ public class TalonSubsystem extends SubsystemBase { // The subsystem of the Talo
         }
     }
 
-    @Override
-    public void simulationPeriodic() {
+    /**
+     * This method sets the speed of the TalonFX motor
+     * to 0.
+     * 
+     * @return a message signalling that the
+     * StopTalonCommand is being run.
+     */
+    public void stopTalon() {
+        System.out.println("!!!!!!!!!!STOP TALON!!!!!!!!!!!!!!!!"); // Prints to show what command is being run
+        speed = 0; // Sets speed to 0
+    }
+
+    /**
+     * This method calls the configureMotor() method in
+     * order to configure the TalonFX.
+     */
+    public TalonSubsystem() {
+        configureMotor(); // Configures the motor
     }
 
     private void configureMotor() {
